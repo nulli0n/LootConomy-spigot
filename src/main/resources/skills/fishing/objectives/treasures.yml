@@ -1,0 +1,90 @@
+saddle:
+  Display_Name: Saddle
+  Drops:
+    Currency:
+      vault:
+        Chance: 100.0
+        Min: 15.0
+        Max: 27.0
+    XP:
+      Chance: 100.0
+      Min: 1.0
+      Max: 5.0
+  Unlock_Level: 0
+  Icon:
+    Material: SADDLE
+nautilus_shell:
+  Display_Name: Nautilus Shell
+  Drops:
+    Currency:
+      vault:
+        Chance: 100.0
+        Min: 15.0
+        Max: 27.0
+    XP:
+      Chance: 100.0
+      Min: 1.0
+      Max: 5.0
+  Unlock_Level: 0
+  Icon:
+    Material: NAUTILUS_SHELL
+name_tag:
+  Display_Name: Name Tag
+  Drops:
+    Currency:
+      vault:
+        Chance: 100.0
+        Min: 15.0
+        Max: 27.0
+    XP:
+      Chance: 100.0
+      Min: 1.0
+      Max: 5.0
+  Unlock_Level: 0
+  Icon:
+    Material: NAME_TAG
+fishing_rod:
+  Display_Name: Fishing Rod
+  Drops:
+    Currency:
+      vault:
+        Chance: 100.0
+        Min: 15.0
+        Max: 27.0
+    XP:
+      Chance: 100.0
+      Min: 1.0
+      Max: 5.0
+  Unlock_Level: 0
+  Icon:
+    Material: FISHING_ROD
+enchanted_book:
+  Display_Name: Enchanted Book
+  Drops:
+    Currency:
+      vault:
+        Chance: 100.0
+        Min: 15.0
+        Max: 27.0
+    XP:
+      Chance: 100.0
+      Min: 1.0
+      Max: 5.0
+  Unlock_Level: 0
+  Icon:
+    Material: ENCHANTED_BOOK
+bow:
+  Display_Name: Bow
+  Drops:
+    Currency:
+      vault:
+        Chance: 100.0
+        Min: 15.0
+        Max: 27.0
+    XP:
+      Chance: 100.0
+      Min: 1.0
+      Max: 5.0
+  Unlock_Level: 0
+  Icon:
+    Material: BOW

@@ -1,0 +1,210 @@
+podzol:
+  Display_Name: Podzol
+  Drops:
+    Currency:
+      vault:
+        Chance: 5.0
+        Min: 0.15
+        Max: 0.25
+    XP:
+      Chance: 5.0
+      Min: 1.0
+      Max: 5.0
+  Unlock_Level: 0
+  Icon:
+    Material: PODZOL
+mud:
+  Display_Name: Mud
+  Drops:
+    Currency:
+      vault:
+        Chance: 5.0
+        Min: 0.15
+        Max: 0.25
+    XP:
+      Chance: 5.0
+      Min: 1.0
+      Max: 5.0
+  Unlock_Level: 0
+  Icon:
+    Material: MUD
+coarse_dirt:
+  Display_Name: Coarse Dirt
+  Drops:
+    Currency:
+      vault:
+        Chance: 5.0
+        Min: 0.15
+        Max: 0.25
+    XP:
+      Chance: 5.0
+      Min: 1.0
+      Max: 5.0
+  Unlock_Level: 0
+  Icon:
+    Material: COARSE_DIRT
+mycelium:
+  Display_Name: Mycelium
+  Drops:
+    Currency:
+      vault:
+        Chance: 5.0
+        Min: 0.15
+        Max: 0.25
+    XP:
+      Chance: 5.0
+      Min: 1.0
+      Max: 5.0
+  Unlock_Level: 0
+  Icon:
+    Material: MYCELIUM
+grass_block:
+  Display_Name: Grass Block
+  Drops:
+    Currency:
+      vault:
+        Chance: 5.0
+        Min: 0.15
+        Max: 0.25
+    XP:
+      Chance: 5.0
+      Min: 1.0
+      Max: 5.0
+  Unlock_Level: 0
+  Icon:
+    Material: GRASS_BLOCK
+dirt:
+  Display_Name: Dirt
+  Drops:
+    Currency:
+      vault:
+        Chance: 5.0
+        Min: 0.15
+        Max: 0.25
+    XP:
+      Chance: 5.0
+      Min: 1.0
+      Max: 5.0
+  Unlock_Level: 0
+  Icon:
+    Material: DIRT
+rooted_dirt:
+  Display_Name: Rooted Dirt
+  Drops:
+    Currency:
+      vault:
+        Chance: 5.0
+        Min: 0.15
+        Max: 0.25
+    XP:
+      Chance: 5.0
+      Min: 1.0
+      Max: 5.0
+  Unlock_Level: 0
+  Icon:
+    Material: ROOTED_DIRT
+red_sand:
+  Display_Name: Red Sand
+  Drops:
+    Currency:
+      vault:
+        Chance: 5.0
+        Min: 0.15
+        Max: 0.25
+    XP:
+      Chance: 5.0
+      Min: 1.0
+      Max: 5.0
+  Unlock_Level: 0
+  Icon:
+    Material: RED_SAND
+suspicious_sand:
+  Display_Name: Suspicious Sand
+  Drops:
+    Currency:
+      vault:
+        Chance: 5.0
+        Min: 0.15
+        Max: 0.25
+    XP:
+      Chance: 5.0
+      Min: 1.0
+      Max: 5.0
+  Unlock_Level: 0
+  Icon:
+    Material: SUSPICIOUS_SAND
+clay:
+  Display_Name: Clay
+  Drops:
+    Currency:
+      vault:
+        Chance: 5.0
+        Min: 0.15
+        Max: 0.25
+    XP:
+      Chance: 5.0
+      Min: 1.0
+      Max: 5.0
+  Unlock_Level: 0
+  Icon:
+    Material: CLAY
+sand:
+  Display_Name: Sand
+  Drops:
+    Currency:
+      vault:
+        Chance: 5.0
+        Min: 0.15
+        Max: 0.25
+    XP:
+      Chance: 5.0
+      Min: 1.0
+      Max: 5.0
+  Unlock_Level: 0
+  Icon:
+    Material: SAND
+soul_sand:
+  Display_Name: Soul Sand
+  Drops:
+    Currency:
+      vault:
+        Chance: 7.5
+        Min: 2.0
+        Max: 5.0
+    XP:
+      Chance: 7.5
+      Min: 1.0
+      Max: 5.0
+  Unlock_Level: 0
+  Icon:
+    Material: SOUL_SAND
+gravel:
+  Display_Name: Gravel
+  Drops:
+    Currency:
+      vault:
+        Chance: 7.5
+        Min: 2.0
+        Max: 5.0
+    XP:
+      Chance: 7.5
+      Min: 1.0
+      Max: 5.0
+  Unlock_Level: 0
+  Icon:
+    Material: GRAVEL
+suspicious_gravel:
+  Display_Name: Suspicious Gravel
+  Drops:
+    Currency:
+      vault:
+        Chance: 7.5
+        Min: 2.0
+        Max: 5.0
+    XP:
+      Chance: 7.5
+      Min: 1.0
+      Max: 5.0
+  Unlock_Level: 0
+  Icon:
+    Material: SUSPICIOUS_GRAVEL

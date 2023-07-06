@@ -1,0 +1,60 @@
+stripped_warped_hyphae:
+  Display_Name: Stripped Warped Hyphae
+  Drops:
+    Currency:
+      vault:
+        Chance: 50.0
+        Min: 3.0
+        Max: 7.0
+    XP:
+      Chance: 50.0
+      Min: 1.0
+      Max: 5.0
+  Unlock_Level: 0
+  Icon:
+    Material: STRIPPED_WARPED_HYPHAE
+warped_stem:
+  Display_Name: Warped Stem
+  Drops:
+    Currency:
+      vault:
+        Chance: 50.0
+        Min: 3.0
+        Max: 7.0
+    XP:
+      Chance: 50.0
+      Min: 1.0
+      Max: 5.0
+  Unlock_Level: 0
+  Icon:
+    Material: WARPED_STEM
+stripped_warped_stem:
+  Display_Name: Stripped Warped Stem
+  Drops:
+    Currency:
+      vault:
+        Chance: 50.0
+        Min: 3.0
+        Max: 7.0
+    XP:
+      Chance: 50.0
+      Min: 1.0
+      Max: 5.0
+  Unlock_Level: 0
+  Icon:
+    Material: STRIPPED_WARPED_STEM
+warped_hyphae:
+  Display_Name: Warped Hyphae
+  Drops:
+    Currency:
+      vault:
+        Chance: 50.0
+        Min: 3.0
+        Max: 7.0
+    XP:
+      Chance: 50.0
+      Min: 1.0
+      Max: 5.0
+  Unlock_Level: 0
+  Icon:
+    Material: WARPED_HYPHAE

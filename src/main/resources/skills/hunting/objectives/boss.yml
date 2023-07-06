@@ -1,0 +1,45 @@
+wither:
+  Display_Name: Wither
+  Drops:
+    Currency:
+      vault:
+        Chance: 100.0
+        Min: 1000.0
+        Max: 5000.0
+    XP:
+      Chance: 100.0
+      Min: 1.0
+      Max: 5.0
+  Unlock_Level: 0
+  Icon:
+    Material: WITHER_SPAWN_EGG
+elder_guardian:
+  Display_Name: Elder Guardian
+  Drops:
+    Currency:
+      vault:
+        Chance: 100.0
+        Min: 1000.0
+        Max: 5000.0
+    XP:
+      Chance: 100.0
+      Min: 1.0
+      Max: 5.0
+  Unlock_Level: 0
+  Icon:
+    Material: ELDER_GUARDIAN_SPAWN_EGG
+ender_dragon:
+  Display_Name: Ender Dragon
+  Drops:
+    Currency:
+      vault:
+        Chance: 100.0
+        Min: 1000.0
+        Max: 5000.0
+    XP:
+      Chance: 100.0
+      Min: 1.0
+      Max: 5.0
+  Unlock_Level: 0
+  Icon:
+    Material: ENDER_DRAGON_SPAWN_EGG

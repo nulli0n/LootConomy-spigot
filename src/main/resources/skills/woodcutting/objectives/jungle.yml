@@ -1,0 +1,60 @@
+stripped_jungle_wood:
+  Display_Name: Stripped Jungle Wood
+  Drops:
+    Currency:
+      vault:
+        Chance: 50.0
+        Min: 3.0
+        Max: 7.0
+    XP:
+      Chance: 50.0
+      Min: 1.0
+      Max: 5.0
+  Unlock_Level: 0
+  Icon:
+    Material: STRIPPED_JUNGLE_WOOD
+stripped_jungle_log:
+  Display_Name: Stripped Jungle Log
+  Drops:
+    Currency:
+      vault:
+        Chance: 50.0
+        Min: 3.0
+        Max: 7.0
+    XP:
+      Chance: 50.0
+      Min: 1.0
+      Max: 5.0
+  Unlock_Level: 0
+  Icon:
+    Material: STRIPPED_JUNGLE_LOG
+jungle_log:
+  Display_Name: Jungle Log
+  Drops:
+    Currency:
+      vault:
+        Chance: 50.0
+        Min: 3.0
+        Max: 7.0
+    XP:
+      Chance: 50.0
+      Min: 1.0
+      Max: 5.0
+  Unlock_Level: 0
+  Icon:
+    Material: JUNGLE_LOG
+jungle_wood:
+  Display_Name: Jungle Wood
+  Drops:
+    Currency:
+      vault:
+        Chance: 50.0
+        Min: 3.0
+        Max: 7.0
+    XP:
+      Chance: 50.0
+      Min: 1.0
+      Max: 5.0
+  Unlock_Level: 0
+  Icon:
+    Material: JUNGLE_WOOD

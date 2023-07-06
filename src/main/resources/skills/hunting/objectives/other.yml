@@ -1,0 +1,30 @@
+iron_golem:
+  Display_Name: Iron Golem
+  Drops:
+    Currency:
+      vault:
+        Chance: 50.0
+        Min: 5.0
+        Max: 20.0
+    XP:
+      Chance: 50.0
+      Min: 1.0
+      Max: 5.0
+  Unlock_Level: 0
+  Icon:
+    Material: IRON_GOLEM_SPAWN_EGG
+snowman:
+  Display_Name: Snowman
+  Drops:
+    Currency:
+      vault:
+        Chance: 50.0
+        Min: 5.0
+        Max: 20.0
+    XP:
+      Chance: 50.0
+      Min: 1.0
+      Max: 5.0
+  Unlock_Level: 0
+  Icon:
+    Material: SNOW_GOLEM_SPAWN_EGG

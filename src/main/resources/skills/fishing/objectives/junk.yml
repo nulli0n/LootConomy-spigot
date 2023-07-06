@@ -1,0 +1,166 @@
+bone:
+  Display_Name: Bone
+  Drops:
+    Currency:
+      vault:
+        Chance: 100.0
+        Min: 2.0
+        Max: 8.0
+    XP:
+      Chance: 100.0
+      Min: 1.0
+      Max: 5.0
+  Unlock_Level: 0
+  Icon:
+    Material: BONE
+string:
+  Display_Name: String
+  Drops:
+    Currency:
+      vault:
+        Chance: 100.0
+        Min: 2.0
+        Max: 8.0
+    XP:
+      Chance: 100.0
+      Min: 1.0
+      Max: 5.0
+  Unlock_Level: 0
+  Icon:
+    Material: STRING
+rotten_flesh:
+  Display_Name: Rotten Flesh
+  Drops:
+    Currency:
+      vault:
+        Chance: 100.0
+        Min: 2.0
+        Max: 8.0
+    XP:
+      Chance: 100.0
+      Min: 1.0
+      Max: 5.0
+  Unlock_Level: 0
+  Icon:
+    Material: ROTTEN_FLESH
+stick:
+  Display_Name: Stick
+  Drops:
+    Currency:
+      vault:
+        Chance: 100.0
+        Min: 2.0
+        Max: 8.0
+    XP:
+      Chance: 100.0
+      Min: 1.0
+      Max: 5.0
+  Unlock_Level: 0
+  Icon:
+    Material: STICK
+lily_pad:
+  Display_Name: Lily Pad
+  Drops:
+    Currency:
+      vault:
+        Chance: 100.0
+        Min: 2.0
+        Max: 8.0
+    XP:
+      Chance: 100.0
+      Min: 1.0
+      Max: 5.0
+  Unlock_Level: 0
+  Icon:
+    Material: LILY_PAD
+leather_boots:
+  Display_Name: Leather Boots
+  Drops:
+    Currency:
+      vault:
+        Chance: 100.0
+        Min: 2.0
+        Max: 8.0
+    XP:
+      Chance: 100.0
+      Min: 1.0
+      Max: 5.0
+  Unlock_Level: 0
+  Icon:
+    Material: LEATHER_BOOTS
+    Color: 160,101,64,
+potion:
+  Display_Name: Potion
+  Drops:
+    Currency:
+      vault:
+        Chance: 100.0
+        Min: 2.0
+        Max: 8.0
+    XP:
+      Chance: 100.0
+      Min: 1.0
+      Max: 5.0
+  Unlock_Level: 0
+  Icon:
+    Material: POTION
+bowl:
+  Display_Name: Bowl
+  Drops:
+    Currency:
+      vault:
+        Chance: 100.0
+        Min: 2.0
+        Max: 8.0
+    XP:
+      Chance: 100.0
+      Min: 1.0
+      Max: 5.0
+  Unlock_Level: 0
+  Icon:
+    Material: BOWL
+leather:
+  Display_Name: Leather
+  Drops:
+    Currency:
+      vault:
+        Chance: 100.0
+        Min: 2.0
+        Max: 8.0
+    XP:
+      Chance: 100.0
+      Min: 1.0
+      Max: 5.0
+  Unlock_Level: 0
+  Icon:
+    Material: LEATHER
+ink_sac:
+  Display_Name: Ink Sac
+  Drops:
+    Currency:
+      vault:
+        Chance: 100.0
+        Min: 2.0
+        Max: 8.0
+    XP:
+      Chance: 100.0
+      Min: 1.0
+      Max: 5.0
+  Unlock_Level: 0
+  Icon:
+    Material: INK_SAC
+tripwire_hook:
+  Display_Name: Tripwire Hook
+  Drops:
+    Currency:
+      vault:
+        Chance: 100.0
+        Min: 2.0
+        Max: 8.0
+    XP:
+      Chance: 100.0
+      Min: 1.0
+      Max: 5.0
+  Unlock_Level: 0
+  Icon:
+    Material: TRIPWIRE_HOOK

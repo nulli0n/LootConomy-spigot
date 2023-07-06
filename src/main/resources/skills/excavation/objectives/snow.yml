@@ -1,0 +1,30 @@
+snow_block:
+  Display_Name: Snow Block
+  Drops:
+    Currency:
+      vault:
+        Chance: 3.5
+        Min: 0.1
+        Max: 0.25
+    XP:
+      Chance: 3.5
+      Min: 1.0
+      Max: 5.0
+  Unlock_Level: 0
+  Icon:
+    Material: SNOW_BLOCK
+snow:
+  Display_Name: Snow
+  Drops:
+    Currency:
+      vault:
+        Chance: 3.5
+        Min: 0.1
+        Max: 0.25
+    XP:
+      Chance: 3.5
+      Min: 1.0
+      Max: 5.0
+  Unlock_Level: 0
+  Icon:
+    Material: SNOW

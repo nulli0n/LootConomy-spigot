@@ -1,0 +1,90 @@
+zombie_villager:
+  Display_Name: Zombie Villager
+  Drops:
+    Currency:
+      vault:
+        Chance: 50.0
+        Min: 6.0
+        Max: 16.0
+    XP:
+      Chance: 50.0
+      Min: 1.0
+      Max: 5.0
+  Unlock_Level: 0
+  Icon:
+    Material: ZOMBIE_VILLAGER_SPAWN_EGG
+zombie_horse:
+  Display_Name: Zombie Horse
+  Drops:
+    Currency:
+      vault:
+        Chance: 50.0
+        Min: 6.0
+        Max: 16.0
+    XP:
+      Chance: 50.0
+      Min: 1.0
+      Max: 5.0
+  Unlock_Level: 0
+  Icon:
+    Material: ZOMBIE_HORSE_SPAWN_EGG
+giant:
+  Display_Name: Giant
+  Drops:
+    Currency:
+      vault:
+        Chance: 50.0
+        Min: 6.0
+        Max: 16.0
+    XP:
+      Chance: 50.0
+      Min: 1.0
+      Max: 5.0
+  Unlock_Level: 0
+  Icon:
+    Material: BAT_SPAWN_EGG
+zombified_piglin:
+  Display_Name: Zombified Piglin
+  Drops:
+    Currency:
+      vault:
+        Chance: 50.0
+        Min: 6.0
+        Max: 16.0
+    XP:
+      Chance: 50.0
+      Min: 1.0
+      Max: 5.0
+  Unlock_Level: 0
+  Icon:
+    Material: ZOMBIFIED_PIGLIN_SPAWN_EGG
+husk:
+  Display_Name: Husk
+  Drops:
+    Currency:
+      vault:
+        Chance: 50.0
+        Min: 6.0
+        Max: 16.0
+    XP:
+      Chance: 50.0
+      Min: 1.0
+      Max: 5.0
+  Unlock_Level: 0
+  Icon:
+    Material: HUSK_SPAWN_EGG
+zombie:
+  Display_Name: Zombie
+  Drops:
+    Currency:
+      vault:
+        Chance: 50.0
+        Min: 6.0
+        Max: 16.0
+    XP:
+      Chance: 50.0
+      Min: 1.0
+      Max: 5.0
+  Unlock_Level: 0
+  Icon:
+    Material: ZOMBIE_SPAWN_EGG

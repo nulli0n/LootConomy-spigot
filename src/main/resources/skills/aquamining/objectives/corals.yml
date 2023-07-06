@@ -1,0 +1,225 @@
+brain_coral_fan:
+  Display_Name: Brain Coral Fan
+  Drops:
+    Currency:
+      vault:
+        Chance: 25.0
+        Min: 3.0
+        Max: 12.0
+    XP:
+      Chance: 25.0
+      Min: 1.0
+      Max: 5.0
+  Unlock_Level: 0
+  Icon:
+    Material: BRAIN_CORAL_FAN
+brain_coral_block:
+  Display_Name: Brain Coral Block
+  Drops:
+    Currency:
+      vault:
+        Chance: 25.0
+        Min: 3.0
+        Max: 12.0
+    XP:
+      Chance: 25.0
+      Min: 1.0
+      Max: 5.0
+  Unlock_Level: 0
+  Icon:
+    Material: BRAIN_CORAL_BLOCK
+bubble_coral_fan:
+  Display_Name: Bubble Coral Fan
+  Drops:
+    Currency:
+      vault:
+        Chance: 25.0
+        Min: 3.0
+        Max: 12.0
+    XP:
+      Chance: 25.0
+      Min: 1.0
+      Max: 5.0
+  Unlock_Level: 0
+  Icon:
+    Material: BUBBLE_CORAL_FAN
+bubble_coral_block:
+  Display_Name: Bubble Coral Block
+  Drops:
+    Currency:
+      vault:
+        Chance: 25.0
+        Min: 3.0
+        Max: 12.0
+    XP:
+      Chance: 25.0
+      Min: 1.0
+      Max: 5.0
+  Unlock_Level: 0
+  Icon:
+    Material: BUBBLE_CORAL_BLOCK
+horn_coral:
+  Display_Name: Horn Coral
+  Drops:
+    Currency:
+      vault:
+        Chance: 25.0
+        Min: 3.0
+        Max: 12.0
+    XP:
+      Chance: 25.0
+      Min: 1.0
+      Max: 5.0
+  Unlock_Level: 0
+  Icon:
+    Material: HORN_CORAL
+tube_coral_block:
+  Display_Name: Tube Coral Block
+  Drops:
+    Currency:
+      vault:
+        Chance: 25.0
+        Min: 3.0
+        Max: 12.0
+    XP:
+      Chance: 25.0
+      Min: 1.0
+      Max: 5.0
+  Unlock_Level: 0
+  Icon:
+    Material: TUBE_CORAL_BLOCK
+horn_coral_block:
+  Display_Name: Horn Coral Block
+  Drops:
+    Currency:
+      vault:
+        Chance: 25.0
+        Min: 3.0
+        Max: 12.0
+    XP:
+      Chance: 25.0
+      Min: 1.0
+      Max: 5.0
+  Unlock_Level: 0
+  Icon:
+    Material: HORN_CORAL_BLOCK
+fire_coral_block:
+  Display_Name: Fire Coral Block
+  Drops:
+    Currency:
+      vault:
+        Chance: 25.0
+        Min: 3.0
+        Max: 12.0
+    XP:
+      Chance: 25.0
+      Min: 1.0
+      Max: 5.0
+  Unlock_Level: 0
+  Icon:
+    Material: FIRE_CORAL_BLOCK
+tube_coral_fan:
+  Display_Name: Tube Coral Fan
+  Drops:
+    Currency:
+      vault:
+        Chance: 25.0
+        Min: 3.0
+        Max: 12.0
+    XP:
+      Chance: 25.0
+      Min: 1.0
+      Max: 5.0
+  Unlock_Level: 0
+  Icon:
+    Material: TUBE_CORAL_FAN
+fire_coral_fan:
+  Display_Name: Fire Coral Fan
+  Drops:
+    Currency:
+      vault:
+        Chance: 25.0
+        Min: 3.0
+        Max: 12.0
+    XP:
+      Chance: 25.0
+      Min: 1.0
+      Max: 5.0
+  Unlock_Level: 0
+  Icon:
+    Material: FIRE_CORAL_FAN
+fire_coral:
+  Display_Name: Fire Coral
+  Drops:
+    Currency:
+      vault:
+        Chance: 25.0
+        Min: 3.0
+        Max: 12.0
+    XP:
+      Chance: 25.0
+      Min: 1.0
+      Max: 5.0
+  Unlock_Level: 0
+  Icon:
+    Material: FIRE_CORAL
+brain_coral:
+  Display_Name: Brain Coral
+  Drops:
+    Currency:
+      vault:
+        Chance: 25.0
+        Min: 3.0
+        Max: 12.0
+    XP:
+      Chance: 25.0
+      Min: 1.0
+      Max: 5.0
+  Unlock_Level: 0
+  Icon:
+    Material: BRAIN_CORAL
+tube_coral:
+  Display_Name: Tube Coral
+  Drops:
+    Currency:
+      vault:
+        Chance: 25.0
+        Min: 3.0
+        Max: 12.0
+    XP:
+      Chance: 25.0
+      Min: 1.0
+      Max: 5.0
+  Unlock_Level: 0
+  Icon:
+    Material: TUBE_CORAL
+horn_coral_fan:
+  Display_Name: Horn Coral Fan
+  Drops:
+    Currency:
+      vault:
+        Chance: 25.0
+        Min: 3.0
+        Max: 12.0
+    XP:
+      Chance: 25.0
+      Min: 1.0
+      Max: 5.0
+  Unlock_Level: 0
+  Icon:
+    Material: HORN_CORAL_FAN
+bubble_coral:
+  Display_Name: Bubble Coral
+  Drops:
+    Currency:
+      vault:
+        Chance: 25.0
+        Min: 3.0
+        Max: 12.0
+    XP:
+      Chance: 25.0
+      Min: 1.0
+      Max: 5.0
+  Unlock_Level: 0
+  Icon:
+    Material: BUBBLE_CORAL

@@ -1,0 +1,60 @@
+stripped_mangrove_log:
+  Display_Name: Stripped Mangrove Log
+  Drops:
+    Currency:
+      vault:
+        Chance: 50.0
+        Min: 3.0
+        Max: 7.0
+    XP:
+      Chance: 50.0
+      Min: 1.0
+      Max: 5.0
+  Unlock_Level: 0
+  Icon:
+    Material: STRIPPED_MANGROVE_LOG
+mangrove_wood:
+  Display_Name: Mangrove Wood
+  Drops:
+    Currency:
+      vault:
+        Chance: 50.0
+        Min: 3.0
+        Max: 7.0
+    XP:
+      Chance: 50.0
+      Min: 1.0
+      Max: 5.0
+  Unlock_Level: 0
+  Icon:
+    Material: MANGROVE_WOOD
+stripped_mangrove_wood:
+  Display_Name: Stripped Mangrove Wood
+  Drops:
+    Currency:
+      vault:
+        Chance: 50.0
+        Min: 3.0
+        Max: 7.0
+    XP:
+      Chance: 50.0
+      Min: 1.0
+      Max: 5.0
+  Unlock_Level: 0
+  Icon:
+    Material: STRIPPED_MANGROVE_WOOD
+mangrove_log:
+  Display_Name: Mangrove Log
+  Drops:
+    Currency:
+      vault:
+        Chance: 50.0
+        Min: 3.0
+        Max: 7.0
+    XP:
+      Chance: 50.0
+      Min: 1.0
+      Max: 5.0
+  Unlock_Level: 0
+  Icon:
+    Material: MANGROVE_LOG

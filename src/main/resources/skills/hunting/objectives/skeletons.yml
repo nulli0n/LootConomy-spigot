@@ -1,0 +1,45 @@
+skeleton:
+  Display_Name: Skeleton
+  Drops:
+    Currency:
+      vault:
+        Chance: 80.0
+        Min: 9.0
+        Max: 18.0
+    XP:
+      Chance: 80.0
+      Min: 1.0
+      Max: 5.0
+  Unlock_Level: 0
+  Icon:
+    Material: SKELETON_SPAWN_EGG
+stray:
+  Display_Name: Stray
+  Drops:
+    Currency:
+      vault:
+        Chance: 80.0
+        Min: 9.0
+        Max: 18.0
+    XP:
+      Chance: 80.0
+      Min: 1.0
+      Max: 5.0
+  Unlock_Level: 0
+  Icon:
+    Material: STRAY_SPAWN_EGG
+wither_skeleton:
+  Display_Name: Wither Skeleton
+  Drops:
+    Currency:
+      vault:
+        Chance: 80.0
+        Min: 9.0
+        Max: 18.0
+    XP:
+      Chance: 80.0
+      Min: 1.0
+      Max: 5.0
+  Unlock_Level: 0
+  Icon:
+    Material: WITHER_SKELETON_SPAWN_EGG

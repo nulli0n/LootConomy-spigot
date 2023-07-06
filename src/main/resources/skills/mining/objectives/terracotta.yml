@@ -1,0 +1,255 @@
+green_terracotta:
+  Display_Name: Green Terracotta
+  Drops:
+    Currency:
+      vault:
+        Chance: 5.0
+        Min: 0.25
+        Max: 0.45
+    XP:
+      Chance: 5.0
+      Min: 1.0
+      Max: 5.0
+  Unlock_Level: 0
+  Icon:
+    Material: GREEN_TERRACOTTA
+lime_terracotta:
+  Display_Name: Lime Terracotta
+  Drops:
+    Currency:
+      vault:
+        Chance: 5.0
+        Min: 0.25
+        Max: 0.45
+    XP:
+      Chance: 5.0
+      Min: 1.0
+      Max: 5.0
+  Unlock_Level: 0
+  Icon:
+    Material: LIME_TERRACOTTA
+light_blue_terracotta:
+  Display_Name: Light Blue Terracotta
+  Drops:
+    Currency:
+      vault:
+        Chance: 5.0
+        Min: 0.25
+        Max: 0.45
+    XP:
+      Chance: 5.0
+      Min: 1.0
+      Max: 5.0
+  Unlock_Level: 0
+  Icon:
+    Material: LIGHT_BLUE_TERRACOTTA
+cyan_terracotta:
+  Display_Name: Cyan Terracotta
+  Drops:
+    Currency:
+      vault:
+        Chance: 5.0
+        Min: 0.25
+        Max: 0.45
+    XP:
+      Chance: 5.0
+      Min: 1.0
+      Max: 5.0
+  Unlock_Level: 0
+  Icon:
+    Material: CYAN_TERRACOTTA
+blue_terracotta:
+  Display_Name: Blue Terracotta
+  Drops:
+    Currency:
+      vault:
+        Chance: 5.0
+        Min: 0.25
+        Max: 0.45
+    XP:
+      Chance: 5.0
+      Min: 1.0
+      Max: 5.0
+  Unlock_Level: 0
+  Icon:
+    Material: BLUE_TERRACOTTA
+magenta_terracotta:
+  Display_Name: Magenta Terracotta
+  Drops:
+    Currency:
+      vault:
+        Chance: 5.0
+        Min: 0.25
+        Max: 0.45
+    XP:
+      Chance: 5.0
+      Min: 1.0
+      Max: 5.0
+  Unlock_Level: 0
+  Icon:
+    Material: MAGENTA_TERRACOTTA
+black_terracotta:
+  Display_Name: Black Terracotta
+  Drops:
+    Currency:
+      vault:
+        Chance: 5.0
+        Min: 0.25
+        Max: 0.45
+    XP:
+      Chance: 5.0
+      Min: 1.0
+      Max: 5.0
+  Unlock_Level: 0
+  Icon:
+    Material: BLACK_TERRACOTTA
+yellow_terracotta:
+  Display_Name: Yellow Terracotta
+  Drops:
+    Currency:
+      vault:
+        Chance: 5.0
+        Min: 0.25
+        Max: 0.45
+    XP:
+      Chance: 5.0
+      Min: 1.0
+      Max: 5.0
+  Unlock_Level: 0
+  Icon:
+    Material: YELLOW_TERRACOTTA
+orange_terracotta:
+  Display_Name: Orange Terracotta
+  Drops:
+    Currency:
+      vault:
+        Chance: 5.0
+        Min: 0.25
+        Max: 0.45
+    XP:
+      Chance: 5.0
+      Min: 1.0
+      Max: 5.0
+  Unlock_Level: 0
+  Icon:
+    Material: ORANGE_TERRACOTTA
+terracotta:
+  Display_Name: Terracotta
+  Drops:
+    Currency:
+      vault:
+        Chance: 5.0
+        Min: 0.25
+        Max: 0.45
+    XP:
+      Chance: 5.0
+      Min: 1.0
+      Max: 5.0
+  Unlock_Level: 0
+  Icon:
+    Material: TERRACOTTA
+light_gray_terracotta:
+  Display_Name: Light Gray Terracotta
+  Drops:
+    Currency:
+      vault:
+        Chance: 5.0
+        Min: 0.25
+        Max: 0.45
+    XP:
+      Chance: 5.0
+      Min: 1.0
+      Max: 5.0
+  Unlock_Level: 0
+  Icon:
+    Material: LIGHT_GRAY_TERRACOTTA
+gray_terracotta:
+  Display_Name: Gray Terracotta
+  Drops:
+    Currency:
+      vault:
+        Chance: 5.0
+        Min: 0.25
+        Max: 0.45
+    XP:
+      Chance: 5.0
+      Min: 1.0
+      Max: 5.0
+  Unlock_Level: 0
+  Icon:
+    Material: GRAY_TERRACOTTA
+white_terracotta:
+  Display_Name: White Terracotta
+  Drops:
+    Currency:
+      vault:
+        Chance: 5.0
+        Min: 0.25
+        Max: 0.45
+    XP:
+      Chance: 5.0
+      Min: 1.0
+      Max: 5.0
+  Unlock_Level: 0
+  Icon:
+    Material: WHITE_TERRACOTTA
+brown_terracotta:
+  Display_Name: Brown Terracotta
+  Drops:
+    Currency:
+      vault:
+        Chance: 5.0
+        Min: 0.25
+        Max: 0.45
+    XP:
+      Chance: 5.0
+      Min: 1.0
+      Max: 5.0
+  Unlock_Level: 0
+  Icon:
+    Material: BROWN_TERRACOTTA
+purple_terracotta:
+  Display_Name: Purple Terracotta
+  Drops:
+    Currency:
+      vault:
+        Chance: 5.0
+        Min: 0.25
+        Max: 0.45
+    XP:
+      Chance: 5.0
+      Min: 1.0
+      Max: 5.0
+  Unlock_Level: 0
+  Icon:
+    Material: PURPLE_TERRACOTTA
+pink_terracotta:
+  Display_Name: Pink Terracotta
+  Drops:
+    Currency:
+      vault:
+        Chance: 5.0
+        Min: 0.25
+        Max: 0.45
+    XP:
+      Chance: 5.0
+      Min: 1.0
+      Max: 5.0
+  Unlock_Level: 0
+  Icon:
+    Material: PINK_TERRACOTTA
+red_terracotta:
+  Display_Name: Red Terracotta
+  Drops:
+    Currency:
+      vault:
+        Chance: 5.0
+        Min: 0.25
+        Max: 0.45
+    XP:
+      Chance: 5.0
+      Min: 1.0
+      Max: 5.0
+  Unlock_Level: 0
+  Icon:
+    Material: RED_TERRACOTTA

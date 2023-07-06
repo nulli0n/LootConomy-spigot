@@ -1,0 +1,390 @@
+goat:
+  Display_Name: Goat
+  Drops:
+    Currency:
+      vault:
+        Chance: 50.0
+        Min: 4.0
+        Max: 12.0
+    XP:
+      Chance: 50.0
+      Min: 1.0
+      Max: 5.0
+  Unlock_Level: 0
+  Icon:
+    Material: GOAT_SPAWN_EGG
+pig:
+  Display_Name: Pig
+  Drops:
+    Currency:
+      vault:
+        Chance: 50.0
+        Min: 4.0
+        Max: 12.0
+    XP:
+      Chance: 50.0
+      Min: 1.0
+      Max: 5.0
+  Unlock_Level: 0
+  Icon:
+    Material: PIG_SPAWN_EGG
+rabbit:
+  Display_Name: Rabbit
+  Drops:
+    Currency:
+      vault:
+        Chance: 50.0
+        Min: 4.0
+        Max: 12.0
+    XP:
+      Chance: 50.0
+      Min: 1.0
+      Max: 5.0
+  Unlock_Level: 0
+  Icon:
+    Material: RABBIT_SPAWN_EGG
+bee:
+  Display_Name: Bee
+  Drops:
+    Currency:
+      vault:
+        Chance: 50.0
+        Min: 4.0
+        Max: 12.0
+    XP:
+      Chance: 50.0
+      Min: 1.0
+      Max: 5.0
+  Unlock_Level: 0
+  Icon:
+    Material: BEE_SPAWN_EGG
+turtle:
+  Display_Name: Turtle
+  Drops:
+    Currency:
+      vault:
+        Chance: 50.0
+        Min: 4.0
+        Max: 12.0
+    XP:
+      Chance: 50.0
+      Min: 1.0
+      Max: 5.0
+  Unlock_Level: 0
+  Icon:
+    Material: TURTLE_SPAWN_EGG
+camel:
+  Display_Name: Camel
+  Drops:
+    Currency:
+      vault:
+        Chance: 50.0
+        Min: 4.0
+        Max: 12.0
+    XP:
+      Chance: 50.0
+      Min: 1.0
+      Max: 5.0
+  Unlock_Level: 0
+  Icon:
+    Material: CAMEL_SPAWN_EGG
+bat:
+  Display_Name: Bat
+  Drops:
+    Currency:
+      vault:
+        Chance: 50.0
+        Min: 4.0
+        Max: 12.0
+    XP:
+      Chance: 50.0
+      Min: 1.0
+      Max: 5.0
+  Unlock_Level: 0
+  Icon:
+    Material: BAT_SPAWN_EGG
+ocelot:
+  Display_Name: Ocelot
+  Drops:
+    Currency:
+      vault:
+        Chance: 50.0
+        Min: 4.0
+        Max: 12.0
+    XP:
+      Chance: 50.0
+      Min: 1.0
+      Max: 5.0
+  Unlock_Level: 0
+  Icon:
+    Material: OCELOT_SPAWN_EGG
+chicken:
+  Display_Name: Chicken
+  Drops:
+    Currency:
+      vault:
+        Chance: 50.0
+        Min: 4.0
+        Max: 12.0
+    XP:
+      Chance: 50.0
+      Min: 1.0
+      Max: 5.0
+  Unlock_Level: 0
+  Icon:
+    Material: CHICKEN_SPAWN_EGG
+donkey:
+  Display_Name: Donkey
+  Drops:
+    Currency:
+      vault:
+        Chance: 50.0
+        Min: 4.0
+        Max: 12.0
+    XP:
+      Chance: 50.0
+      Min: 1.0
+      Max: 5.0
+  Unlock_Level: 0
+  Icon:
+    Material: DONKEY_SPAWN_EGG
+llama:
+  Display_Name: Llama
+  Drops:
+    Currency:
+      vault:
+        Chance: 50.0
+        Min: 4.0
+        Max: 12.0
+    XP:
+      Chance: 50.0
+      Min: 1.0
+      Max: 5.0
+  Unlock_Level: 0
+  Icon:
+    Material: LLAMA_SPAWN_EGG
+frog:
+  Display_Name: Frog
+  Drops:
+    Currency:
+      vault:
+        Chance: 50.0
+        Min: 4.0
+        Max: 12.0
+    XP:
+      Chance: 50.0
+      Min: 1.0
+      Max: 5.0
+  Unlock_Level: 0
+  Icon:
+    Material: FROG_SPAWN_EGG
+sheep:
+  Display_Name: Sheep
+  Drops:
+    Currency:
+      vault:
+        Chance: 50.0
+        Min: 4.0
+        Max: 12.0
+    XP:
+      Chance: 50.0
+      Min: 1.0
+      Max: 5.0
+  Unlock_Level: 0
+  Icon:
+    Material: SHEEP_SPAWN_EGG
+mushroom_cow:
+  Display_Name: Mushroom Cow
+  Drops:
+    Currency:
+      vault:
+        Chance: 50.0
+        Min: 4.0
+        Max: 12.0
+    XP:
+      Chance: 50.0
+      Min: 1.0
+      Max: 5.0
+  Unlock_Level: 0
+  Icon:
+    Material: MOOSHROOM_SPAWN_EGG
+cow:
+  Display_Name: Cow
+  Drops:
+    Currency:
+      vault:
+        Chance: 50.0
+        Min: 4.0
+        Max: 12.0
+    XP:
+      Chance: 50.0
+      Min: 1.0
+      Max: 5.0
+  Unlock_Level: 0
+  Icon:
+    Material: COW_SPAWN_EGG
+parrot:
+  Display_Name: Parrot
+  Drops:
+    Currency:
+      vault:
+        Chance: 50.0
+        Min: 4.0
+        Max: 12.0
+    XP:
+      Chance: 50.0
+      Min: 1.0
+      Max: 5.0
+  Unlock_Level: 0
+  Icon:
+    Material: PARROT_SPAWN_EGG
+silverfish:
+  Display_Name: Silverfish
+  Drops:
+    Currency:
+      vault:
+        Chance: 50.0
+        Min: 4.0
+        Max: 12.0
+    XP:
+      Chance: 50.0
+      Min: 1.0
+      Max: 5.0
+  Unlock_Level: 0
+  Icon:
+    Material: SILVERFISH_SPAWN_EGG
+fox:
+  Display_Name: Fox
+  Drops:
+    Currency:
+      vault:
+        Chance: 50.0
+        Min: 4.0
+        Max: 12.0
+    XP:
+      Chance: 50.0
+      Min: 1.0
+      Max: 5.0
+  Unlock_Level: 0
+  Icon:
+    Material: FOX_SPAWN_EGG
+mule:
+  Display_Name: Mule
+  Drops:
+    Currency:
+      vault:
+        Chance: 50.0
+        Min: 4.0
+        Max: 12.0
+    XP:
+      Chance: 50.0
+      Min: 1.0
+      Max: 5.0
+  Unlock_Level: 0
+  Icon:
+    Material: MULE_SPAWN_EGG
+panda:
+  Display_Name: Panda
+  Drops:
+    Currency:
+      vault:
+        Chance: 50.0
+        Min: 4.0
+        Max: 12.0
+    XP:
+      Chance: 50.0
+      Min: 1.0
+      Max: 5.0
+  Unlock_Level: 0
+  Icon:
+    Material: PANDA_SPAWN_EGG
+cat:
+  Display_Name: Cat
+  Drops:
+    Currency:
+      vault:
+        Chance: 50.0
+        Min: 4.0
+        Max: 12.0
+    XP:
+      Chance: 50.0
+      Min: 1.0
+      Max: 5.0
+  Unlock_Level: 0
+  Icon:
+    Material: CAT_SPAWN_EGG
+polar_bear:
+  Display_Name: Polar Bear
+  Drops:
+    Currency:
+      vault:
+        Chance: 50.0
+        Min: 4.0
+        Max: 12.0
+    XP:
+      Chance: 50.0
+      Min: 1.0
+      Max: 5.0
+  Unlock_Level: 0
+  Icon:
+    Material: POLAR_BEAR_SPAWN_EGG
+trader_llama:
+  Display_Name: Trader Llama
+  Drops:
+    Currency:
+      vault:
+        Chance: 50.0
+        Min: 4.0
+        Max: 12.0
+    XP:
+      Chance: 50.0
+      Min: 1.0
+      Max: 5.0
+  Unlock_Level: 0
+  Icon:
+    Material: TRADER_LLAMA_SPAWN_EGG
+horse:
+  Display_Name: Horse
+  Drops:
+    Currency:
+      vault:
+        Chance: 50.0
+        Min: 4.0
+        Max: 12.0
+    XP:
+      Chance: 50.0
+      Min: 1.0
+      Max: 5.0
+  Unlock_Level: 0
+  Icon:
+    Material: HORSE_SPAWN_EGG
+wolf:
+  Display_Name: Wolf
+  Drops:
+    Currency:
+      vault:
+        Chance: 50.0
+        Min: 4.0
+        Max: 12.0
+    XP:
+      Chance: 50.0
+      Min: 1.0
+      Max: 5.0
+  Unlock_Level: 0
+  Icon:
+    Material: WOLF_SPAWN_EGG
+skeleton_horse:
+  Display_Name: Skeleton Horse
+  Drops:
+    Currency:
+      vault:
+        Chance: 50.0
+        Min: 4.0
+        Max: 12.0
+    XP:
+      Chance: 50.0
+      Min: 1.0
+      Max: 5.0
+  Unlock_Level: 0
+  Icon:
+    Material: SKELETON_HORSE_SPAWN_EGG

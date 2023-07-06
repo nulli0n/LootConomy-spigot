@@ -1,0 +1,90 @@
+witch:
+  Display_Name: Witch
+  Drops:
+    Currency:
+      vault:
+        Chance: 80.0
+        Min: 7.0
+        Max: 15.0
+    XP:
+      Chance: 80.0
+      Min: 1.0
+      Max: 5.0
+  Unlock_Level: 0
+  Icon:
+    Material: WITCH_SPAWN_EGG
+pillager:
+  Display_Name: Pillager
+  Drops:
+    Currency:
+      vault:
+        Chance: 80.0
+        Min: 7.0
+        Max: 15.0
+    XP:
+      Chance: 80.0
+      Min: 1.0
+      Max: 5.0
+  Unlock_Level: 0
+  Icon:
+    Material: PILLAGER_SPAWN_EGG
+illusioner:
+  Display_Name: Illusioner
+  Drops:
+    Currency:
+      vault:
+        Chance: 80.0
+        Min: 7.0
+        Max: 15.0
+    XP:
+      Chance: 80.0
+      Min: 1.0
+      Max: 5.0
+  Unlock_Level: 0
+  Icon:
+    Material: BAT_SPAWN_EGG
+vindicator:
+  Display_Name: Vindicator
+  Drops:
+    Currency:
+      vault:
+        Chance: 80.0
+        Min: 7.0
+        Max: 15.0
+    XP:
+      Chance: 80.0
+      Min: 1.0
+      Max: 5.0
+  Unlock_Level: 0
+  Icon:
+    Material: VINDICATOR_SPAWN_EGG
+ravager:
+  Display_Name: Ravager
+  Drops:
+    Currency:
+      vault:
+        Chance: 80.0
+        Min: 7.0
+        Max: 15.0
+    XP:
+      Chance: 80.0
+      Min: 1.0
+      Max: 5.0
+  Unlock_Level: 0
+  Icon:
+    Material: RAVAGER_SPAWN_EGG
+evoker:
+  Display_Name: Evoker
+  Drops:
+    Currency:
+      vault:
+        Chance: 80.0
+        Min: 7.0
+        Max: 15.0
+    XP:
+      Chance: 80.0
+      Min: 1.0
+      Max: 5.0
+  Unlock_Level: 0
+  Icon:
+    Material: EVOKER_SPAWN_EGG

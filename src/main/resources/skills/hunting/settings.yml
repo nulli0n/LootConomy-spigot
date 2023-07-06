@@ -1,0 +1,83 @@
+Enabled: true
+Type: KILL_MOB
+Name: 'Hunting'
+Description:
+  - '&7Found money in killed animals and monsters!'
+Permission_Required: false
+Icon:
+  Material: PLAYER_HEAD
+  Head_Texture: 'eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvYmU4NDU2MTU1MTQyY2JlNGU2MTM1M2ZmYmFmZjMwNGQzZDljNGJjOTI0N2ZjMjdiOTJlMzNlNmUyNjA2N2VkZCJ9fX0='
+  Item_Flags:
+    - '*'
+
+Ranks:
+  novice:
+    Name: 'Novice Hunter'
+    Level_Cap: 20
+    XP_Initial: 100
+    XP_Factor: 1.17
+    Drop_Multiplier:
+      Currency:
+        vault: '1.0 + %skill_level% / 100.0'
+      XP: '1.0'
+    Daily_Limits:
+      Currency:
+        vault: '-1'
+      XP: '-1'
+    LevelUp_Commands: {}
+
+  skilled:
+    Name: 'Skilled Hunter'
+    Level_Cap: 40
+    XP_Initial: 350
+    XP_Factor: 1.1
+    Drop_Multiplier:
+      Currency:
+        vault: '1.0 + %skill_level% / 100.0'
+      XP: '1.1 + %skill_level% / 100.0'
+    Daily_Limits:
+      Currency:
+        vault: '-1'
+      XP: '-1'
+
+  experienced:
+    Name: 'Experienced Hunter'
+    Level_Cap: 60
+    XP_Initial: 460
+    XP_Factor: 1.09
+    Drop_Multiplier:
+      Currency:
+        vault: '1.0 + %skill_level% / 100.0'
+      XP: '1.25 + %skill_level% / 100.0'
+    Daily_Limits:
+      Currency:
+        vault: '-1'
+      XP: '-1'
+
+  expert:
+    Name: 'Expert Hunter'
+    Level_Cap: 80
+    XP_Initial: 14000
+    XP_Factor: 1.03
+    Drop_Multiplier:
+      Currency:
+        vault: '1.0 + %skill_level% / 100.0'
+      XP: '1.5 + %skill_level% / 100.0'
+    Daily_Limits:
+      Currency:
+        vault: '-1'
+      XP: '-1'
+
+  master:
+    Name: 'Master Hunter'
+    Level_Cap: 100
+    XP_Initial: 30000
+    XP_Factor: 1.02
+    Drop_Multiplier:
+      Currency:
+        vault: '1.0 + %skill_level% / 100.0'
+      XP: '1.75 + %skill_level% / 100.0'
+    Daily_Limits:
+      Currency:
+        vault: '-1'
+      XP: '-1'

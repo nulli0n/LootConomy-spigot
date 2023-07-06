@@ -1,0 +1,105 @@
+crimson_roots:
+  Display_Name: Crimson Roots
+  Drops:
+    Currency:
+      vault:
+        Chance: 30.0
+        Min: 2.0
+        Max: 4.0
+    XP:
+      Chance: 30.0
+      Min: 1.0
+      Max: 5.0
+  Unlock_Level: 0
+  Icon:
+    Material: CRIMSON_ROOTS
+red_mushroom:
+  Display_Name: Red Mushroom
+  Drops:
+    Currency:
+      vault:
+        Chance: 30.0
+        Min: 2.0
+        Max: 4.0
+    XP:
+      Chance: 30.0
+      Min: 1.0
+      Max: 5.0
+  Unlock_Level: 0
+  Icon:
+    Material: RED_MUSHROOM
+warped_fungus:
+  Display_Name: Warped Fungus
+  Drops:
+    Currency:
+      vault:
+        Chance: 30.0
+        Min: 2.0
+        Max: 4.0
+    XP:
+      Chance: 30.0
+      Min: 1.0
+      Max: 5.0
+  Unlock_Level: 0
+  Icon:
+    Material: WARPED_FUNGUS
+crimson_fungus:
+  Display_Name: Crimson Fungus
+  Drops:
+    Currency:
+      vault:
+        Chance: 30.0
+        Min: 2.0
+        Max: 4.0
+    XP:
+      Chance: 30.0
+      Min: 1.0
+      Max: 5.0
+  Unlock_Level: 0
+  Icon:
+    Material: CRIMSON_FUNGUS
+brown_mushroom:
+  Display_Name: Brown Mushroom
+  Drops:
+    Currency:
+      vault:
+        Chance: 30.0
+        Min: 2.0
+        Max: 4.0
+    XP:
+      Chance: 30.0
+      Min: 1.0
+      Max: 5.0
+  Unlock_Level: 0
+  Icon:
+    Material: BROWN_MUSHROOM
+mangrove_roots:
+  Display_Name: Mangrove Roots
+  Drops:
+    Currency:
+      vault:
+        Chance: 30.0
+        Min: 2.0
+        Max: 4.0
+    XP:
+      Chance: 30.0
+      Min: 1.0
+      Max: 5.0
+  Unlock_Level: 0
+  Icon:
+    Material: MANGROVE_ROOTS
+hanging_roots:
+  Display_Name: Hanging Roots
+  Drops:
+    Currency:
+      vault:
+        Chance: 30.0
+        Min: 2.0
+        Max: 4.0
+    XP:
+      Chance: 30.0
+      Min: 1.0
+      Max: 5.0
+  Unlock_Level: 0
+  Icon:
+    Material: HANGING_ROOTS

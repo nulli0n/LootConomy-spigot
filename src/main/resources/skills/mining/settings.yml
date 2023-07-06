@@ -1,0 +1,87 @@
+Enabled: true
+Type: BLOCK_BREAK
+Name: 'Mining'
+Description:
+  - '&7Found money in stones, ores and other blocks!'
+Permission_Required: false
+Icon:
+  Material: PLAYER_HEAD
+  Head_Texture: 'eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvZDM1NzQ0NGFkZTY0ZWM2Y2VhNjQ1ZWM1N2U3NzU4NjRkNjdjNWZhNjIyOTk3ODZlMDM3OTkzMTdlZTRhZCJ9fX0='
+  Item_Flags:
+    - '*'
+
+Ranks:
+  novice:
+    Name: 'Novice Miner'
+    Level_Cap: 20
+    XP_Initial: 100
+    XP_Factor: 1.17
+    Drop_Multiplier:
+      Currency:
+        vault: '1.0 + %skill_level% / 100.0'
+      XP: '1.0'
+    Daily_Limits:
+      Currency:
+        vault: '-1'
+      XP: '-1'
+    LevelUp_Commands: {}
+
+  skilled:
+    Name: 'Skilled Miner'
+    Level_Cap: 40
+    XP_Initial: 350
+    XP_Factor: 1.1
+    Drop_Multiplier:
+      Currency:
+        vault: '1.0 + %skill_level% / 100.0'
+      XP: '1.1 + %skill_level% / 100.0'
+    Daily_Limits:
+      Currency:
+        vault: '-1'
+      XP: '-1'
+    LevelUp_Commands: {}
+
+  experienced:
+    Name: 'Experienced Miner'
+    Level_Cap: 60
+    XP_Initial: 460
+    XP_Factor: 1.09
+    Drop_Multiplier:
+      Currency:
+        vault: '1.0 + %skill_level% / 100.0'
+      XP: '1.25 + %skill_level% / 100.0'
+    Daily_Limits:
+      Currency:
+        vault: '-1'
+      XP: '-1'
+    LevelUp_Commands: {}
+
+  expert:
+    Name: 'Expert Miner'
+    Level_Cap: 80
+    XP_Initial: 14000
+    XP_Factor: 1.03
+    Drop_Multiplier:
+      Currency:
+        vault: '1.0 + %skill_level% / 100.0'
+      XP: '1.5 + %skill_level% / 100.0'
+    Daily_Limits:
+      Currency:
+        vault: '-1'
+      XP: '-1'
+    LevelUp_Commands: {}
+
+  master:
+    Name: 'Master Miner'
+    Level_Cap: 100
+    XP_Initial: 30000
+    XP_Factor: 1.02
+    Drop_Multiplier:
+      Currency:
+        vault: '1.0 + %skill_level% / 100.0'
+      XP: '1.75 + %skill_level% / 100.0'
+    Daily_Limits:
+      Currency:
+        vault: '-1'
+      XP: '-1'
+    LevelUp_Commands: {}

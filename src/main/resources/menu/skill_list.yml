@@ -1,0 +1,45 @@
+Title: '&lLoot Skills'
+Size: 27
+Inventory_Type: CHEST
+
+Skill:
+  Available:
+    Name: '#ee9aff&l%skill_name%'
+    Lore:
+    - '%skill_description%'
+    - ''
+    - '#ee9aff&lMy Stats:'
+    - '#ee9aff▪ #ddeceeXP: #ee9aff%skill_xp%#ddecee/#ee9aff%skill_xp_max%'
+    - '#ee9aff▪ #ddeceeLevel: #ee9aff%skill_level%#ddecee/#ee9aff%skill_level_max%'
+    - '#ee9aff▪ #ddeceeRank: #ee9aff%skill_rank%'
+    - '#ee9aff▪ #ddeceeNext Rank: #ee9aff%skill_next_rank%'
+    - ''
+    - '#5edefd&lMultipliers:'
+    - '#5edefd▪ #ddeceeXP Multiplier: #5edefdx%xp_multiplier%'
+    - '#5edefd▪ #ddecee%currency_name% Multiplier: #5edefdx%currency_multiplier%'
+    - ''
+    - '#fdf35e&lBoosters:'
+    - '#fdf35e▪ #ddeceeXP Boost: #fdf35e+%xp_boost_percent%%'
+    - '#fdf35e▪ #ddecee%currency_name% Boost: #fdf35e+%currency_boost_percent%%'
+    - ''
+    - '#a5ff9a&lActions:'
+    - '#a5ff9a▪ #ddeceeLeft-Click: #a5ff9aView Objectives'
+    - '#a5ff9a▪ #ddecee[Q/Drop] Key: #a5ff9aReset Progress'
+  Locked_Permission:
+    Name: '&c&l[Locked]&r %skill_name%'
+    Lore:
+    - '&cYou don''t have access to this job!'
+  Slots: 10,11,12,13,14,15,16
+
+Content:
+  panel_blue:
+    Item:
+      Material: 'CYAN_STAINED_GLASS_PANE'
+      Name: ''
+    Slots: '0,8,18,26'
+
+  panel_black:
+    Item:
+      Material: 'BLACK_STAINED_GLASS_PANE'
+      Name: ''
+    Slots: '1,2,3,4,5,6,7,9,17,19,20,21,22,23,24,25'

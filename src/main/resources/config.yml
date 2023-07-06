@@ -1,0 +1,5 @@
+Plugin:
+  Command_Aliases: 'lootconomy,lootcon,lc'
+
+Database:
+  Table_Prefix: 'lootconomy'

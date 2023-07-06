@@ -1,0 +1,60 @@
+stripped_acacia_wood:
+  Display_Name: Stripped Acacia Wood
+  Drops:
+    Currency:
+      vault:
+        Chance: 50.0
+        Min: 4.0
+        Max: 8.0
+    XP:
+      Chance: 50.0
+      Min: 1.0
+      Max: 5.0
+  Unlock_Level: 0
+  Icon:
+    Material: STRIPPED_ACACIA_WOOD
+acacia_log:
+  Display_Name: Acacia Log
+  Drops:
+    Currency:
+      vault:
+        Chance: 50.0
+        Min: 4.0
+        Max: 8.0
+    XP:
+      Chance: 50.0
+      Min: 1.0
+      Max: 5.0
+  Unlock_Level: 0
+  Icon:
+    Material: ACACIA_LOG
+acacia_wood:
+  Display_Name: Acacia Wood
+  Drops:
+    Currency:
+      vault:
+        Chance: 50.0
+        Min: 4.0
+        Max: 8.0
+    XP:
+      Chance: 50.0
+      Min: 1.0
+      Max: 5.0
+  Unlock_Level: 0
+  Icon:
+    Material: ACACIA_WOOD
+stripped_acacia_log:
+  Display_Name: Stripped Acacia Log
+  Drops:
+    Currency:
+      vault:
+        Chance: 50.0
+        Min: 4.0
+        Max: 8.0
+    XP:
+      Chance: 50.0
+      Min: 1.0
+      Max: 5.0
+  Unlock_Level: 0
+  Icon:
+    Material: STRIPPED_ACACIA_LOG

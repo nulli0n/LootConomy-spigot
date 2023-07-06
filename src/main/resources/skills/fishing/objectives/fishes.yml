@@ -1,0 +1,90 @@
+pufferfish:
+  Display_Name: Pufferfish
+  Drops:
+    Currency:
+      vault:
+        Chance: 100.0
+        Min: 5.0
+        Max: 15.0
+    XP:
+      Chance: 100.0
+      Min: 1.0
+      Max: 5.0
+  Unlock_Level: 0
+  Icon:
+    Material: PUFFERFISH
+tropical_fish:
+  Display_Name: Tropical Fish
+  Drops:
+    Currency:
+      vault:
+        Chance: 100.0
+        Min: 5.0
+        Max: 15.0
+    XP:
+      Chance: 100.0
+      Min: 1.0
+      Max: 5.0
+  Unlock_Level: 0
+  Icon:
+    Material: TROPICAL_FISH
+cooked_salmon:
+  Display_Name: Cooked Salmon
+  Drops:
+    Currency:
+      vault:
+        Chance: 100.0
+        Min: 5.0
+        Max: 15.0
+    XP:
+      Chance: 100.0
+      Min: 1.0
+      Max: 5.0
+  Unlock_Level: 0
+  Icon:
+    Material: COOKED_SALMON
+cooked_cod:
+  Display_Name: Cooked Cod
+  Drops:
+    Currency:
+      vault:
+        Chance: 100.0
+        Min: 5.0
+        Max: 15.0
+    XP:
+      Chance: 100.0
+      Min: 1.0
+      Max: 5.0
+  Unlock_Level: 0
+  Icon:
+    Material: COOKED_COD
+cod:
+  Display_Name: Cod
+  Drops:
+    Currency:
+      vault:
+        Chance: 100.0
+        Min: 5.0
+        Max: 15.0
+    XP:
+      Chance: 100.0
+      Min: 1.0
+      Max: 5.0
+  Unlock_Level: 0
+  Icon:
+    Material: COD
+salmon:
+  Display_Name: Salmon
+  Drops:
+    Currency:
+      vault:
+        Chance: 100.0
+        Min: 5.0
+        Max: 15.0
+    XP:
+      Chance: 100.0
+      Min: 1.0
+      Max: 5.0
+  Unlock_Level: 0
+  Icon:
+    Material: SALMON

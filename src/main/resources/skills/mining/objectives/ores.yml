@@ -1,0 +1,270 @@
+deepslate_copper_ore:
+  Display_Name: Deepslate Copper Ore
+  Drops:
+    Currency:
+      vault:
+        Chance: 50.0
+        Min: 5.0
+        Max: 10.0
+    XP:
+      Chance: 50.0
+      Min: 1.0
+      Max: 5.0
+  Unlock_Level: 0
+  Icon:
+    Material: DEEPSLATE_COPPER_ORE
+coal_ore:
+  Display_Name: Coal Ore
+  Drops:
+    Currency:
+      vault:
+        Chance: 50.0
+        Min: 5.0
+        Max: 10.0
+    XP:
+      Chance: 50.0
+      Min: 1.0
+      Max: 5.0
+  Unlock_Level: 0
+  Icon:
+    Material: COAL_ORE
+copper_ore:
+  Display_Name: Copper Ore
+  Drops:
+    Currency:
+      vault:
+        Chance: 50.0
+        Min: 5.0
+        Max: 10.0
+    XP:
+      Chance: 50.0
+      Min: 1.0
+      Max: 5.0
+  Unlock_Level: 0
+  Icon:
+    Material: COPPER_ORE
+deepslate_coal_ore:
+  Display_Name: Deepslate Coal Ore
+  Drops:
+    Currency:
+      vault:
+        Chance: 50.0
+        Min: 5.0
+        Max: 10.0
+    XP:
+      Chance: 50.0
+      Min: 1.0
+      Max: 5.0
+  Unlock_Level: 0
+  Icon:
+    Material: DEEPSLATE_COAL_ORE
+diamond_ore:
+  Display_Name: Diamond Ore
+  Drops:
+    Currency:
+      vault:
+        Chance: 100.0
+        Min: 50.0
+        Max: 150.0
+    XP:
+      Chance: 100.0
+      Min: 1.0
+      Max: 5.0
+  Unlock_Level: 0
+  Icon:
+    Material: DIAMOND_ORE
+deepslate_diamond_ore:
+  Display_Name: Deepslate Diamond Ore
+  Drops:
+    Currency:
+      vault:
+        Chance: 100.0
+        Min: 50.0
+        Max: 150.0
+    XP:
+      Chance: 100.0
+      Min: 1.0
+      Max: 5.0
+  Unlock_Level: 0
+  Icon:
+    Material: DEEPSLATE_DIAMOND_ORE
+deepslate_emerald_ore:
+  Display_Name: Deepslate Emerald Ore
+  Drops:
+    Currency:
+      vault:
+        Chance: 100.0
+        Min: 150.0
+        Max: 300.0
+    XP:
+      Chance: 100.0
+      Min: 1.0
+      Max: 5.0
+  Unlock_Level: 0
+  Icon:
+    Material: DEEPSLATE_EMERALD_ORE
+emerald_ore:
+  Display_Name: Emerald Ore
+  Drops:
+    Currency:
+      vault:
+        Chance: 100.0
+        Min: 150.0
+        Max: 300.0
+    XP:
+      Chance: 100.0
+      Min: 1.0
+      Max: 5.0
+  Unlock_Level: 0
+  Icon:
+    Material: EMERALD_ORE
+nether_gold_ore:
+  Display_Name: Nether Gold Ore
+  Drops:
+    Currency:
+      vault:
+        Chance: 80.0
+        Min: 5.0
+        Max: 15.0
+    XP:
+      Chance: 80.0
+      Min: 1.0
+      Max: 5.0
+  Unlock_Level: 0
+  Icon:
+    Material: NETHER_GOLD_ORE
+deepslate_lapis_ore:
+  Display_Name: Deepslate Lapis Ore
+  Drops:
+    Currency:
+      vault:
+        Chance: 80.0
+        Min: 5.0
+        Max: 15.0
+    XP:
+      Chance: 80.0
+      Min: 1.0
+      Max: 5.0
+  Unlock_Level: 0
+  Icon:
+    Material: DEEPSLATE_LAPIS_ORE
+lapis_ore:
+  Display_Name: Lapis Ore
+  Drops:
+    Currency:
+      vault:
+        Chance: 80.0
+        Min: 5.0
+        Max: 15.0
+    XP:
+      Chance: 80.0
+      Min: 1.0
+      Max: 5.0
+  Unlock_Level: 0
+  Icon:
+    Material: LAPIS_ORE
+gold_ore:
+  Display_Name: Gold Ore
+  Drops:
+    Currency:
+      vault:
+        Chance: 80.0
+        Min: 5.0
+        Max: 15.0
+    XP:
+      Chance: 80.0
+      Min: 1.0
+      Max: 5.0
+  Unlock_Level: 0
+  Icon:
+    Material: GOLD_ORE
+deepslate_gold_ore:
+  Display_Name: Deepslate Gold Ore
+  Drops:
+    Currency:
+      vault:
+        Chance: 80.0
+        Min: 5.0
+        Max: 15.0
+    XP:
+      Chance: 80.0
+      Min: 1.0
+      Max: 5.0
+  Unlock_Level: 0
+  Icon:
+    Material: DEEPSLATE_GOLD_ORE
+deepslate_redstone_ore:
+  Display_Name: Deepslate Redstone Ore
+  Drops:
+    Currency:
+      vault:
+        Chance: 80.0
+        Min: 5.0
+        Max: 15.0
+    XP:
+      Chance: 80.0
+      Min: 1.0
+      Max: 5.0
+  Unlock_Level: 0
+  Icon:
+    Material: DEEPSLATE_REDSTONE_ORE
+redstone_ore:
+  Display_Name: Redstone Ore
+  Drops:
+    Currency:
+      vault:
+        Chance: 80.0
+        Min: 5.0
+        Max: 15.0
+    XP:
+      Chance: 80.0
+      Min: 1.0
+      Max: 5.0
+  Unlock_Level: 0
+  Icon:
+    Material: REDSTONE_ORE
+iron_ore:
+  Display_Name: Iron Ore
+  Drops:
+    Currency:
+      vault:
+        Chance: 75.0
+        Min: 5.0
+        Max: 10.0
+    XP:
+      Chance: 75.0
+      Min: 1.0
+      Max: 5.0
+  Unlock_Level: 0
+  Icon:
+    Material: IRON_ORE
+deepslate_iron_ore:
+  Display_Name: Deepslate Iron Ore
+  Drops:
+    Currency:
+      vault:
+        Chance: 75.0
+        Min: 5.0
+        Max: 10.0
+    XP:
+      Chance: 75.0
+      Min: 1.0
+      Max: 5.0
+  Unlock_Level: 0
+  Icon:
+    Material: DEEPSLATE_IRON_ORE
+nether_quartz_ore:
+  Display_Name: Nether Quartz Ore
+  Drops:
+    Currency:
+      vault:
+        Chance: 80.0
+        Min: 5.0
+        Max: 15.0
+    XP:
+      Chance: 80.0
+      Min: 1.0
+      Max: 5.0
+  Unlock_Level: 0
+  Icon:
+    Material: NETHER_QUARTZ_ORE

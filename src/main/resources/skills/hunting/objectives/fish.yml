@@ -1,0 +1,120 @@
+axolotl:
+  Display_Name: Axolotl
+  Drops:
+    Currency:
+      vault:
+        Chance: 75.0
+        Min: 3.0
+        Max: 9.0
+    XP:
+      Chance: 75.0
+      Min: 1.0
+      Max: 5.0
+  Unlock_Level: 0
+  Icon:
+    Material: AXOLOTL_SPAWN_EGG
+tadpole:
+  Display_Name: Tadpole
+  Drops:
+    Currency:
+      vault:
+        Chance: 75.0
+        Min: 3.0
+        Max: 9.0
+    XP:
+      Chance: 75.0
+      Min: 1.0
+      Max: 5.0
+  Unlock_Level: 0
+  Icon:
+    Material: TADPOLE_SPAWN_EGG
+squid:
+  Display_Name: Squid
+  Drops:
+    Currency:
+      vault:
+        Chance: 75.0
+        Min: 3.0
+        Max: 9.0
+    XP:
+      Chance: 75.0
+      Min: 1.0
+      Max: 5.0
+  Unlock_Level: 0
+  Icon:
+    Material: SQUID_SPAWN_EGG
+glow_squid:
+  Display_Name: Glow Squid
+  Drops:
+    Currency:
+      vault:
+        Chance: 75.0
+        Min: 3.0
+        Max: 9.0
+    XP:
+      Chance: 75.0
+      Min: 1.0
+      Max: 5.0
+  Unlock_Level: 0
+  Icon:
+    Material: GLOW_SQUID_SPAWN_EGG
+pufferfish:
+  Display_Name: Pufferfish
+  Drops:
+    Currency:
+      vault:
+        Chance: 75.0
+        Min: 3.0
+        Max: 9.0
+    XP:
+      Chance: 75.0
+      Min: 1.0
+      Max: 5.0
+  Unlock_Level: 0
+  Icon:
+    Material: PUFFERFISH_SPAWN_EGG
+salmon:
+  Display_Name: Salmon
+  Drops:
+    Currency:
+      vault:
+        Chance: 75.0
+        Min: 3.0
+        Max: 9.0
+    XP:
+      Chance: 75.0
+      Min: 1.0
+      Max: 5.0
+  Unlock_Level: 0
+  Icon:
+    Material: SALMON_SPAWN_EGG
+cod:
+  Display_Name: Cod
+  Drops:
+    Currency:
+      vault:
+        Chance: 75.0
+        Min: 3.0
+        Max: 9.0
+    XP:
+      Chance: 75.0
+      Min: 1.0
+      Max: 5.0
+  Unlock_Level: 0
+  Icon:
+    Material: COD_SPAWN_EGG
+guardian:
+  Display_Name: Guardian
+  Drops:
+    Currency:
+      vault:
+        Chance: 90.0
+        Min: 15.0
+        Max: 30.0
+    XP:
+      Chance: 90.0
+      Min: 1.0
+      Max: 5.0
+  Unlock_Level: 0
+  Icon:
+    Material: GUARDIAN_SPAWN_EGG

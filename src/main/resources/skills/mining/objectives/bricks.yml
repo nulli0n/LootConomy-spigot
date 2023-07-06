@@ -1,0 +1,60 @@
+stone_bricks:
+  Display_Name: Stone Bricks
+  Drops:
+    Currency:
+      vault:
+        Chance: 45.0
+        Min: 2.0
+        Max: 6.0
+    XP:
+      Chance: 45.0
+      Min: 1.0
+      Max: 5.0
+  Unlock_Level: 0
+  Icon:
+    Material: STONE_BRICKS
+mossy_stone_bricks:
+  Display_Name: Mossy Stone Bricks
+  Drops:
+    Currency:
+      vault:
+        Chance: 45.0
+        Min: 2.0
+        Max: 6.0
+    XP:
+      Chance: 45.0
+      Min: 1.0
+      Max: 5.0
+  Unlock_Level: 0
+  Icon:
+    Material: MOSSY_STONE_BRICKS
+cracked_stone_bricks:
+  Display_Name: Cracked Stone Bricks
+  Drops:
+    Currency:
+      vault:
+        Chance: 45.0
+        Min: 2.0
+        Max: 6.0
+    XP:
+      Chance: 45.0
+      Min: 1.0
+      Max: 5.0
+  Unlock_Level: 0
+  Icon:
+    Material: CRACKED_STONE_BRICKS
+chiseled_stone_bricks:
+  Display_Name: Chiseled Stone Bricks
+  Drops:
+    Currency:
+      vault:
+        Chance: 45.0
+        Min: 2.0
+        Max: 6.0
+    XP:
+      Chance: 45.0
+      Min: 1.0
+      Max: 5.0
+  Unlock_Level: 0
+  Icon:
+    Material: CHISELED_STONE_BRICKS

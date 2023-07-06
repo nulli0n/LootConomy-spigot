@@ -1,0 +1,30 @@
+warped_nylium:
+  Display_Name: Warped Nylium
+  Drops:
+    Currency:
+      vault:
+        Chance: 6.5
+        Min: 0.35
+        Max: 0.5
+    XP:
+      Chance: 6.5
+      Min: 1.0
+      Max: 5.0
+  Unlock_Level: 0
+  Icon:
+    Material: WARPED_NYLIUM
+crimson_nylium:
+  Display_Name: Crimson Nylium
+  Drops:
+    Currency:
+      vault:
+        Chance: 6.5
+        Min: 0.35
+        Max: 0.5
+    XP:
+      Chance: 6.5
+      Min: 1.0
+      Max: 5.0
+  Unlock_Level: 0
+  Icon:
+    Material: CRIMSON_NYLIUM

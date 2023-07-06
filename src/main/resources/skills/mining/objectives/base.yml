@@ -1,0 +1,135 @@
+stone:
+  Display_Name: Stone
+  Drops:
+    Currency:
+      vault:
+        Chance: 5.0
+        Min: 0.1
+        Max: 0.3
+    XP:
+      Chance: 5.0
+      Min: 1.0
+      Max: 5.0
+  Unlock_Level: 0
+  Icon:
+    Material: STONE
+granite:
+  Display_Name: Granite
+  Drops:
+    Currency:
+      vault:
+        Chance: 5.0
+        Min: 0.1
+        Max: 0.3
+    XP:
+      Chance: 5.0
+      Min: 1.0
+      Max: 5.0
+  Unlock_Level: 0
+  Icon:
+    Material: GRANITE
+andesite:
+  Display_Name: Andesite
+  Drops:
+    Currency:
+      vault:
+        Chance: 5.0
+        Min: 0.1
+        Max: 0.3
+    XP:
+      Chance: 5.0
+      Min: 1.0
+      Max: 5.0
+  Unlock_Level: 0
+  Icon:
+    Material: ANDESITE
+diorite:
+  Display_Name: Diorite
+  Drops:
+    Currency:
+      vault:
+        Chance: 5.0
+        Min: 0.1
+        Max: 0.3
+    XP:
+      Chance: 5.0
+      Min: 1.0
+      Max: 5.0
+  Unlock_Level: 0
+  Icon:
+    Material: DIORITE
+tuff:
+  Display_Name: Tuff
+  Drops:
+    Currency:
+      vault:
+        Chance: 5.0
+        Min: 0.1
+        Max: 0.3
+    XP:
+      Chance: 5.0
+      Min: 1.0
+      Max: 5.0
+  Unlock_Level: 0
+  Icon:
+    Material: TUFF
+netherrack:
+  Display_Name: Netherrack
+  Drops:
+    Currency:
+      vault:
+        Chance: 5.0
+        Min: 0.1
+        Max: 0.3
+    XP:
+      Chance: 5.0
+      Min: 1.0
+      Max: 5.0
+  Unlock_Level: 0
+  Icon:
+    Material: NETHERRACK
+basalt:
+  Display_Name: Basalt
+  Drops:
+    Currency:
+      vault:
+        Chance: 5.0
+        Min: 0.1
+        Max: 0.3
+    XP:
+      Chance: 5.0
+      Min: 1.0
+      Max: 5.0
+  Unlock_Level: 0
+  Icon:
+    Material: BASALT
+deepslate:
+  Display_Name: Deepslate
+  Drops:
+    Currency:
+      vault:
+        Chance: 5.0
+        Min: 0.1
+        Max: 0.3
+    XP:
+      Chance: 5.0
+      Min: 1.0
+      Max: 5.0
+  Unlock_Level: 0
+  Icon:
+    Material: DEEPSLATE
+blackstone:
+  Display_Name: Blackstone
+  Drops:
+    Currency:
+      vault:
+        Chance: 5.0
+        Min: 0.1
+        Max: 0.3
+    XP:
+      Chance: 5.0
+      Min: 1.0
+      Max: 5.0
+  Unlock_Level: 0
+  Icon:
+    Material: BLACKSTONE

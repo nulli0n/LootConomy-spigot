@@ -1,0 +1,150 @@
+dark_oak_leaves:
+  Display_Name: Dark Oak Leaves
+  Drops:
+    Currency:
+      vault:
+        Chance: 25.0
+        Min: 1.0
+        Max: 4.0
+    XP:
+      Chance: 25.0
+      Min: 1.0
+      Max: 5.0
+  Unlock_Level: 0
+  Icon:
+    Material: DARK_OAK_LEAVES
+jungle_leaves:
+  Display_Name: Jungle Leaves
+  Drops:
+    Currency:
+      vault:
+        Chance: 25.0
+        Min: 1.0
+        Max: 4.0
+    XP:
+      Chance: 25.0
+      Min: 1.0
+      Max: 5.0
+  Unlock_Level: 0
+  Icon:
+    Material: JUNGLE_LEAVES
+oak_leaves:
+  Display_Name: Oak Leaves
+  Drops:
+    Currency:
+      vault:
+        Chance: 25.0
+        Min: 1.0
+        Max: 4.0
+    XP:
+      Chance: 25.0
+      Min: 1.0
+      Max: 5.0
+  Unlock_Level: 0
+  Icon:
+    Material: OAK_LEAVES
+birch_leaves:
+  Display_Name: Birch Leaves
+  Drops:
+    Currency:
+      vault:
+        Chance: 25.0
+        Min: 1.0
+        Max: 4.0
+    XP:
+      Chance: 25.0
+      Min: 1.0
+      Max: 5.0
+  Unlock_Level: 0
+  Icon:
+    Material: BIRCH_LEAVES
+acacia_leaves:
+  Display_Name: Acacia Leaves
+  Drops:
+    Currency:
+      vault:
+        Chance: 25.0
+        Min: 1.0
+        Max: 4.0
+    XP:
+      Chance: 25.0
+      Min: 1.0
+      Max: 5.0
+  Unlock_Level: 0
+  Icon:
+    Material: ACACIA_LEAVES
+cherry_leaves:
+  Display_Name: Cherry Leaves
+  Drops:
+    Currency:
+      vault:
+        Chance: 25.0
+        Min: 1.0
+        Max: 4.0
+    XP:
+      Chance: 25.0
+      Min: 1.0
+      Max: 5.0
+  Unlock_Level: 0
+  Icon:
+    Material: CHERRY_LEAVES
+mangrove_leaves:
+  Display_Name: Mangrove Leaves
+  Drops:
+    Currency:
+      vault:
+        Chance: 25.0
+        Min: 1.0
+        Max: 4.0
+    XP:
+      Chance: 25.0
+      Min: 1.0
+      Max: 5.0
+  Unlock_Level: 0
+  Icon:
+    Material: MANGROVE_LEAVES
+flowering_azalea_leaves:
+  Display_Name: Flowering Azalea Leaves
+  Drops:
+    Currency:
+      vault:
+        Chance: 25.0
+        Min: 1.0
+        Max: 4.0
+    XP:
+      Chance: 25.0
+      Min: 1.0
+      Max: 5.0
+  Unlock_Level: 0
+  Icon:
+    Material: FLOWERING_AZALEA_LEAVES
+spruce_leaves:
+  Display_Name: Spruce Leaves
+  Drops:
+    Currency:
+      vault:
+        Chance: 25.0
+        Min: 1.0
+        Max: 4.0
+    XP:
+      Chance: 25.0
+      Min: 1.0
+      Max: 5.0
+  Unlock_Level: 0
+  Icon:
+    Material: SPRUCE_LEAVES
+azalea_leaves:
+  Display_Name: Azalea Leaves
+  Drops:
+    Currency:
+      vault:
+        Chance: 25.0
+        Min: 1.0
+        Max: 4.0
+    XP:
+      Chance: 25.0
+      Min: 1.0
+      Max: 5.0
+  Unlock_Level: 0
+  Icon:
+    Material: AZALEA_LEAVES

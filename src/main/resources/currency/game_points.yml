@@ -1,0 +1,10 @@
+Enabled: true
+Name: 'Points'
+Format: '%amount% %currency_name%'
+
+Item_Style_By_Amount:
+  '0':
+    Material: SUNFLOWER
+    Name: '&6&l%amount%'
+    Enchants:
+      fortune: 1

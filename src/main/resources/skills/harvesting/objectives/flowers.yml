@@ -1,0 +1,360 @@
+allium:
+  Display_Name: Allium
+  Drops:
+    Currency:
+      vault:
+        Chance: 30.0
+        Min: 2.0
+        Max: 4.0
+    XP:
+      Chance: 30.0
+      Min: 1.0
+      Max: 5.0
+  Unlock_Level: 0
+  Icon:
+    Material: ALLIUM
+flowering_azalea_leaves:
+  Display_Name: Flowering Azalea Leaves
+  Drops:
+    Currency:
+      vault:
+        Chance: 30.0
+        Min: 2.0
+        Max: 4.0
+    XP:
+      Chance: 30.0
+      Min: 1.0
+      Max: 5.0
+  Unlock_Level: 0
+  Icon:
+    Material: FLOWERING_AZALEA_LEAVES
+pink_tulip:
+  Display_Name: Pink Tulip
+  Drops:
+    Currency:
+      vault:
+        Chance: 30.0
+        Min: 2.0
+        Max: 4.0
+    XP:
+      Chance: 30.0
+      Min: 1.0
+      Max: 5.0
+  Unlock_Level: 0
+  Icon:
+    Material: PINK_TULIP
+azure_bluet:
+  Display_Name: Azure Bluet
+  Drops:
+    Currency:
+      vault:
+        Chance: 30.0
+        Min: 2.0
+        Max: 4.0
+    XP:
+      Chance: 30.0
+      Min: 1.0
+      Max: 5.0
+  Unlock_Level: 0
+  Icon:
+    Material: AZURE_BLUET
+white_tulip:
+  Display_Name: White Tulip
+  Drops:
+    Currency:
+      vault:
+        Chance: 30.0
+        Min: 2.0
+        Max: 4.0
+    XP:
+      Chance: 30.0
+      Min: 1.0
+      Max: 5.0
+  Unlock_Level: 0
+  Icon:
+    Material: WHITE_TULIP
+flowering_azalea:
+  Display_Name: Flowering Azalea
+  Drops:
+    Currency:
+      vault:
+        Chance: 30.0
+        Min: 2.0
+        Max: 4.0
+    XP:
+      Chance: 30.0
+      Min: 1.0
+      Max: 5.0
+  Unlock_Level: 0
+  Icon:
+    Material: FLOWERING_AZALEA
+blue_orchid:
+  Display_Name: Blue Orchid
+  Drops:
+    Currency:
+      vault:
+        Chance: 30.0
+        Min: 2.0
+        Max: 4.0
+    XP:
+      Chance: 30.0
+      Min: 1.0
+      Max: 5.0
+  Unlock_Level: 0
+  Icon:
+    Material: BLUE_ORCHID
+peony:
+  Display_Name: Peony
+  Drops:
+    Currency:
+      vault:
+        Chance: 30.0
+        Min: 2.0
+        Max: 4.0
+    XP:
+      Chance: 30.0
+      Min: 1.0
+      Max: 5.0
+  Unlock_Level: 0
+  Icon:
+    Material: PEONY
+wither_rose:
+  Display_Name: Wither Rose
+  Drops:
+    Currency:
+      vault:
+        Chance: 30.0
+        Min: 2.0
+        Max: 4.0
+    XP:
+      Chance: 30.0
+      Min: 1.0
+      Max: 5.0
+  Unlock_Level: 0
+  Icon:
+    Material: WITHER_ROSE
+cherry_leaves:
+  Display_Name: Cherry Leaves
+  Drops:
+    Currency:
+      vault:
+        Chance: 30.0
+        Min: 2.0
+        Max: 4.0
+    XP:
+      Chance: 30.0
+      Min: 1.0
+      Max: 5.0
+  Unlock_Level: 0
+  Icon:
+    Material: CHERRY_LEAVES
+dandelion:
+  Display_Name: Dandelion
+  Drops:
+    Currency:
+      vault:
+        Chance: 30.0
+        Min: 2.0
+        Max: 4.0
+    XP:
+      Chance: 30.0
+      Min: 1.0
+      Max: 5.0
+  Unlock_Level: 0
+  Icon:
+    Material: DANDELION
+poppy:
+  Display_Name: Poppy
+  Drops:
+    Currency:
+      vault:
+        Chance: 30.0
+        Min: 2.0
+        Max: 4.0
+    XP:
+      Chance: 30.0
+      Min: 1.0
+      Max: 5.0
+  Unlock_Level: 0
+  Icon:
+    Material: POPPY
+lily_of_the_valley:
+  Display_Name: Lily Of The Valley
+  Drops:
+    Currency:
+      vault:
+        Chance: 30.0
+        Min: 2.0
+        Max: 4.0
+    XP:
+      Chance: 30.0
+      Min: 1.0
+      Max: 5.0
+  Unlock_Level: 0
+  Icon:
+    Material: LILY_OF_THE_VALLEY
+red_tulip:
+  Display_Name: Red Tulip
+  Drops:
+    Currency:
+      vault:
+        Chance: 30.0
+        Min: 2.0
+        Max: 4.0
+    XP:
+      Chance: 30.0
+      Min: 1.0
+      Max: 5.0
+  Unlock_Level: 0
+  Icon:
+    Material: RED_TULIP
+rose_bush:
+  Display_Name: Rose Bush
+  Drops:
+    Currency:
+      vault:
+        Chance: 30.0
+        Min: 2.0
+        Max: 4.0
+    XP:
+      Chance: 30.0
+      Min: 1.0
+      Max: 5.0
+  Unlock_Level: 0
+  Icon:
+    Material: ROSE_BUSH
+sunflower:
+  Display_Name: Sunflower
+  Drops:
+    Currency:
+      vault:
+        Chance: 30.0
+        Min: 2.0
+        Max: 4.0
+    XP:
+      Chance: 30.0
+      Min: 1.0
+      Max: 5.0
+  Unlock_Level: 0
+  Icon:
+    Material: SUNFLOWER
+cornflower:
+  Display_Name: Cornflower
+  Drops:
+    Currency:
+      vault:
+        Chance: 30.0
+        Min: 2.0
+        Max: 4.0
+    XP:
+      Chance: 30.0
+      Min: 1.0
+      Max: 5.0
+  Unlock_Level: 0
+  Icon:
+    Material: CORNFLOWER
+pink_petals:
+  Display_Name: Pink Petals
+  Drops:
+    Currency:
+      vault:
+        Chance: 30.0
+        Min: 2.0
+        Max: 4.0
+    XP:
+      Chance: 30.0
+      Min: 1.0
+      Max: 5.0
+  Unlock_Level: 0
+  Icon:
+    Material: PINK_PETALS
+orange_tulip:
+  Display_Name: Orange Tulip
+  Drops:
+    Currency:
+      vault:
+        Chance: 30.0
+        Min: 2.0
+        Max: 4.0
+    XP:
+      Chance: 30.0
+      Min: 1.0
+      Max: 5.0
+  Unlock_Level: 0
+  Icon:
+    Material: ORANGE_TULIP
+torchflower:
+  Display_Name: Torchflower
+  Drops:
+    Currency:
+      vault:
+        Chance: 30.0
+        Min: 2.0
+        Max: 4.0
+    XP:
+      Chance: 30.0
+      Min: 1.0
+      Max: 5.0
+  Unlock_Level: 0
+  Icon:
+    Material: TORCHFLOWER
+mangrove_propagule:
+  Display_Name: Mangrove Propagule
+  Drops:
+    Currency:
+      vault:
+        Chance: 30.0
+        Min: 2.0
+        Max: 4.0
+    XP:
+      Chance: 30.0
+      Min: 1.0
+      Max: 5.0
+  Unlock_Level: 0
+  Icon:
+    Material: MANGROVE_PROPAGULE
+pitcher_plant:
+  Display_Name: Pitcher Plant
+  Drops:
+    Currency:
+      vault:
+        Chance: 30.0
+        Min: 2.0
+        Max: 4.0
+    XP:
+      Chance: 30.0
+      Min: 1.0
+      Max: 5.0
+  Unlock_Level: 0
+  Icon:
+    Material: PITCHER_PLANT
+lilac:
+  Display_Name: Lilac
+  Drops:
+    Currency:
+      vault:
+        Chance: 30.0
+        Min: 2.0
+        Max: 4.0
+    XP:
+      Chance: 30.0
+      Min: 1.0
+      Max: 5.0
+  Unlock_Level: 0
+  Icon:
+    Material: LILAC
+oxeye_daisy:
+  Display_Name: Oxeye Daisy
+  Drops:
+    Currency:
+      vault:
+        Chance: 30.0
+        Min: 2.0
+        Max: 4.0
+    XP:
+      Chance: 30.0
+      Min: 1.0
+      Max: 5.0
+  Unlock_Level: 0
+  Icon:
+    Material: OXEYE_DAISY

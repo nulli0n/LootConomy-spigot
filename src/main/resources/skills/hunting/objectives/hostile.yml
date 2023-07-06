@@ -1,0 +1,255 @@
+magma_cube:
+  Display_Name: Magma Cube
+  Drops:
+    Currency:
+      vault:
+        Chance: 50.0
+        Min: 6.0
+        Max: 16.0
+    XP:
+      Chance: 50.0
+      Min: 1.0
+      Max: 5.0
+  Unlock_Level: 0
+  Icon:
+    Material: MAGMA_CUBE_SPAWN_EGG
+spider:
+  Display_Name: Spider
+  Drops:
+    Currency:
+      vault:
+        Chance: 50.0
+        Min: 6.0
+        Max: 16.0
+    XP:
+      Chance: 50.0
+      Min: 1.0
+      Max: 5.0
+  Unlock_Level: 0
+  Icon:
+    Material: SPIDER_SPAWN_EGG
+drowned:
+  Display_Name: Drowned
+  Drops:
+    Currency:
+      vault:
+        Chance: 50.0
+        Min: 6.0
+        Max: 16.0
+    XP:
+      Chance: 50.0
+      Min: 1.0
+      Max: 5.0
+  Unlock_Level: 0
+  Icon:
+    Material: DROWNED_SPAWN_EGG
+phantom:
+  Display_Name: Phantom
+  Drops:
+    Currency:
+      vault:
+        Chance: 50.0
+        Min: 6.0
+        Max: 16.0
+    XP:
+      Chance: 50.0
+      Min: 1.0
+      Max: 5.0
+  Unlock_Level: 0
+  Icon:
+    Material: PHANTOM_SPAWN_EGG
+cave_spider:
+  Display_Name: Cave Spider
+  Drops:
+    Currency:
+      vault:
+        Chance: 50.0
+        Min: 6.0
+        Max: 16.0
+    XP:
+      Chance: 50.0
+      Min: 1.0
+      Max: 5.0
+  Unlock_Level: 0
+  Icon:
+    Material: CAVE_SPIDER_SPAWN_EGG
+zoglin:
+  Display_Name: Zoglin
+  Drops:
+    Currency:
+      vault:
+        Chance: 50.0
+        Min: 6.0
+        Max: 16.0
+    XP:
+      Chance: 50.0
+      Min: 1.0
+      Max: 5.0
+  Unlock_Level: 0
+  Icon:
+    Material: ZOGLIN_SPAWN_EGG
+endermite:
+  Display_Name: Endermite
+  Drops:
+    Currency:
+      vault:
+        Chance: 50.0
+        Min: 6.0
+        Max: 16.0
+    XP:
+      Chance: 50.0
+      Min: 1.0
+      Max: 5.0
+  Unlock_Level: 0
+  Icon:
+    Material: ENDERMITE_SPAWN_EGG
+pig:
+  Display_Name: Pig
+  Drops:
+    Currency:
+      vault:
+        Chance: 50.0
+        Min: 6.0
+        Max: 16.0
+    XP:
+      Chance: 50.0
+      Min: 1.0
+      Max: 5.0
+  Unlock_Level: 0
+  Icon:
+    Material: PIG_SPAWN_EGG
+creeper:
+  Display_Name: Creeper
+  Drops:
+    Currency:
+      vault:
+        Chance: 50.0
+        Min: 6.0
+        Max: 16.0
+    XP:
+      Chance: 50.0
+      Min: 1.0
+      Max: 5.0
+  Unlock_Level: 0
+  Icon:
+    Material: CREEPER_SPAWN_EGG
+vex:
+  Display_Name: Vex
+  Drops:
+    Currency:
+      vault:
+        Chance: 50.0
+        Min: 6.0
+        Max: 16.0
+    XP:
+      Chance: 50.0
+      Min: 1.0
+      Max: 5.0
+  Unlock_Level: 0
+  Icon:
+    Material: VEX_SPAWN_EGG
+slime:
+  Display_Name: Slime
+  Drops:
+    Currency:
+      vault:
+        Chance: 50.0
+        Min: 6.0
+        Max: 16.0
+    XP:
+      Chance: 50.0
+      Min: 1.0
+      Max: 5.0
+  Unlock_Level: 0
+  Icon:
+    Material: SLIME_SPAWN_EGG
+piglin_brute:
+  Display_Name: Piglin Brute
+  Drops:
+    Currency:
+      vault:
+        Chance: 50.0
+        Min: 6.0
+        Max: 16.0
+    XP:
+      Chance: 50.0
+      Min: 1.0
+      Max: 5.0
+  Unlock_Level: 0
+  Icon:
+    Material: PIGLIN_BRUTE_SPAWN_EGG
+hoglin:
+  Display_Name: Hoglin
+  Drops:
+    Currency:
+      vault:
+        Chance: 50.0
+        Min: 6.0
+        Max: 16.0
+    XP:
+      Chance: 50.0
+      Min: 1.0
+      Max: 5.0
+  Unlock_Level: 0
+  Icon:
+    Material: HOGLIN_SPAWN_EGG
+ghast:
+  Display_Name: Ghast
+  Drops:
+    Currency:
+      vault:
+        Chance: 50.0
+        Min: 6.0
+        Max: 16.0
+    XP:
+      Chance: 50.0
+      Min: 1.0
+      Max: 5.0
+  Unlock_Level: 0
+  Icon:
+    Material: GHAST_SPAWN_EGG
+enderman:
+  Display_Name: Enderman
+  Drops:
+    Currency:
+      vault:
+        Chance: 50.0
+        Min: 6.0
+        Max: 16.0
+    XP:
+      Chance: 50.0
+      Min: 1.0
+      Max: 5.0
+  Unlock_Level: 0
+  Icon:
+    Material: ENDERMAN_SPAWN_EGG
+silverfish:
+  Display_Name: Silverfish
+  Drops:
+    Currency:
+      vault:
+        Chance: 50.0
+        Min: 6.0
+        Max: 16.0
+    XP:
+      Chance: 50.0
+      Min: 1.0
+      Max: 5.0
+  Unlock_Level: 0
+  Icon:
+    Material: SILVERFISH_SPAWN_EGG
+blaze:
+  Display_Name: Blaze
+  Drops:
+    Currency:
+      vault:
+        Chance: 50.0
+        Min: 6.0
+        Max: 16.0
+    XP:
+      Chance: 50.0
+      Min: 1.0
+      Max: 5.0
+  Unlock_Level: 0
+  Icon:
+    Material: BLAZE_SPAWN_EGG

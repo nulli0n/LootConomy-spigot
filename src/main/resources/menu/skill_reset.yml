@@ -1,0 +1,35 @@
+Title: '&lSkill Reset Progress'
+Size: 27
+
+Content:
+  stats:
+    Item:
+      Material: MAP
+      Name: '#ee9aff&lReset: #ddecee%skill_name%'
+      Lore:
+        - '#ee9aff&lStats:'
+        - '#ee9aff▪ #ddeceeXP: #ee9aff%skill_xp%#ddecee/#ee9aff%skill_xp_max%'
+        - '#ee9aff▪ #ddeceeLevel: #ee9aff%skill_level%#ddecee/#ee9aff%skill_level_max%'
+        - '#ee9aff▪ #ddeceeRank: #ee9aff%skill_rank%'
+        - '#ee9aff▪ #ddeceeNext Rank: #ee9aff%skill_next_rank%'
+    Slots: 13
+
+  cancel:
+    Item:
+      Material: PLAYER_HEAD
+      Head_Texture: 'eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvYmViNTg4YjIxYTZmOThhZDFmZjRlMDg1YzU1MmRjYjA1MGVmYzljYWI0MjdmNDYwNDhmMThmYzgwMzQ3NWY3In19fQ=='
+      Name: '#ff9a9a&lCancel'
+      Lore:
+        - '#ddeceeNo changes will be made.'
+    Slots: 21
+    Type: CONFIRMATION_DECLINE
+
+  accept:
+    Item:
+      Material: PLAYER_HEAD
+      Head_Texture: 'eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvYTc5YTVjOTVlZTE3YWJmZWY0NWM4ZGMyMjQxODk5NjQ5NDRkNTYwZjE5YTQ0ZjE5ZjhhNDZhZWYzZmVlNDc1NiJ9fX0='
+      Name: '#a5ff9a&lAccept'
+      Lore:
+        - '#ddeceeYou will lost all current progress.'
+    Slots: 23
+    Type: CONFIRMATION_ACCEPT

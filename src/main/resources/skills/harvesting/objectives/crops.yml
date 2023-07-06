@@ -1,0 +1,135 @@
+beetroots:
+  Display_Name: Beetroots
+  Drops:
+    Currency:
+      vault:
+        Chance: 100.0
+        Min: 4.0
+        Max: 12.0
+    XP:
+      Chance: 100.0
+      Min: 1.0
+      Max: 5.0
+  Unlock_Level: 0
+  Icon:
+    Material: BEETROOT
+potatoes:
+  Display_Name: Potato
+  Drops:
+    Currency:
+      vault:
+        Chance: 100.0
+        Min: 4.0
+        Max: 12.0
+    XP:
+      Chance: 100.0
+      Min: 1.0
+      Max: 5.0
+  Unlock_Level: 0
+  Icon:
+    Material: POTATO
+carrots:
+  Display_Name: Carrot
+  Drops:
+    Currency:
+      vault:
+        Chance: 100.0
+        Min: 4.0
+        Max: 12.0
+    XP:
+      Chance: 100.0
+      Min: 1.0
+      Max: 5.0
+  Unlock_Level: 0
+  Icon:
+    Material: CARROT
+wheat:
+  Display_Name: Wheat
+  Drops:
+    Currency:
+      vault:
+        Chance: 100.0
+        Min: 4.0
+        Max: 12.0
+    XP:
+      Chance: 100.0
+      Min: 1.0
+      Max: 5.0
+  Unlock_Level: 0
+  Icon:
+    Material: WHEAT
+melon:
+  Display_Name: Melon
+  Drops:
+    Currency:
+      vault:
+        Chance: 100.0
+        Min: 4.0
+        Max: 12.0
+    XP:
+      Chance: 100.0
+      Min: 1.0
+      Max: 5.0
+  Unlock_Level: 0
+  Icon:
+    Material: MELON
+nether_wart:
+  Display_Name: Nether Wart
+  Drops:
+    Currency:
+      vault:
+        Chance: 100.0
+        Min: 4.0
+        Max: 12.0
+    XP:
+      Chance: 100.0
+      Min: 1.0
+      Max: 5.0
+  Unlock_Level: 0
+  Icon:
+    Material: NETHER_WART
+pumpkin:
+  Display_Name: Pumpkin
+  Drops:
+    Currency:
+      vault:
+        Chance: 100.0
+        Min: 4.0
+        Max: 12.0
+    XP:
+      Chance: 100.0
+      Min: 1.0
+      Max: 5.0
+  Unlock_Level: 0
+  Icon:
+    Material: PUMPKIN
+sweet_berries:
+  Display_Name: Sweet Berries
+  Drops:
+    Currency:
+      vault:
+        Chance: 100.0
+        Min: 4.0
+        Max: 12.0
+    XP:
+      Chance: 100.0
+      Min: 1.0
+      Max: 5.0
+  Unlock_Level: 0
+  Icon:
+    Material: SWEET_BERRIES
+glow_berries:
+  Display_Name: Glow Berries
+  Drops:
+    Currency:
+      vault:
+        Chance: 100.0
+        Min: 4.0
+        Max: 12.0
+    XP:
+      Chance: 100.0
+      Min: 1.0
+      Max: 5.0
+  Unlock_Level: 0
+  Icon:
+    Material: GLOW_BERRIES

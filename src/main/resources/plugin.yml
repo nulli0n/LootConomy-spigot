@@ -1,0 +1,15 @@
+name: LootConomy
+main: su.nightexpress.lootconomy.LootConomy
+version: '${project.version}'
+description: Spread your economy & currencies across the world in a natural way!
+author: NightExpress
+depend: [NexEngine]
+softdepend:
+  - MythicMobs
+  - AdvancedMobArena
+  - ExcellentEnchants
+  - PlaceholderAPI
+  - GamePoints
+  - CoinsEngine
+  - Vault
+api-version: 1.17
