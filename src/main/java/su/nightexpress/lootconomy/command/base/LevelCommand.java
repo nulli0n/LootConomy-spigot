@@ -85,7 +85,7 @@ public class LevelCommand extends AbstractCommand<LootConomy> {
             case SET -> Lang.COMMAND_LEVEL_SET_DONE;
         })
             .replace(skillData.replacePlaceholders())
-            .replace(Placeholders.Player.NAME, user.getName())
+            .replace(Placeholders.PLAYER_NAME, user.getName())
             .replace(Placeholders.GENERIC_AMOUNT, amount)
             .send(sender);
 

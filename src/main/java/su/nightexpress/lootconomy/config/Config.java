@@ -4,7 +4,7 @@ import org.bukkit.GameMode;
 import org.bukkit.Material;
 import org.bukkit.event.entity.CreatureSpawnEvent;
 import su.nexmedia.engine.api.config.JOption;
-import su.nexmedia.engine.hooks.Hooks;
+import su.nexmedia.engine.utils.EngineUtils;
 import su.nexmedia.engine.utils.StringUtil;
 import su.nightexpress.lootconomy.Placeholders;
 import su.nightexpress.lootconomy.booster.BoosterMultiplier;
@@ -102,7 +102,7 @@ public class Config {
         (cfg, path, id) -> TimedBoosterInfo.read(cfg, path + "." + id),
         Map.of(
             "example", new TimedBoosterInfo(Set.of(Placeholders.WILDCARD),
-                new BoosterMultiplier(Map.of(Hooks.VAULT, 1.25), 1.25),
+                new BoosterMultiplier(Map.of(EngineUtils.VAULT, 1.25), 1.25),
                 Map.of(DayOfWeek.SATURDAY, Set.of(LocalTime.of(16, 0))), 7200)
         ),
         "List of global, automated XP / currency boosters.",
@@ -115,10 +115,10 @@ public class Config {
         (cfg, path, id) -> RankBoosterInfo.read(cfg, path + "." + id, id),
         Map.of(
             "vip", new RankBoosterInfo("vip", 10, Set.of(Placeholders.WILDCARD),
-                new BoosterMultiplier(Map.of(Hooks.VAULT, 1.25), 1.25)
+                new BoosterMultiplier(Map.of(EngineUtils.VAULT, 1.25), 1.25)
             ),
             "premium", new RankBoosterInfo("premium", 10, Set.of(Placeholders.WILDCARD),
-                new BoosterMultiplier(Map.of(Hooks.VAULT, 1.5), 1.5)
+                new BoosterMultiplier(Map.of(EngineUtils.VAULT, 1.5), 1.5)
             )
         ),
         "List of passive XP / currency boosters based on player permission group(s).",
@@ -129,13 +129,13 @@ public class Config {
         (cfg, path, id) -> BoosterInfo.read(cfg, path + "." + id),
         Map.of(
             "xp_money_1_25", new BoosterInfo(Set.of(Placeholders.WILDCARD),
-                new BoosterMultiplier(Map.of(Hooks.VAULT, 1.25), 1.25)),
+                new BoosterMultiplier(Map.of(EngineUtils.VAULT, 1.25), 1.25)),
             "xp_money_1_5", new BoosterInfo(Set.of(Placeholders.WILDCARD),
-                new BoosterMultiplier(Map.of(Hooks.VAULT, 1.5), 1.5)),
+                new BoosterMultiplier(Map.of(EngineUtils.VAULT, 1.5), 1.5)),
             "money_2", new BoosterInfo(Set.of(Placeholders.WILDCARD),
-                new BoosterMultiplier(Map.of(Hooks.VAULT, 2D), 1D)),
+                new BoosterMultiplier(Map.of(EngineUtils.VAULT, 2D), 1D)),
             "xp_2", new BoosterInfo(Set.of(Placeholders.WILDCARD),
-                new BoosterMultiplier(Map.of(Hooks.VAULT, 1D), 2D))
+                new BoosterMultiplier(Map.of(EngineUtils.VAULT, 1D), 2D))
         ),
         "List of custom XP / currency boosters to be given via booster commands.",
         "You can create as many boosters as you want.",

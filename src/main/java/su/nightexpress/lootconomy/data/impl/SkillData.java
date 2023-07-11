@@ -10,7 +10,9 @@ import su.nightexpress.lootconomy.skill.impl.Rank;
 import su.nightexpress.lootconomy.skill.impl.Skill;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 public class SkillData implements Placeholder {
 
@@ -21,22 +23,25 @@ public class SkillData implements Placeholder {
     private int level;
     private int xp;
 
+    private final Set<Integer> obtainedLevelRewards;
     private final Map<String, Integer> perkLevels;
     private final PlaceholderMap placeholderMap;
 
     public static SkillData create(@NotNull Skill job) {
         Rank rank = job.getLowestRank();
-        return new SkillData(job, rank, 1, 0, SkillLimitData.create(job), new HashMap<>());
+        return new SkillData(job, rank, 1, 0, SkillLimitData.create(job), new HashMap<>(), new HashSet<>());
     }
 
     public SkillData(@NotNull Skill skill, @NotNull Rank rank,
                      int level, int xp,
                      @NotNull SkillLimitData limitData,
-                     @NotNull Map<String, Integer> perkLevels) {
+                     @NotNull Map<String, Integer> perkLevels,
+                     @NotNull Set<Integer> obtainedLevelRewards) {
         this.skill = skill;
         this.rank = rank;
         this.limitData = limitData;
         this.perkLevels = perkLevels;
+        this.obtainedLevelRewards = obtainedLevelRewards;
         this.setLevel(level);
         this.setXP(xp);
 
@@ -290,13 +295,20 @@ public class SkillData implements Placeholder {
         return perkLevels;
     }
 
-
     public int getPerkLevel(@NotNull String id) {
         return this.perkLevels.getOrDefault(id.toLowerCase(), 0);
     }
 
-
     public void setPerkLevel(@NotNull String id, int level) {
         this.perkLevels.put(id.toLowerCase(), level);
+    }
+
+    @NotNull
+    public Set<Integer> getObtainedLevelRewards() {
+        return obtainedLevelRewards;
+    }
+
+    public boolean isLevelRewardObtained(int level) {
+        return this.getObtainedLevelRewards().contains(level);
     }
 }

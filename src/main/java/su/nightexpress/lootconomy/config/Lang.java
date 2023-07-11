@@ -1,18 +1,18 @@
 package su.nightexpress.lootconomy.config;
 
 import org.bukkit.Sound;
-import su.nexmedia.engine.api.lang.LangColors;
 import su.nexmedia.engine.api.lang.LangKey;
+import su.nexmedia.engine.lang.EngineLang;
 import su.nightexpress.lootconomy.Placeholders;
 
-public class Lang implements LangColors {
+public class Lang extends EngineLang {
 
     public static final LangKey COMMAND_STATS_DESC    = LangKey.of("Command.Stats.Desc", "Show [player's] skills stats.");
     public static final LangKey COMMAND_STATS_USAGE   = LangKey.of("Command.Stats.Usage", "[player]");
     public static final LangKey COMMAND_STATS_DISPLAY = LangKey.of("Command.Stats.Display",
         "<! prefix:\"false\" !>" +
             "\n" + GRAY +
-            "\n" + YELLOW + "&l" + Placeholders.Player.NAME + "'s Loot Stats:" +
+            "\n" + YELLOW + "&l" + Placeholders.PLAYER_NAME + "'s Loot Stats:" +
             "\n" + GRAY +
             "\n" + GRAY + "&o(Hover mouse over skill name for details)" +
             "\n" + GRAY +
@@ -49,35 +49,35 @@ public class Lang implements LangColors {
 
     public static final LangKey COMMAND_BOOSTER_CREATE_DESC  = LangKey.of("Command.Booster.Create.Desc", "Create personal booster.");
     public static final LangKey COMMAND_BOOSTER_CREATE_USAGE = LangKey.of("Command.Booster.Create.Usage", "<player> <booster> <duration> [-s]");
-    public static final LangKey COMMAND_BOOSTER_CREATE_DONE  = LangKey.of("Command.Booster.Create.Done", GRAY + "Added " + GREEN + Placeholders.GENERIC_NAME + GRAY + " booster to " + GREEN + Placeholders.Player.NAME + GRAY + " for " + GREEN + Placeholders.GENERIC_TIME);
+    public static final LangKey COMMAND_BOOSTER_CREATE_DONE  = LangKey.of("Command.Booster.Create.Done", GRAY + "Added " + GREEN + Placeholders.GENERIC_NAME + GRAY + " booster to " + GREEN + Placeholders.PLAYER_NAME + GRAY + " for " + GREEN + Placeholders.GENERIC_TIME);
     public static final LangKey COMMAND_BOOSTER_CREATE_NOTIFY  = LangKey.of("Command.Booster.Create.Notify", GRAY + "You got a booster for your " + YELLOW + Placeholders.SKILL_NAME + GRAY + " skill for " + YELLOW + Placeholders.GENERIC_TIME + GRAY + "!");
 
     public static final LangKey COMMAND_BOOSTER_CLEAR_DESC       = LangKey.of("Command.Booster.Clear.Desc", "Remove personal boosters.");
     public static final LangKey COMMAND_BOOSTER_CLEAR_USAGE      = LangKey.of("Command.Booster.Clear.Usage", "<player> [skill]");
-    public static final LangKey COMMAND_BOOSTER_CLEAR_DONE_SKILL = LangKey.of("Command.Booster.Clear.Done.Skill", GRAY + "Removed personal " + GREEN + Placeholders.SKILL_NAME + GRAY + " booster from " + GREEN + Placeholders.Player.NAME + GRAY + ".");
-    public static final LangKey COMMAND_BOOSTER_CLEAR_DONE_ALL   = LangKey.of("Command.Booster.Clear.Done.All", GRAY + "Removed " + GREEN + "All" + GRAY + " personal boosters from " + GREEN + Placeholders.Player.NAME + GRAY + ".");
+    public static final LangKey COMMAND_BOOSTER_CLEAR_DONE_SKILL = LangKey.of("Command.Booster.Clear.Done.Skill", GRAY + "Removed personal " + GREEN + Placeholders.SKILL_NAME + GRAY + " booster from " + GREEN + Placeholders.PLAYER_NAME + GRAY + ".");
+    public static final LangKey COMMAND_BOOSTER_CLEAR_DONE_ALL   = LangKey.of("Command.Booster.Clear.Done.All", GRAY + "Removed " + GREEN + "All" + GRAY + " personal boosters from " + GREEN + Placeholders.PLAYER_NAME + GRAY + ".");
 
     public static final LangKey COMMAND_XP_DESC          = LangKey.of("Command.XP.Desc", "Manage player's skill XP.");
     public static final LangKey COMMAND_XP_USAGE         = LangKey.of("Command.XP.Usage", "<action> <skill> <amount> [player] [-s]");
-    public static final LangKey COMMAND_XP_ADD_DONE      = LangKey.of("Command.XP.Add.Done", GRAY + "Added " + GREEN + Placeholders.GENERIC_AMOUNT + GRAY + " XP to " + GREEN + Placeholders.SKILL_NAME + GRAY + " skill for " + GREEN + Placeholders.Player.NAME + GRAY + ".");
+    public static final LangKey COMMAND_XP_ADD_DONE      = LangKey.of("Command.XP.Add.Done", GRAY + "Added " + GREEN + Placeholders.GENERIC_AMOUNT + GRAY + " XP to " + GREEN + Placeholders.SKILL_NAME + GRAY + " skill for " + GREEN + Placeholders.PLAYER_NAME + GRAY + ".");
     public static final LangKey COMMAND_XP_ADD_NOTIFY    = LangKey.of("Command.XP.Add.Notify", GREEN + Placeholders.GENERIC_AMOUNT + GRAY + " XP has been added to your " + GREEN + Placeholders.SKILL_NAME + GRAY + " skill!");
-    public static final LangKey COMMAND_XP_REMOVE_DONE   = LangKey.of("Command.XP.Remove.Done", GRAY + "Removed " + RED + Placeholders.GENERIC_AMOUNT + GRAY + " XP from " + RED + Placeholders.SKILL_NAME + GRAY + " skill of " + RED + Placeholders.Player.NAME + GRAY + ".");
+    public static final LangKey COMMAND_XP_REMOVE_DONE   = LangKey.of("Command.XP.Remove.Done", GRAY + "Removed " + RED + Placeholders.GENERIC_AMOUNT + GRAY + " XP from " + RED + Placeholders.SKILL_NAME + GRAY + " skill of " + RED + Placeholders.PLAYER_NAME + GRAY + ".");
     public static final LangKey COMMAND_XP_REMOVE_NOTIFY = LangKey.of("Command.XP.Remove.Notify", RED + Placeholders.GENERIC_AMOUNT + GRAY + " XP has been removed from your " + RED + Placeholders.SKILL_NAME + GRAY + " skill.");
-    public static final LangKey COMMAND_XP_SET_DONE      = LangKey.of("Command.XP.Set.Done", GRAY + "Set " + YELLOW + Placeholders.GENERIC_AMOUNT + GRAY + " XP for " + YELLOW + Placeholders.Player.NAME + GRAY + "'s " + Placeholders.SKILL_NAME + " skill.");
+    public static final LangKey COMMAND_XP_SET_DONE      = LangKey.of("Command.XP.Set.Done", GRAY + "Set " + YELLOW + Placeholders.GENERIC_AMOUNT + GRAY + " XP for " + YELLOW + Placeholders.PLAYER_NAME + GRAY + "'s " + Placeholders.SKILL_NAME + " skill.");
     public static final LangKey COMMAND_XP_SET_NOTIFY    = LangKey.of("Command.XP.Set.Notify", GRAY + "Your " + YELLOW + Placeholders.SKILL_NAME + GRAY + " skill XP has been set to " + YELLOW + Placeholders.GENERIC_AMOUNT + GRAY + ".");
 
     public static final LangKey COMMAND_LEVEL_DESC          = LangKey.of("Command.Level.Desc", "Manage player's skill levels.");
     public static final LangKey COMMAND_LEVEL_USAGE         = LangKey.of("Command.Level.Usage", "<action> <skill> <amount> [player] [-s]");
-    public static final LangKey COMMAND_LEVEL_ADD_DONE      = LangKey.of("Command.Level.Add.Done", GRAY + "Added " + GREEN + Placeholders.GENERIC_AMOUNT + GRAY + " level(s) to " + GREEN + Placeholders.SKILL_NAME + GRAY + " skill for " + GREEN + Placeholders.Player.NAME + GRAY + ".");
+    public static final LangKey COMMAND_LEVEL_ADD_DONE      = LangKey.of("Command.Level.Add.Done", GRAY + "Added " + GREEN + Placeholders.GENERIC_AMOUNT + GRAY + " level(s) to " + GREEN + Placeholders.SKILL_NAME + GRAY + " skill for " + GREEN + Placeholders.PLAYER_NAME + GRAY + ".");
     public static final LangKey COMMAND_LEVEL_ADD_NOTIFY    = LangKey.of("Command.Level.Add.Notify", GREEN + Placeholders.GENERIC_AMOUNT + GRAY + " level(s) has been added to your " + GREEN + Placeholders.SKILL_NAME + GRAY + " skill!");
-    public static final LangKey COMMAND_LEVEL_REMOVE_DONE   = LangKey.of("Command.Level.Remove.Done", GRAY + "Removed " + RED + Placeholders.GENERIC_AMOUNT + GRAY + " level(s) from " + RED + Placeholders.SKILL_NAME + GRAY + " skill of " + RED + Placeholders.Player.NAME + GRAY + ".");
+    public static final LangKey COMMAND_LEVEL_REMOVE_DONE   = LangKey.of("Command.Level.Remove.Done", GRAY + "Removed " + RED + Placeholders.GENERIC_AMOUNT + GRAY + " level(s) from " + RED + Placeholders.SKILL_NAME + GRAY + " skill of " + RED + Placeholders.PLAYER_NAME + GRAY + ".");
     public static final LangKey COMMAND_LEVEL_REMOVE_NOTIFY = LangKey.of("Command.Level.Remove.Notify", RED + Placeholders.GENERIC_AMOUNT + GRAY + " level(s) has been removed from your " + RED + Placeholders.SKILL_NAME + GRAY + " skill.");
-    public static final LangKey COMMAND_LEVEL_SET_DONE      = LangKey.of("Command.Level.Set.Done", GRAY + "Set " + YELLOW + Placeholders.GENERIC_AMOUNT + GRAY + " level for " + YELLOW + Placeholders.Player.NAME + GRAY + "'s " + Placeholders.SKILL_NAME + " skill.");
+    public static final LangKey COMMAND_LEVEL_SET_DONE      = LangKey.of("Command.Level.Set.Done", GRAY + "Set " + YELLOW + Placeholders.GENERIC_AMOUNT + GRAY + " level for " + YELLOW + Placeholders.PLAYER_NAME + GRAY + "'s " + Placeholders.SKILL_NAME + " skill.");
     public static final LangKey COMMAND_LEVEL_SET_NOTIFY    = LangKey.of("Command.Level.Set.Notify", GRAY + "Your " + YELLOW + Placeholders.SKILL_NAME + GRAY + " skill level has been set to " + YELLOW + Placeholders.GENERIC_AMOUNT + GRAY + ".");
 
     public static final LangKey COMMAND_RESET_DESC  = LangKey.of("Command.Reset.Desc", "Reset [player's] skill progress.");
     public static final LangKey COMMAND_RESET_USAGE = LangKey.of("Command.Reset.Usage", "<skill> [player] [-s]");
-    public static final LangKey COMMAND_RESET_DONE  = LangKey.of("Command.Reset.Done", GRAY + "Successfully reset " + GREEN + Placeholders.SKILL_NAME + GRAY + " progress for " + GREEN + Placeholders.Player.NAME + GRAY + ".");
+    public static final LangKey COMMAND_RESET_DONE  = LangKey.of("Command.Reset.Done", GRAY + "Successfully reset " + GREEN + Placeholders.SKILL_NAME + GRAY + " progress for " + GREEN + Placeholders.PLAYER_NAME + GRAY + ".");
 
     public static final LangKey COMMAND_SKILLS_DESC  = LangKey.of("Command.Skills.Desc", "Open skills menu.");
     public static final LangKey COMMAND_SKILLS_USAGE = LangKey.of("Command.Skills.Usage", "");
@@ -87,7 +87,7 @@ public class Lang implements LangColors {
 
     public static final LangKey COMMAND_DROP_USAGE = LangKey.of("Command.Drop.Usage", "<currency> <min> <max> <world> <x> <y> <z>");
     public static final LangKey COMMAND_DROP_DESC  = LangKey.of("Command.Drop.Desc", "Create and drop currency item.");
-    public static final LangKey COMMAND_DROP_DONE  = LangKey.of("Command.Drop.Done", GRAY + "Dropped " + YELLOW + Placeholders.GENERIC_AMOUNT + GRAY + " currency item at " + YELLOW + Placeholders.Location.X + ", " + Placeholders.Location.Y + ", " + Placeholders.Location.Z + GRAY + " in " + YELLOW + Placeholders.Location.WORLD + GRAY + ".");
+    public static final LangKey COMMAND_DROP_DONE  = LangKey.of("Command.Drop.Done", GRAY + "Dropped " + YELLOW + Placeholders.GENERIC_AMOUNT + GRAY + " currency item at " + YELLOW + Placeholders.LOCATION_X + ", " + Placeholders.LOCATION_Y + ", " + Placeholders.LOCATION_Z + GRAY + " in " + YELLOW + Placeholders.LOCATION_WORLD + GRAY + ".");
 
     public static final LangKey COMMAND_SOUND_DESC = LangKey.of("Command.Sound.Desc", "Switch on/off money pickup sound.");
     public static final LangKey COMMAND_SOUND_DONE = LangKey.of("Command.Sound.Done",
@@ -100,7 +100,7 @@ public class Lang implements LangColors {
             "\n" + CYAN +
             "\n" + CYAN + "&l" + Placeholders.SKILL_NAME + " Level Top:" +
             "\n" + CYAN +
-            "\n" + CYAN + Placeholders.GENERIC_POS + ". " + GRAY + Placeholders.Player.NAME + ": " + CYAN + Placeholders.GENERIC_AMOUNT + GRAY + " Levels" +
+            "\n" + CYAN + Placeholders.GENERIC_POS + ". " + GRAY + Placeholders.PLAYER_NAME + ": " + CYAN + Placeholders.GENERIC_AMOUNT + GRAY + " Levels" +
             "\n" + CYAN +
             "\n" + GRAY + "Page " + CYAN + Placeholders.GENERIC_CURRENT + GRAY + " of " + CYAN + Placeholders.GENERIC_MAX + GRAY + "." +
             "\n" + CYAN);

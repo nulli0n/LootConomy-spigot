@@ -74,7 +74,7 @@ public class ConfigCurrency extends AbstractConfigHolder<LootConomy> implements 
             SimpleParticle.of(Particle.REDSTONE, new Particle.DustOptions(Color.YELLOW, 1f)),
             "Sets the particle effect to be constantly played when currency item is dropped in the world.",
             Placeholders.URL_ENGINE_PARTICLE
-        ).setWriter((cfg, path, pe) -> SimpleParticle.write(pe, cfg, path)).read(cfg);
+        ).setWriter((cfg, path, particle) -> particle.write(cfg, path)).read(cfg);
 
         this.pickupSound = JOption.create("Effects.Pickup_Sound", Sound.class, Sound.BLOCK_NOTE_BLOCK_BELL,
             "Sets sound to player when player pickups item of that currency.",
@@ -113,7 +113,8 @@ public class ConfigCurrency extends AbstractConfigHolder<LootConomy> implements 
             "Here you can define different item layout depends on the currency amount.",
             "It will use item of the greatest amount less than or equal to the currency amount.",
             Placeholders.URL_ENGINE_ITEMS,
-            "Use '" + Placeholders.GENERIC_AMOUNT + "' placeholer to display formatted currency amount in item name.").read(cfg));
+            "Use '" + Placeholders.GENERIC_AMOUNT + "' placeholer to display formatted currency amount in item name."
+        ).setWriter((cfg, path2, map) -> map.forEach((i, item) -> cfg.setItem(path2 + "." + i, item))).read(cfg));
         this.itemStyle.values().removeIf(item -> item.getType().isAir());
 
         this.cfg.saveChanges();

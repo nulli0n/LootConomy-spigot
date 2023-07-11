@@ -40,7 +40,7 @@ public class StatsCommand extends AbstractCommand<LootConomy> {
             }
 
             plugin.getMessage(Lang.COMMAND_STATS_DISPLAY)
-                .replace(Placeholders.Player.NAME, user.getName())
+                .replace(Placeholders.PLAYER_NAME, user.getName())
                 .replace(str -> str.contains(Placeholders.SKILL_NAME), (line, list) -> {
                     this.plugin.getSkillManager().getSkills().forEach(skill -> {
                         list.add(user.getData(skill).replacePlaceholders().apply(line).replace("\n", NexParser.TAG_NEWLINE));

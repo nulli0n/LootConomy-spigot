@@ -5,7 +5,7 @@ import su.nexmedia.engine.NexPlugin;
 import su.nexmedia.engine.api.command.GeneralCommand;
 import su.nexmedia.engine.api.data.UserDataHolder;
 import su.nexmedia.engine.command.list.ReloadSubCommand;
-import su.nexmedia.engine.hooks.Hooks;
+import su.nexmedia.engine.utils.EngineUtils;
 import su.nexmedia.playerblocktracker.PlayerBlockTracker;
 import su.nightexpress.lootconomy.booster.BoosterManager;
 import su.nightexpress.lootconomy.command.base.*;
@@ -59,14 +59,14 @@ public class LootConomy extends NexPlugin<LootConomy> implements UserDataHolder<
         this.moneyManager = new MoneyManager(this);
         this.moneyManager.setup();
 
-        if (Hooks.hasPlaceholderAPI()) {
+        if (EngineUtils.hasPlaceholderAPI()) {
             PlaceholderHook.setup(this);
         }
     }
 
     @Override
     public void disable() {
-        if (Hooks.hasPlaceholderAPI()) {
+        if (EngineUtils.hasPlaceholderAPI()) {
             PlaceholderHook.shutdown();
         }
         PlayerBlockTracker.shutdown();
@@ -96,7 +96,7 @@ public class LootConomy extends NexPlugin<LootConomy> implements UserDataHolder<
     @Override
     public void loadLang() {
         this.getLangManager().loadMissing(Lang.class);
-        this.getLangManager().setupEnum(SkillType.class);
+        this.getLangManager().loadEnum(SkillType.class);
         this.getLang().saveChanges();
     }
 

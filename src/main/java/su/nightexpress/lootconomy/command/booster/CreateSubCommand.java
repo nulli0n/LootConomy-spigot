@@ -88,7 +88,7 @@ class CreateSubCommand extends AbstractCommand<LootConomy> {
             this.plugin.getMessage(Lang.COMMAND_BOOSTER_CREATE_DONE)
                 .replace(Placeholders.GENERIC_NAME, result.getArg(2))
                 .replace(Placeholders.GENERIC_TIME, TimeUtil.formatTimeLeft(booster.getExpireDate()))
-                .replace(Placeholders.Player.NAME, user.getName())
+                .replace(Placeholders.PLAYER_NAME, user.getName())
                 .send(sender);
 
             Player player = user.getPlayer();

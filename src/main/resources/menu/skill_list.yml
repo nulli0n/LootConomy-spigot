@@ -28,7 +28,7 @@ Skill:
   Locked_Permission:
     Name: '&c&l[Locked]&r %skill_name%'
     Lore:
-    - '&cYou don''t have access to this job!'
+    - '&cYou don''t have access to this skill!'
   Slots: 10,11,12,13,14,15,16
 
 Content:

@@ -9,7 +9,7 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 import su.nexmedia.engine.api.manager.AbstractListener;
-import su.nexmedia.engine.hooks.Hooks;
+import su.nexmedia.engine.utils.EngineUtils;
 import su.nightexpress.lootconomy.LootConomy;
 import su.nightexpress.lootconomy.hook.HookId;
 import su.nightexpress.lootconomy.hook.impl.ExcellentEnchantsHook;
@@ -36,7 +36,7 @@ public class SkillMythicLootListener extends AbstractListener<LootConomy> {
         String type = mythicMob.getInternalName();
 
         this.plugin.getSkillManager().getSkillLoots(player, SkillType.KILL_MYTHIC_MOB, type).forEach(item -> {
-            if (Hooks.hasPlugin(HookId.EXCELLENT_ENCHANTS) && ExcellentEnchantsHook.hasNimble(tool)) {
+            if (EngineUtils.hasPlugin(HookId.EXCELLENT_ENCHANTS) && ExcellentEnchantsHook.hasNimble(tool)) {
                 this.plugin.getMoneyManager().pickupMoney(player, item);
                 return;
             }

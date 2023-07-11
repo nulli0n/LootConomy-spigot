@@ -16,11 +16,11 @@ import org.bukkit.event.player.PlayerHarvestBlockEvent;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 import su.nexmedia.engine.api.manager.AbstractListener;
-import su.nexmedia.engine.hooks.Hooks;
+import su.nexmedia.engine.utils.EngineUtils;
 import su.nexmedia.engine.utils.PDCUtil;
 import su.nexmedia.playerblocktracker.PlayerBlockTracker;
-import su.nightexpress.lootconomy.config.Keys;
 import su.nightexpress.lootconomy.LootConomy;
+import su.nightexpress.lootconomy.config.Keys;
 import su.nightexpress.lootconomy.hook.HookId;
 import su.nightexpress.lootconomy.hook.impl.ExcellentEnchantsHook;
 import su.nightexpress.lootconomy.hook.impl.MythicMobsHook;
@@ -48,7 +48,7 @@ public class SkillVanillaLootListener extends AbstractListener<LootConomy> {
         LivingEntity dead = event.getEntity();
         if (dead instanceof Player) return;
         if (MoneyManager.isDevastated(dead)) return;
-        if (Hooks.hasPlugin(HookId.MYTHIC_MOBS) && MythicMobsHook.isMythicMob(dead)) return;
+        if (EngineUtils.hasPlugin(HookId.MYTHIC_MOBS) && MythicMobsHook.isMythicMob(dead)) return;
 
         Player player = dead.getKiller();
         if (player == null) return;
@@ -57,7 +57,7 @@ public class SkillVanillaLootListener extends AbstractListener<LootConomy> {
 
         String type = dead.getType().name();
         this.plugin.getSkillManager().getSkillLoots(player, SkillType.KILL_MOB, type).forEach(item -> {
-            if (Hooks.hasPlugin(HookId.EXCELLENT_ENCHANTS) && ExcellentEnchantsHook.hasNimble(tool)) {
+            if (EngineUtils.hasPlugin(HookId.EXCELLENT_ENCHANTS) && ExcellentEnchantsHook.hasNimble(tool)) {
                 this.plugin.getMoneyManager().pickupMoney(player, item);
                 return;
             }
@@ -98,7 +98,7 @@ public class SkillVanillaLootListener extends AbstractListener<LootConomy> {
 
         BlockBreakEvent event = new BlockBreakEvent(block, player);
         this.plugin.getSkillManager().getSkillLoots(player, SkillType.BLOCK_BREAK, type).forEach(item -> {
-            if (Hooks.hasPlugin(HookId.EXCELLENT_ENCHANTS) && ExcellentEnchantsHook.hasTelekinesis(tool)) {
+            if (EngineUtils.hasPlugin(HookId.EXCELLENT_ENCHANTS) && ExcellentEnchantsHook.hasTelekinesis(tool)) {
                 this.plugin.getMoneyManager().pickupMoney(player, item);
                 return;
             }
@@ -135,7 +135,7 @@ public class SkillVanillaLootListener extends AbstractListener<LootConomy> {
 
             BlockBreakEvent event = new BlockBreakEvent(block, player);
             this.plugin.getSkillManager().getSkillLoots(player, SkillType.BLOCK_BREAK, type).forEach(item -> {
-                if (Hooks.hasPlugin(HookId.EXCELLENT_ENCHANTS) && ExcellentEnchantsHook.hasTelekinesis(tool)) {
+                if (EngineUtils.hasPlugin(HookId.EXCELLENT_ENCHANTS) && ExcellentEnchantsHook.hasTelekinesis(tool)) {
                     this.plugin.getMoneyManager().pickupMoney(player, item);
                     return;
                 }

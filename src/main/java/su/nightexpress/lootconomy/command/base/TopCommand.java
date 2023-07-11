@@ -73,7 +73,7 @@ public class TopCommand extends AbstractCommand<LootConomy> {
                     list1.add(line
                         .replace(Placeholders.GENERIC_POS, NumberUtil.format(pos.getAndIncrement()))
                         .replace(Placeholders.GENERIC_AMOUNT, NumberUtil.format(pair.getSecond()))
-                        .replace(Placeholders.Player.NAME, pair.getFirst()));
+                        .replace(Placeholders.PLAYER_NAME, pair.getFirst()));
                 }
             })
             .send(sender);

@@ -4,17 +4,17 @@ import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import su.nexmedia.engine.api.manager.AbstractManager;
-import su.nexmedia.engine.hooks.external.VaultHook;
+import su.nexmedia.engine.utils.PlayerUtil;
 import su.nightexpress.lootconomy.LootConomy;
 import su.nightexpress.lootconomy.booster.config.BoosterInfo;
 import su.nightexpress.lootconomy.booster.config.RankBoosterInfo;
 import su.nightexpress.lootconomy.booster.config.TimedBoosterInfo;
 import su.nightexpress.lootconomy.booster.impl.Booster;
 import su.nightexpress.lootconomy.booster.impl.ExpirableBooster;
-import su.nightexpress.lootconomy.config.Config;
-import su.nightexpress.lootconomy.data.impl.LootUser;
 import su.nightexpress.lootconomy.booster.listener.BoosterListenerGeneric;
 import su.nightexpress.lootconomy.booster.task.BoosterUpdateTask;
+import su.nightexpress.lootconomy.config.Config;
+import su.nightexpress.lootconomy.data.impl.LootUser;
 import su.nightexpress.lootconomy.skill.impl.Skill;
 
 import java.util.*;
@@ -62,7 +62,7 @@ public class BoosterManager extends AbstractManager<LootConomy> {
     @Nullable
     public Booster getRankBooster(@NotNull Player player) {
         return Config.BOOSTERS_RANK.get().values().stream()
-            .filter(booster -> VaultHook.getPermissionGroups(player).contains(booster.getRank()))
+            .filter(booster -> PlayerUtil.getPermissionGroups(player).contains(booster.getRank()))
             .max(Comparator.comparingInt(RankBoosterInfo::getPriority)).map(BoosterInfo::createBooster).orElse(null);
     }
 

@@ -196,7 +196,7 @@ public class MoneyManager extends AbstractManager<LootConomy> {
 
         LootUser user = plugin.getUserManager().getUserData(player);
         if (user.getSettings().isPickupSound()) {
-            MessageUtil.sound(player, currency.getPickupSound());
+            PlayerUtil.sound(player, currency.getPickupSound());
         }
 
         plugin.getMessage(Lang.CURRENCY_PICKUP)

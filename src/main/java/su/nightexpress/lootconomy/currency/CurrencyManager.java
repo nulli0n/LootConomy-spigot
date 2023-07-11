@@ -4,8 +4,8 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import su.nexmedia.engine.api.config.JYML;
 import su.nexmedia.engine.api.manager.AbstractManager;
-import su.nexmedia.engine.hooks.Hooks;
-import su.nexmedia.engine.hooks.external.VaultHook;
+import su.nexmedia.engine.integration.VaultHook;
+import su.nexmedia.engine.utils.EngineUtils;
 import su.nightexpress.coinsengine.api.CoinsEngineAPI;
 import su.nightexpress.lootconomy.LootConomy;
 import su.nightexpress.lootconomy.api.currency.Currency;
@@ -38,14 +38,14 @@ public class CurrencyManager extends AbstractManager<LootConomy> {
     protected void onLoad() {
         this.plugin.getConfigManager().extractResources(DIR_CURRENCIES);
 
-        if (Hooks.hasVault() && VaultHook.hasEconomy()) {
-            this.registerCurrency(Hooks.VAULT, VaultEconomyHandler::new);
+        if (EngineUtils.hasVault() && VaultHook.hasEconomy()) {
+            this.registerCurrency(EngineUtils.VAULT, VaultEconomyHandler::new);
         }
-        if (Hooks.hasPlugin(HookId.GAME_POINTS)) {
+        if (EngineUtils.hasPlugin(HookId.GAME_POINTS)) {
             this.registerCurrency(HookId.GAME_POINTS, GamePointsHandler::new);
             this.deprecatedCurrency(HookId.GAME_POINTS);
         }
-        if (Hooks.hasPlugin(HookId.COINS_ENGINE)) {
+        if (EngineUtils.hasPlugin(HookId.COINS_ENGINE)) {
             CoinsEngineAPI.getCurrencyManager().getCurrencies().forEach(cura -> {
                 if (!cura.isVaultEconomy()) {
                     String id = "coinsengine_" + cura.getId();
@@ -70,7 +70,7 @@ public class CurrencyManager extends AbstractManager<LootConomy> {
 
     @NotNull
     private JYML getConfig(@NotNull String id) {
-        return JYML.loadOrExtract(plugin, DIR_CURRENCIES + id + ".yml");
+        return JYML.loadOrExtract(plugin, DIR_CURRENCIES + id.toLowerCase() + ".yml");
     }
 
     public boolean registerCurrency(@NotNull String id, @NotNull Supplier<CurrencyHandler> supplier) {

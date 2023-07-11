@@ -6,8 +6,8 @@ import org.bukkit.entity.EntityType;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 import su.nexmedia.engine.api.config.JYML;
-import su.nexmedia.engine.hooks.Hooks;
 import su.nexmedia.engine.lang.LangManager;
+import su.nexmedia.engine.utils.EngineUtils;
 import su.nightexpress.lootconomy.LootConomy;
 import su.nightexpress.lootconomy.LootConomyAPI;
 import su.nightexpress.lootconomy.api.currency.Currency;
@@ -274,7 +274,7 @@ public class LazyGen {
             ItemStack icon = new ItemStack(material);
             Map<String, DropInfo> currencyDrops = new HashMap<>();
             currencies.forEach(currency -> {
-                if (!currency.getId().equalsIgnoreCase(Hooks.VAULT)) return;
+                if (!currency.getId().equalsIgnoreCase(EngineUtils.VAULT)) return;
                 currencyDrops.put(currency.getId(), new DropInfo(chance, min, max));
             });
             DropInfo xpDrop = new DropInfo(chance, 1, 5);
@@ -306,7 +306,7 @@ public class LazyGen {
             ItemStack icon = new ItemStack(material);
             Map<String, DropInfo> currencyDrops = new HashMap<>();
             currencies.forEach(currency -> {
-                if (!currency.getId().equalsIgnoreCase(Hooks.VAULT)) return;
+                if (!currency.getId().equalsIgnoreCase(EngineUtils.VAULT)) return;
                 currencyDrops.put(currency.getId(), new DropInfo(chance, min, max));
             });
             DropInfo xpDrop = new DropInfo(chance, 1, 5);

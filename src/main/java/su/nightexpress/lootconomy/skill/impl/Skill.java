@@ -6,20 +6,19 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import su.nexmedia.engine.api.config.JYML;
 import su.nexmedia.engine.api.manager.AbstractConfigHolder;
-import su.nexmedia.engine.api.manager.ICleanable;
 import su.nexmedia.engine.api.placeholder.Placeholder;
 import su.nexmedia.engine.api.placeholder.PlaceholderMap;
 import su.nexmedia.engine.lang.LangManager;
 import su.nexmedia.engine.utils.Colorizer;
 import su.nexmedia.engine.utils.StringUtil;
 import su.nightexpress.lootconomy.LootConomy;
-import su.nightexpress.lootconomy.config.Perms;
 import su.nightexpress.lootconomy.Placeholders;
+import su.nightexpress.lootconomy.config.Perms;
 import su.nightexpress.lootconomy.skill.menu.SkillObjectivesMenu;
 
 import java.util.*;
 
-public class Skill extends AbstractConfigHolder<LootConomy> implements Placeholder, ICleanable {
+public class Skill extends AbstractConfigHolder<LootConomy> implements Placeholder {
 
     private SkillType type;
     private String    name;
@@ -97,7 +96,6 @@ public class Skill extends AbstractConfigHolder<LootConomy> implements Placehold
 
     }
 
-    @Override
     public void clear() {
         if (this.objectivesMenu != null) {
             this.objectivesMenu.clear();

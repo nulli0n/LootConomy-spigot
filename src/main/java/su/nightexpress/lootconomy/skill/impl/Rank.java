@@ -91,7 +91,7 @@ public class Rank implements Placeholder {
             (raw) -> StringUtil.getInteger(raw, 0),
             (cfg2, path2, key) -> cfg2.getStringList(path2),
             Map.of(
-                0, Arrays.asList("eco give " + Placeholders.Player.NAME + " 250", "feed " + Placeholders.Player.NAME)
+                0, Arrays.asList("eco give " + Placeholders.PLAYER_NAME + " 250", "feed " + Placeholders.PLAYER_NAME)
             ),
             "A list of commands to execute when player reaches certain level(s).",
             "Key = Level reached"

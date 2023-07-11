@@ -10,7 +10,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import su.nexmedia.engine.api.config.JYML;
 import su.nexmedia.engine.api.manager.AbstractManager;
-import su.nexmedia.engine.hooks.Hooks;
+import su.nexmedia.engine.utils.EngineUtils;
 import su.nexmedia.engine.utils.FileUtil;
 import su.nexmedia.engine.utils.PDCUtil;
 import su.nexmedia.engine.utils.Pair;
@@ -89,7 +89,7 @@ public class SkillManager extends AbstractManager<LootConomy> {
         PlayerBlockTracker.BLOCK_FILTERS.add(this.skillBlockFilter);
 
         this.addListener(new SkillVanillaLootListener(this));
-        if (Hooks.hasPlugin(HookId.MYTHIC_MOBS)) {
+        if (EngineUtils.hasPlugin(HookId.MYTHIC_MOBS)) {
             this.addListener(new SkillMythicLootListener(this));
         }
 
@@ -313,9 +313,11 @@ public class SkillManager extends AbstractManager<LootConomy> {
             PlayerSkillLevelUpEvent levelUpEvent = new PlayerSkillLevelUpEvent(player, user, skillData);
             plugin.getPluginManager().callEvent(levelUpEvent);
 
-            skillData.getRank().getLevelUpCommands(skillData.getLevel()).forEach(command -> {
-                plugin.getServer().dispatchCommand(plugin.getServer().getConsoleSender(), Placeholders.Player.replacer(player).apply(command));
-            });
+            if (!skillData.isLevelRewardObtained(skillData.getLevel())) {
+                skillData.getRank().getLevelUpCommands(skillData.getLevel()).forEach(command -> {
+                    plugin.getServer().dispatchCommand(plugin.getServer().getConsoleSender(), Placeholders.forPlayer(player).apply(command));
+                });
+            }
 
             plugin.getMessage(Lang.SKILL_LEVEL_UP)
                 .replace(skillData.replacePlaceholders())

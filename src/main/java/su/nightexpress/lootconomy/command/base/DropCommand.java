@@ -93,7 +93,7 @@ public class DropCommand extends AbstractCommand<LootConomy> {
 
         plugin.getMessage(Lang.COMMAND_DROP_DONE)
             .replace(Placeholders.GENERIC_AMOUNT, currency.format(amount))
-            .replace(Placeholders.LOCATION.replacer(location))
+            .replace(Placeholders.forLocation(location))
             .send(sender);
     }
 }

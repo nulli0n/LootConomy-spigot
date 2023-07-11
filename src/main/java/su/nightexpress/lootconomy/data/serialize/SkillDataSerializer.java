@@ -5,11 +5,13 @@ import com.google.gson.reflect.TypeToken;
 import su.nightexpress.lootconomy.LootConomyAPI;
 import su.nightexpress.lootconomy.data.impl.SkillData;
 import su.nightexpress.lootconomy.data.impl.SkillLimitData;
-import su.nightexpress.lootconomy.skill.impl.Skill;
 import su.nightexpress.lootconomy.skill.impl.Rank;
+import su.nightexpress.lootconomy.skill.impl.Skill;
 
 import java.lang.reflect.Type;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 public class SkillDataSerializer implements JsonDeserializer<SkillData>, JsonSerializer<SkillData> {
 
@@ -31,19 +33,26 @@ public class SkillDataSerializer implements JsonDeserializer<SkillData>, JsonSer
 		Map<String, Integer> perkLevels = contex.deserialize(object.get("perkLevels"), new TypeToken<Map<String, Integer>>(){}.getType());
         SkillLimitData limitData = contex.deserialize(object.get("dailyLimits"), new TypeToken<SkillLimitData>(){}.getType());
 
-        return new SkillData(job, rank, level, xp, limitData, perkLevels);
+        Set<Integer> obtainedLevelRewards;
+        if (object.get("obtainedLevelRewards") == null) {
+            obtainedLevelRewards = new HashSet<>();
+        }
+        else obtainedLevelRewards = contex.deserialize(object.get("obtainedLevelRewards"), new TypeToken<Set<Integer>>(){}.getType());
+
+        return new SkillData(job, rank, level, xp, limitData, perkLevels, obtainedLevelRewards);
     }
 
     @Override
-    public JsonElement serialize(SkillData src, Type type, JsonSerializationContext contex) {
+    public JsonElement serialize(SkillData data, Type type, JsonSerializationContext contex) {
 
         JsonObject object = new JsonObject();
-        object.addProperty("job", src.getSkill().getId());
-        object.addProperty("rank", src.getRank().getId());
-        object.addProperty("level", src.getLevel());
-        object.addProperty("xp", src.getXP());
-        object.add("perkLevels", contex.serialize(src.getPerkLevels()));
-        object.add("dailyLimits", contex.serialize(src.getLimitData()));
+        object.addProperty("job", data.getSkill().getId());
+        object.addProperty("rank", data.getRank().getId());
+        object.addProperty("level", data.getLevel());
+        object.addProperty("xp", data.getXP());
+        object.add("perkLevels", contex.serialize(data.getPerkLevels()));
+        object.add("dailyLimits", contex.serialize(data.getLimitData()));
+        object.add("obtainedLevelRewards", contex.serialize(data.getObtainedLevelRewards()));
 
         return object;
     }

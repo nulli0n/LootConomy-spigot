@@ -58,14 +58,14 @@ class ClearSubCommand extends AbstractCommand<LootConomy> {
 
                 this.plugin.getMessage(Lang.COMMAND_BOOSTER_CLEAR_DONE_SKILL)
                     .replace(skill.replacePlaceholders())
-                    .replace(Placeholders.Player.NAME, user.getName())
+                    .replace(Placeholders.PLAYER_NAME, user.getName())
                     .send(sender);
             }
             else {
                 user.getBoosterMap().clear();
 
                 this.plugin.getMessage(Lang.COMMAND_BOOSTER_CLEAR_DONE_ALL)
-                    .replace(Placeholders.Player.NAME, user.getName())
+                    .replace(Placeholders.PLAYER_NAME, user.getName())
                     .send(sender);
             }
             user.saveData(this.plugin);

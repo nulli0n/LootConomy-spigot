@@ -68,7 +68,7 @@ public class ResetCommand extends AbstractCommand<LootConomy> {
         if (!sender.getName().equalsIgnoreCase(user.getName())) {
             plugin.getMessage(Lang.COMMAND_RESET_DONE)
                 .replace(skillData.replacePlaceholders())
-                .replace(Placeholders.Player.NAME, user.getName())
+                .replace(Placeholders.PLAYER_NAME, user.getName())
                 .send(sender);
         }
 
