@@ -24,6 +24,8 @@ public class InventoryCheckTask extends AbstractTask<LootConomy> {
 
             player.getNearbyEntities(2, 2, 2).stream().filter(e -> e instanceof Item).forEach(e -> {
                 Item item = (Item) e;
+                if (item.getPickupDelay() > 0) return;
+
                 ItemStack stack = item.getItemStack();
                 if (MoneyManager.isMoneyItem(stack)) {
                     EntityPickupItemEvent event = new EntityPickupItemEvent(player, item, 0);
