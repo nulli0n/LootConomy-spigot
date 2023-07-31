@@ -6,6 +6,7 @@ import org.jetbrains.annotations.Nullable;
 import su.nexmedia.engine.api.manager.AbstractManager;
 import su.nexmedia.engine.utils.PlayerUtil;
 import su.nightexpress.lootconomy.LootConomy;
+import su.nightexpress.lootconomy.Placeholders;
 import su.nightexpress.lootconomy.booster.config.BoosterInfo;
 import su.nightexpress.lootconomy.booster.config.RankBoosterInfo;
 import su.nightexpress.lootconomy.booster.config.TimedBoosterInfo;
@@ -56,7 +57,8 @@ public class BoosterManager extends AbstractManager<LootConomy> {
 
     @Nullable
     public ExpirableBooster getGlobalBooster(@NotNull Skill skill) {
-        return this.getGlobalBoosterMap().get(skill.getId());
+        var map = this.getGlobalBoosterMap();
+        return map.getOrDefault(skill.getId(), map.get(Placeholders.WILDCARD));
     }
 
     @Nullable
@@ -85,8 +87,11 @@ public class BoosterManager extends AbstractManager<LootConomy> {
 
         if (boosterInfo == null) return;
 
-        boosterInfo.getSkills().forEach(skill -> {
-            this.getGlobalBoosterMap().put(skill, boosterInfo.createBooster());
+        var map = this.getGlobalBoosterMap();
+        this.plugin.getSkillManager().getSkills().forEach(skill -> {
+            if (boosterInfo.isApplicable(skill)) {
+                map.put(skill.getId(), boosterInfo.createBooster());
+            }
         });
     }
 

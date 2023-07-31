@@ -311,4 +311,8 @@ public class SkillData implements Placeholder {
     public boolean isLevelRewardObtained(int level) {
         return this.getObtainedLevelRewards().contains(level);
     }
+
+    public void setLevelRewardObtained(int level) {
+        this.getObtainedLevelRewards().add(level);
+    }
 }

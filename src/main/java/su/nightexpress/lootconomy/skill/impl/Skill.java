@@ -59,6 +59,34 @@ public class Skill extends AbstractConfigHolder<LootConomy> implements Placehold
         this.permissionRequired = cfg.getBoolean("Permission_Required");
         this.icon = cfg.getItem("Icon");
 
+        this.cfg.setComments("Ranks", "Rank setting descriptions:",
+            "- Name: Sets rank display name.",
+            "- Level_Cap: Sets maximal level for this rank.",
+            "      When max. level is reached, player will be upgraded to the next rank (if available).",
+            "- XP_Initial: Sets the initial amount of XP required for next (2) level.",
+            "      NOTE: This means initial XP for the FIRST (1) level even if this rank is supposed to be mid/last rank.",
+            "- XP_Factor: Sets the XP progression for each next rank level.",
+            "      Formula: Previous_XP * XP_Factor",
+            "      Example: You need 100 XP for level 2, on level 2 you will need '100 * XP_Factor' xp.",
+            "      " + "-".repeat(10) + " WARNING " + "-".repeat(10),
+            "      Amount of XP calculated from the first (1) level!",
+            "- LevelUp_Commands: A list of commands to execute when player reaches certain level(s).",
+            "      Key = Level reached",
+            "- Drop_Multiplier.Currency: Here you can set player currency drop multiplier.",
+            "      " + "Use expressions for best results: " + Placeholders.URL_ENGINE_SCALER,
+            "      " + "Expression level placeholder: '" + Placeholders.SKILL_DATA_LEVEL + "'.",
+            "- Daily_Limits.Currency: Here you can set player daily limits on currency drop for each currency.",
+            "      Set '-1' for no limits.",
+            "      " + "Use expressions for best results: " + Placeholders.URL_ENGINE_SCALER,
+            "      " + "Expression level placeholder: '" + Placeholders.SKILL_DATA_LEVEL + "'.",
+            "- Drop_Multiplier.XP: Here you can set player XP drop multiplier.",
+            "      " + "Use expressions for best results: " + Placeholders.URL_ENGINE_SCALER,
+            "      " + "Expression level placeholder: '" + Placeholders.SKILL_DATA_LEVEL + "'.",
+            "- Daily_Limits.XP: Here you can set player daily limits on skill XP earnings.",
+            "      Set '-1' for no limits.",
+            "      " + "Use expressions for best results: " + Placeholders.URL_ENGINE_SCALER,
+            "      " + "Expression level placeholder: '" + Placeholders.SKILL_DATA_LEVEL + "'.");
+
         for (String rankId : cfg.getSection("Ranks")) {
             Rank rank = Rank.read(this.cfg, "Ranks." + rankId, rankId);
             this.rankMap.put(rank.getId(), rank);
@@ -87,7 +115,7 @@ public class Skill extends AbstractConfigHolder<LootConomy> implements Placehold
         }
 
         this.objectivesMenu = new SkillObjectivesMenu(this.plugin, this);
-
+        this.cfg.saveChanges();
         return true;
     }
 

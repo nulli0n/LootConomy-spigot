@@ -317,7 +317,10 @@ public class SkillManager extends AbstractManager<LootConomy> {
                 skillData.getRank().getLevelUpCommands(skillData.getLevel()).forEach(command -> {
                     plugin.getServer().dispatchCommand(plugin.getServer().getConsoleSender(), Placeholders.forPlayer(player).apply(command));
                 });
+                skillData.setLevelRewardObtained(skillData.getLevel());
+                user.saveData(this.plugin);
             }
+
 
             plugin.getMessage(Lang.SKILL_LEVEL_UP)
                 .replace(skillData.replacePlaceholders())

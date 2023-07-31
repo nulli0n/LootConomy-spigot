@@ -6,15 +6,16 @@ import org.jetbrains.annotations.NotNull;
 import su.nexmedia.engine.api.command.AbstractCommand;
 import su.nexmedia.engine.api.command.CommandResult;
 import su.nexmedia.engine.utils.CollectionsUtil;
+import su.nexmedia.engine.utils.NumberUtil;
 import su.nexmedia.engine.utils.TimeUtil;
 import su.nightexpress.lootconomy.LootConomy;
-import su.nightexpress.lootconomy.config.Perms;
 import su.nightexpress.lootconomy.Placeholders;
 import su.nightexpress.lootconomy.booster.config.BoosterInfo;
 import su.nightexpress.lootconomy.booster.impl.ExpirableBooster;
 import su.nightexpress.lootconomy.command.CommandFlags;
 import su.nightexpress.lootconomy.config.Config;
 import su.nightexpress.lootconomy.config.Lang;
+import su.nightexpress.lootconomy.config.Perms;
 import su.nightexpress.lootconomy.skill.impl.Skill;
 
 import java.util.*;
@@ -93,12 +94,24 @@ class CreateSubCommand extends AbstractCommand<LootConomy> {
 
             Player player = user.getPlayer();
             if (player != null && !result.hasFlag(CommandFlags.SILENT)) {
-                skills.forEach(skill -> {
-                    this.plugin.getMessage(Lang.COMMAND_BOOSTER_CREATE_NOTIFY)
-                        .replace(skill.replacePlaceholders())
-                        .replace(Placeholders.GENERIC_TIME, TimeUtil.formatTimeLeft(booster.getExpireDate()))
-                        .send(player);
-                });
+                String skillNames = skills.stream().map(Skill::getName).collect(Collectors.joining(", "));
+
+                this.plugin.getMessage(Lang.COMMAND_BOOSTER_CREATE_NOTIFY)
+                    .replace(Placeholders.SKILL_NAME, skillNames)
+                    .replace(Placeholders.GENERIC_TIME, TimeUtil.formatTimeLeft(booster.getExpireDate()))
+                    .replace(Placeholders.XP_BOOST_MODIFIER, NumberUtil.format(booster.getMultiplier().getXPMultiplier()))
+                    .replace(Placeholders.XP_BOOST_PERCENT, NumberUtil.format(booster.getMultiplier().getXPPercent()))
+                    .replace(str -> str.contains(Placeholders.CURRENCY_BOOST_PERCENT) || str.contains(Placeholders.CURRENCY_BOOST_MODIFIER), (line, list) -> {
+                        plugin.getCurrencyManager().getCurrencies().forEach(currency -> {
+                            double percent = booster.getMultiplier().getCurrencyPercent(currency);
+                            double modifier = booster.getMultiplier().getCurrencyMultiplier(currency);
+                            list.add(currency.replacePlaceholders().apply(line)
+                                .replace(Placeholders.CURRENCY_BOOST_PERCENT, NumberUtil.format(percent))
+                                .replace(Placeholders.CURRENCY_BOOST_MODIFIER, NumberUtil.format(modifier))
+                            );
+                        });
+                    })
+                    .send(player);
             }
         });
     }

@@ -3,6 +3,7 @@ package su.nightexpress.lootconomy.config;
 import org.bukkit.Sound;
 import su.nexmedia.engine.api.lang.LangKey;
 import su.nexmedia.engine.lang.EngineLang;
+import su.nexmedia.engine.utils.message.NexParser;
 import su.nightexpress.lootconomy.Placeholders;
 
 public class Lang extends EngineLang {
@@ -12,11 +13,15 @@ public class Lang extends EngineLang {
     public static final LangKey COMMAND_STATS_DISPLAY = LangKey.of("Command.Stats.Display",
         "<! prefix:\"false\" !>" +
             "\n" + GRAY +
-            "\n" + YELLOW + "&l" + Placeholders.PLAYER_NAME + "'s Loot Stats:" +
+            "\n" + ORANGE + Placeholders.PLAYER_NAME + "'s Loot Stats:" +
             "\n" + GRAY +
-            "\n" + GRAY + "&o(Hover mouse over skill name for details)" +
+            "\n" + GRAY + "[Hover mouse over elements for details]" +
             "\n" + GRAY +
-            "\n" + YELLOW + "▪ " + GRAY + "<? show_text:\"" + Placeholders.SKILL_DESCRIPTION + "\" run_command:\"/lootconomy info " + Placeholders.SKILL_ID + "\" ?>" + YELLOW + Placeholders.SKILL_NAME + "</>    " + GRAY + "Level: " + GREEN + Placeholders.SKILL_DATA_LEVEL + GRAY + ",    XP: " + GREEN + Placeholders.SKILL_DATA_XP + GRAY + "/" + GREEN + Placeholders.SKILL_DATA_XP_MAX +
+            "\n" + GRAY + "▪ "
+                + "<? show_text:\"" + ORANGE + Placeholders.SKILL_DESCRIPTION + "\" ?>" + ORANGE + "[?]</> "
+                + "<? show_text:\"" + GRAY + "Click to for detailed skill info.\" run_command:\"/lootconomy info " + Placeholders.SKILL_ID + "\" ?>" + LIGHT_YELLOW + Placeholders.SKILL_NAME + "</> "
+                + "<? show_text:\"" + GRAY + "Level: " + GREEN + Placeholders.SKILL_DATA_LEVEL + NexParser.TAG_NEWLINE + GRAY + "XP: " + GREEN + Placeholders.SKILL_DATA_XP + GRAY + "/" + GREEN + Placeholders.SKILL_DATA_XP_MAX + "\" ?>" + GREEN + "[XP]</> "
+                + "<? show_text:\"" + GRAY + "Rank: " + PURPLE + Placeholders.SKILL_DATA_RANK + NexParser.TAG_NEWLINE + GRAY + "Next: " + PURPLE + Placeholders.SKILL_DATA_NEXT_RANK + "\" ?>" + PURPLE + "[Rank]</>" +
             "\n" + GRAY);
 
     public static final LangKey COMMAND_INFO_USAGE   = LangKey.of("Command.Info.Usage", "<skill>");
@@ -50,7 +55,15 @@ public class Lang extends EngineLang {
     public static final LangKey COMMAND_BOOSTER_CREATE_DESC  = LangKey.of("Command.Booster.Create.Desc", "Create personal booster.");
     public static final LangKey COMMAND_BOOSTER_CREATE_USAGE = LangKey.of("Command.Booster.Create.Usage", "<player> <booster> <duration> [-s]");
     public static final LangKey COMMAND_BOOSTER_CREATE_DONE  = LangKey.of("Command.Booster.Create.Done", GRAY + "Added " + GREEN + Placeholders.GENERIC_NAME + GRAY + " booster to " + GREEN + Placeholders.PLAYER_NAME + GRAY + " for " + GREEN + Placeholders.GENERIC_TIME);
-    public static final LangKey COMMAND_BOOSTER_CREATE_NOTIFY  = LangKey.of("Command.Booster.Create.Notify", GRAY + "You got a booster for your " + YELLOW + Placeholders.SKILL_NAME + GRAY + " skill for " + YELLOW + Placeholders.GENERIC_TIME + GRAY + "!");
+    public static final LangKey COMMAND_BOOSTER_CREATE_NOTIFY  = LangKey.of("Command.Booster.Create.Notify",
+        "<! prefix:\"false\" sound:\"" + Sound.BLOCK_NOTE_BLOCK_BELL.name() + "\" !>" +
+            "\n" + LIGHT_YELLOW +
+            "\n" + LIGHT_YELLOW + "You got a Loot Booster:" +
+            "\n" + LIGHT_YELLOW + "▪ " + GRAY + "Skills: " + LIGHT_YELLOW + Placeholders.SKILL_NAME +
+            "\n" + LIGHT_YELLOW + "▪ " + GRAY + "XP Bonus: " + LIGHT_YELLOW + "+" + Placeholders.XP_BOOST_PERCENT + "%" +
+            "\n" + LIGHT_YELLOW + "▪ " + GRAY + Placeholders.CURRENCY_NAME + " Bonus: " + LIGHT_YELLOW + "+" + Placeholders.CURRENCY_BOOST_PERCENT + "%" +
+            "\n" + RED + "▪ " + GRAY + "Duration: " + RED + Placeholders.GENERIC_TIME +
+            "\n" + LIGHT_YELLOW);
 
     public static final LangKey COMMAND_BOOSTER_CLEAR_DESC       = LangKey.of("Command.Booster.Clear.Desc", "Remove personal boosters.");
     public static final LangKey COMMAND_BOOSTER_CLEAR_USAGE      = LangKey.of("Command.Booster.Clear.Usage", "<player> [skill]");

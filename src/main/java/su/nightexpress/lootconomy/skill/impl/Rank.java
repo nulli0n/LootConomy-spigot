@@ -61,23 +61,10 @@ public class Rank implements Placeholder {
 
     @NotNull
     public static Rank read(@NotNull JYML cfg, @NotNull String path, @NotNull String id) {
-        String name = JOption.create(path + ".Name", StringUtil.capitalizeUnderscored(id),
-            "Sets rank display name.").read(cfg);
-
-        int maxLevel = JOption.create(path + ".Level_Cap", 1,
-            "Sets maximal level for this rank.",
-            "When max. level is reached, player will be upgraded to the next rank (if available).").read(cfg);
-
-        int xpInitial = JOption.create(path + ".XP_Initial", 25,
-            "Sets the initial amount of XP required for next (2) level.",
-            "NOTE: This means initial XP for the FIRST (1) level even if this rank is supposed to be mid/last rank.").read(cfg);
-
-        double xpFactor = JOption.create(path + ".XP_Factor", 1D,
-            "Sets the XP progression for each next rank level.",
-            "Formula: Previous_XP * XP_Factor",
-            "Example: You need 100 XP for level 2, on level 2 you will need '100 * XP_Factor' xp.",
-            "-".repeat(10) + " WARNING " + "-".repeat(10),
-            "Amount of XP calculated from the first (1) level!").read(cfg);
+        String name = JOption.create(path + ".Name", StringUtil.capitalizeUnderscored(id)).read(cfg);
+        int maxLevel = JOption.create(path + ".Level_Cap", 1).read(cfg);
+        int xpInitial = JOption.create(path + ".XP_Initial", 25).read(cfg);
+        double xpFactor = JOption.create(path + ".XP_Factor", 1D).read(cfg);
 
         var xpTable = new TreeMap<Integer, Integer>();
 
@@ -88,51 +75,25 @@ public class Rank implements Placeholder {
         }
 
         Map<Integer, List<String>> levelCommands = JOption.forMap(path + ".LevelUp_Commands",
-            (raw) -> StringUtil.getInteger(raw, 0),
-            (cfg2, path2, key) -> cfg2.getStringList(path2),
+            (key) -> StringUtil.getInteger(key, 0),
+            (cfg2, path2, key) -> cfg2.getStringList(path2 + "." + key),
             Map.of(
                 0, Arrays.asList("eco give " + Placeholders.PLAYER_NAME + " 250", "feed " + Placeholders.PLAYER_NAME)
-            ),
-            "A list of commands to execute when player reaches certain level(s).",
-            "Key = Level reached"
+            )
         ).setWriter((cfg2, path2, map) -> map.forEach((lvl, cmds) -> cfg2.set(path2 + "." + lvl, cmds))).read(cfg);
 
         Map<String, RankScaler> currencyMultiplier = new HashMap<>();
         Map<String, RankScaler> currencyDropLimits = new HashMap<>();
-
-        cfg.setComments(path + ".Drop_Multiplier.Currency",
-            "Here you can set player currency drop multiplier.",
-            "Use expressions for best results: " + Placeholders.URL_ENGINE_SCALER,
-            "Expression level placeholder: '" + Placeholders.SKILL_DATA_LEVEL + "'.");
         for (String curId : cfg.getSection(path + ".Drop_Multiplier.Currency")) {
             RankScaler scaler = new RankScaler(cfg, path + ".Drop_Multiplier.Currency." + curId, maxLevel);
             currencyMultiplier.put(curId.toLowerCase(), scaler);
         }
-
-        cfg.setComments(path + ".Daily_Limits.Currency",
-            "Here you can set player daily limits on currency drop for each currency.",
-            "Set '-1' for no limits.",
-            "Use expressions for best results: " + Placeholders.URL_ENGINE_SCALER,
-            "Expression level placeholder: '" + Placeholders.SKILL_DATA_LEVEL + "'.");
         for (String curId : cfg.getSection(path + ".Daily_Limits.Currency")) {
             RankScaler scaler = new RankScaler(cfg, path + ".Daily_Limits.Currency." + curId, maxLevel);
             currencyDropLimits.put(curId.toLowerCase(), scaler);
         }
-
-        cfg.setComments(path + ".Drop_Multiplier.XP",
-            "Here you can set player skill XP multiplier.",
-            "Use expressions for best results: " + Placeholders.URL_ENGINE_SCALER,
-            "Expression level placeholder: '" + Placeholders.SKILL_DATA_LEVEL + "'.");
-        cfg.setComments(path + ".Daily_Limits.XP",
-            "Here you can set player daily limits on skill XP earnings.",
-            "Set '-1' for no limits.",
-            "Use expressions for best results: " + Placeholders.URL_ENGINE_SCALER,
-            "Expression level placeholder: '" + Placeholders.SKILL_DATA_LEVEL + "'.");
-
         RankScaler xpMultiplier = new RankScaler(cfg, path + ".Drop_Multiplier.XP", maxLevel);
         RankScaler xpDropLimit = new RankScaler(cfg, path + ".Daily_Limits.XP", maxLevel);
-
-        cfg.saveChanges();
 
         return new Rank(
             id, name,
