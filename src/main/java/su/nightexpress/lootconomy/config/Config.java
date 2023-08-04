@@ -23,13 +23,9 @@ public class Config {
         Set.of("my_world", "another_world"),
         "A list of worlds, where no skill XP / currency will be dropped.");
 
-    public static final JOption<Boolean> GENERAL_DEDICATED_SKILLS_COMMAND_ENABLED = JOption.create("General.Dedicated_Skills_Command.Enabled",
+    public static final JOption<Boolean> GENERAL_DEFAULT_SKILLS_COMMAND_ENABLED = JOption.create("General.Default_Skills_Command",
         false,
-        "Sets whether or not '/lc skills' command will be registered as a global command (/skills).");
-
-    public static final JOption<String> GENERAL_DEDICATED_SKILLS_COMMAND_NAME = JOption.create("General.Dedicated_Skills_Command.Name",
-        "lootskills",
-        "When above setting is enabled, sets custom name for the skills command.");
+        "Sets whether or not 'skills' command will be registered as default plugin command instead of 'help' one.");
 
     public static final JOption<Boolean> GENERAL_LOOT_PROTECTION = JOption.create("General.Loot_Protection", true,
         "Sets whether or not loot protection is enabled.",

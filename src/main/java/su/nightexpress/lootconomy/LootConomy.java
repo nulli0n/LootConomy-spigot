@@ -118,9 +118,6 @@ public class LootConomy extends NexPlugin<LootConomy> implements UserDataHolder<
 
     @Override
     public void registerCommands(@NotNull GeneralCommand<LootConomy> mainCommand) {
-        if (Config.GENERAL_DEDICATED_SKILLS_COMMAND_ENABLED.get()) {
-            this.getCommandManager().registerCommand(new SkillsCommand(this, Config.GENERAL_DEDICATED_SKILLS_COMMAND_NAME.get()));
-        }
         if (Config.LEVELING_ENABLED.get()) {
             mainCommand.addChildren(new StatsCommand(this));
             mainCommand.addChildren(new XPCommand(this));
@@ -128,12 +125,17 @@ public class LootConomy extends NexPlugin<LootConomy> implements UserDataHolder<
             mainCommand.addChildren(new ResetCommand(this));
             mainCommand.addChildren(new TopCommand(this));
         }
+        if (Config.GENERAL_DEFAULT_SKILLS_COMMAND_ENABLED.get()) {
+            mainCommand.addDefaultCommand(new SkillsCommand(this));
+        }
+        else {
+            mainCommand.addChildren(new SkillsCommand(this));
+        }
         mainCommand.addChildren(new ReloadSubCommand<>(this, Perms.COMMAND_RELOAD));
         mainCommand.addChildren(new InfoCommand(this));
         mainCommand.addChildren(new DropCommand(this));
         mainCommand.addChildren(new BoosterCommand(this));
         mainCommand.addChildren(new ObjectivesCommand(this));
-        mainCommand.addChildren(new SkillsCommand(this, "skills"));
         mainCommand.addChildren(new SoundCommand(this));
     }
 
