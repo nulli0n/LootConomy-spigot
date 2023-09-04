@@ -39,6 +39,8 @@ public interface Currency extends Placeholder {
 
     @Nullable Sound getPickupSound();
 
+    boolean isDirectToBalance();
+
     boolean isDeathPenaltyEnabled();
 
     boolean isDeathPenaltyDropItem();

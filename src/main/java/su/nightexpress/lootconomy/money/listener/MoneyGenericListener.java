@@ -43,7 +43,7 @@ public class MoneyGenericListener extends AbstractListener<LootConomy> {
     }
 
     // Support for plugins like RPGLoot
-    @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
+    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onMoneyItemInventoryClick(InventoryClickEvent e) {
         ItemStack item = e.getCurrentItem();
         if (item == null || !MoneyManager.isMoneyItem(item)) return;

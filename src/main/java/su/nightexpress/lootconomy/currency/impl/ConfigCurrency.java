@@ -36,6 +36,7 @@ public class ConfigCurrency extends AbstractConfigHolder<LootConomy> implements 
     private SimpleParticle groundEffect;
     private Sound          pickupSound;
 
+    private boolean directToBalance;
     private boolean  deathPenaltyEnabled;
     private boolean  deathPenaltyDropItem;
     private double deathPenaltyChance;
@@ -68,6 +69,9 @@ public class ConfigCurrency extends AbstractConfigHolder<LootConomy> implements 
             "Sets currency format.", "Available placeholders:",
             "- " + su.nightexpress.lootconomy.Placeholders.GENERIC_AMOUNT, "- " + Placeholders.CURRENCY_NAME,
             "This option is useless for " + HookId.COINS_ENGINE + " (it has own format setting).").mapReader(Colorizer::apply).read(cfg);
+
+        this.directToBalance = JOption.create("Instant_Pickup", false,
+            "Sets whether or not this currnecy will be directly added to player's balance when dropped.").read(cfg);
 
         this.groundEffect = new JOption<>("Effects.Particle_On_Ground",
             (cfg, path, def) -> SimpleParticle.read(cfg, path),
@@ -169,6 +173,11 @@ public class ConfigCurrency extends AbstractConfigHolder<LootConomy> implements 
     @Override
     public String getFormat() {
         return format;
+    }
+
+    @Override
+    public boolean isDirectToBalance() {
+        return directToBalance;
     }
 
     @Nullable

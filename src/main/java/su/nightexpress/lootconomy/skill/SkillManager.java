@@ -193,7 +193,7 @@ public class SkillManager extends AbstractManager<LootConomy> {
             }
 
             if (currency.round(amount) == 0D) continue;
-            if (amount < 0D/* || currency.isDirectToBalance()*/) { // TODO Perk AutoPickup
+            if (amount < 0D || currency.isDirectToBalance()) {
                 this.plugin.getMoneyManager().pickupMoney(player, currency, amount, skill, objective);
             }
             else {

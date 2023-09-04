@@ -112,8 +112,8 @@ public class Config {
         "List of global, automated XP / currency boosters.",
         "You can create as many boosters as you want.",
         "But keep in mind that only one global booster can be active at the same time.",
-        "If you have multiple boosters applicable at the same day times, the latest one will override all previous.")
-        .setWriter((cfg, path, map) -> map.forEach((id, info) -> info.write(cfg, path + "." + id)));
+        "If you have multiple boosters applicable at the same day times, the latest one will override all previous."
+    ).setWriter((cfg, path, map) -> map.forEach((id, info) -> info.write(cfg, path + "." + id)));
 
     public static final JOption<Map<String, RankBoosterInfo>> BOOSTERS_RANK = JOption.forMap("Boosters.Rank",
         (cfg, path, id) -> RankBoosterInfo.read(cfg, path + "." + id, id),
@@ -126,8 +126,8 @@ public class Config {
             )
         ),
         "List of passive XP / currency boosters based on player permission group(s).",
-        "Use the 'Priority' option to define booster's priority to guarantee that players with multiple permission groups will get the best one.")
-        .setWriter((cfg, path, map) -> map.forEach((id, info) -> info.write(cfg, path + "." + id)));
+        "Use the 'Priority' option to define booster's priority to guarantee that players with multiple permission groups will get the best one."
+    ).setWriter((cfg, path, map) -> map.forEach((id, info) -> info.write(cfg, path + "." + id)));
 
     public static final JOption<Map<String, BoosterInfo>> BOOSTERS_CUSTOM = JOption.forMap("Boosters.Custom",
         (cfg, path, id) -> BoosterInfo.read(cfg, path + "." + id),
@@ -144,6 +144,6 @@ public class Config {
         "List of custom XP / currency boosters to be given via booster commands.",
         "You can create as many boosters as you want.",
         "But keep in mind that only one personal booster per skill can be active at the same time.",
-        "If player already has a booster for certain skill, it will be replaced with a new one.")
-        .setWriter((cfg, path, map) -> map.forEach((id, info) -> info.write(cfg, path + "." + id)));
+        "If player already has a booster for certain skill, it will be replaced with a new one."
+    ).setWriter((cfg, path, map) -> map.forEach((id, info) -> info.write(cfg, path + "." + id)));
 }
