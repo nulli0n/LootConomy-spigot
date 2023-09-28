@@ -1,12 +1,11 @@
 package su.nightexpress.lootconomy.api.currency;
 
-import org.bukkit.Sound;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
-import su.nexmedia.engine.api.particle.SimpleParticle;
 import su.nexmedia.engine.api.placeholder.Placeholder;
 import su.nexmedia.engine.utils.NumberUtil;
+import su.nexmedia.engine.utils.values.UniParticle;
+import su.nexmedia.engine.utils.values.UniSound;
 import su.nightexpress.lootconomy.Placeholders;
 
 public interface Currency extends Placeholder {
@@ -35,9 +34,9 @@ public interface Currency extends Placeholder {
 
     @NotNull String getFormat();
 
-    @Nullable SimpleParticle getGroundEffect();
+    @NotNull UniParticle getGroundEffect();
 
-    @Nullable Sound getPickupSound();
+    @NotNull UniSound getPickupSound();
 
     boolean isDirectToBalance();
 

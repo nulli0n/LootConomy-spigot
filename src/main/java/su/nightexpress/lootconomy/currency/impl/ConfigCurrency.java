@@ -2,23 +2,18 @@ package su.nightexpress.lootconomy.currency.impl;
 
 import org.bukkit.Color;
 import org.bukkit.Material;
-import org.bukkit.Particle;
 import org.bukkit.Sound;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 import su.nexmedia.engine.api.config.JOption;
 import su.nexmedia.engine.api.config.JYML;
-import su.nexmedia.engine.api.lang.LangColors;
 import su.nexmedia.engine.api.manager.AbstractConfigHolder;
-import su.nexmedia.engine.api.particle.SimpleParticle;
 import su.nexmedia.engine.api.placeholder.PlaceholderMap;
-import su.nexmedia.engine.utils.Colorizer;
-import su.nexmedia.engine.utils.ItemUtil;
-import su.nexmedia.engine.utils.Pair;
-import su.nexmedia.engine.utils.StringUtil;
+import su.nexmedia.engine.utils.*;
 import su.nexmedia.engine.utils.random.Rnd;
+import su.nexmedia.engine.utils.values.UniParticle;
+import su.nexmedia.engine.utils.values.UniSound;
 import su.nightexpress.lootconomy.LootConomy;
 import su.nightexpress.lootconomy.Placeholders;
 import su.nightexpress.lootconomy.api.currency.Currency;
@@ -33,8 +28,8 @@ public class ConfigCurrency extends AbstractConfigHolder<LootConomy> implements 
     private   String   name;
     private   String   format;
 
-    private SimpleParticle groundEffect;
-    private Sound          pickupSound;
+    private UniParticle groundEffect;
+    private UniSound    pickupSound;
 
     private boolean directToBalance;
     private boolean  deathPenaltyEnabled;
@@ -73,18 +68,14 @@ public class ConfigCurrency extends AbstractConfigHolder<LootConomy> implements 
         this.directToBalance = JOption.create("Instant_Pickup", false,
             "Sets whether or not this currnecy will be directly added to player's balance when dropped.").read(cfg);
 
-        this.groundEffect = new JOption<>("Effects.Particle_On_Ground",
-            (cfg, path, def) -> SimpleParticle.read(cfg, path),
-            SimpleParticle.of(Particle.REDSTONE, new Particle.DustOptions(Color.YELLOW, 1f)),
+        this.groundEffect = JOption.create("Effects.Particle_On_Ground", UniParticle.redstone(Color.YELLOW, 1f),
             "Sets the particle effect to be constantly played when currency item is dropped in the world.",
             Placeholders.URL_ENGINE_PARTICLE
-        ).setWriter((cfg, path, particle) -> particle.write(cfg, path)).read(cfg);
+        ).read(cfg);
 
-        this.pickupSound = JOption.create("Effects.Pickup_Sound", Sound.class, Sound.BLOCK_NOTE_BLOCK_BELL,
+        this.pickupSound = JOption.create("Effects.Pickup_Sound", UniSound.of(Sound.BLOCK_NOTE_BLOCK_BELL),
             "Sets sound to player when player pickups item of that currency.",
             Placeholders.URL_SPIGOT_SOUND).read(cfg);
-
-
 
         String path = "Death_Penalty.";
         this.deathPenaltyEnabled = JOption.create(path + "Enabled", false,
@@ -134,7 +125,7 @@ public class ConfigCurrency extends AbstractConfigHolder<LootConomy> implements 
     private static ItemStack getDefaultItem(@NotNull Material material) {
         ItemStack item = new ItemStack(material);
         ItemUtil.mapMeta(item, meta -> {
-            meta.setDisplayName(LangColors.YELLOW + Placeholders.GENERIC_AMOUNT);
+            meta.setDisplayName(Colors.YELLOW + Placeholders.GENERIC_AMOUNT);
             meta.addEnchant(Enchantment.DURABILITY, 1, true);
         });
         return item;
@@ -180,15 +171,15 @@ public class ConfigCurrency extends AbstractConfigHolder<LootConomy> implements 
         return directToBalance;
     }
 
-    @Nullable
+    @NotNull
     @Override
-    public SimpleParticle getGroundEffect() {
+    public UniParticle getGroundEffect() {
         return groundEffect;
     }
 
-    @Nullable
+    @NotNull
     @Override
-    public Sound getPickupSound() {
+    public UniSound getPickupSound() {
         return pickupSound;
     }
 

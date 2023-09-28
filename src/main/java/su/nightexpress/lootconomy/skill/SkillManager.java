@@ -14,8 +14,8 @@ import su.nexmedia.engine.utils.EngineUtils;
 import su.nexmedia.engine.utils.FileUtil;
 import su.nexmedia.engine.utils.PDCUtil;
 import su.nexmedia.engine.utils.Pair;
+import su.nexmedia.engine.utils.blocktracker.PlayerBlockTracker;
 import su.nexmedia.engine.utils.random.Rnd;
-import su.nexmedia.playerblocktracker.PlayerBlockTracker;
 import su.nightexpress.lootconomy.LootConomy;
 import su.nightexpress.lootconomy.Placeholders;
 import su.nightexpress.lootconomy.api.currency.Currency;
@@ -318,7 +318,7 @@ public class SkillManager extends AbstractManager<LootConomy> {
                     plugin.getServer().dispatchCommand(plugin.getServer().getConsoleSender(), Placeholders.forPlayer(player).apply(command));
                 });
                 skillData.setLevelRewardObtained(skillData.getLevel());
-                user.saveData(this.plugin);
+                this.plugin.getUserManager().saveUser(user);
             }
 
 

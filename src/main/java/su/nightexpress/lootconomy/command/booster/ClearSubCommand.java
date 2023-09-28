@@ -68,7 +68,7 @@ class ClearSubCommand extends AbstractCommand<LootConomy> {
                     .replace(Placeholders.PLAYER_NAME, user.getName())
                     .send(sender);
             }
-            user.saveData(this.plugin);
+            this.plugin.getUserManager().saveUser(user);
         });
     }
 }

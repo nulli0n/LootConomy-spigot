@@ -84,7 +84,7 @@ class CreateSubCommand extends AbstractCommand<LootConomy> {
             skills.forEach(skill -> {
                 user.getBoosterMap().put(skill.getId(), booster);
             });
-            user.saveData(this.plugin);
+            this.plugin.getUserManager().saveUser(user);
 
             this.plugin.getMessage(Lang.COMMAND_BOOSTER_CREATE_DONE)
                 .replace(Placeholders.GENERIC_NAME, result.getArg(2))

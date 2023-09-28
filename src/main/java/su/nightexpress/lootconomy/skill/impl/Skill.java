@@ -108,8 +108,6 @@ public class Skill extends AbstractConfigHolder<LootConomy> implements Placehold
         for (JYML objConfig : JYML.loadAll(this.getConfig().getFile().getParentFile().getAbsolutePath() + "/objectives/")) {
             for (String object : objConfig.getSection("")) {
                 SkillObjective objective = SkillObjective.read(objConfig, object, object);
-                if (objective == null) continue;
-
                 this.objectiveMap.put(objective.getName(), objective);
             }
         }

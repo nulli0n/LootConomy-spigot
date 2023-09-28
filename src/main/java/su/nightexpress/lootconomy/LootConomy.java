@@ -6,7 +6,7 @@ import su.nexmedia.engine.api.command.GeneralCommand;
 import su.nexmedia.engine.api.data.UserDataHolder;
 import su.nexmedia.engine.command.list.ReloadSubCommand;
 import su.nexmedia.engine.utils.EngineUtils;
-import su.nexmedia.playerblocktracker.PlayerBlockTracker;
+import su.nexmedia.engine.utils.blocktracker.PlayerBlockTracker;
 import su.nightexpress.lootconomy.booster.BoosterManager;
 import su.nightexpress.lootconomy.command.base.*;
 import su.nightexpress.lootconomy.command.booster.BoosterCommand;
@@ -51,7 +51,7 @@ public class LootConomy extends NexPlugin<LootConomy> implements UserDataHolder<
         this.boosterManager = new BoosterManager(this);
         this.boosterManager.setup();
 
-        PlayerBlockTracker.initialize(this);
+        PlayerBlockTracker.initialize();
 
         this.skillManager = new SkillManager(this);
         this.skillManager.setup();
@@ -69,7 +69,6 @@ public class LootConomy extends NexPlugin<LootConomy> implements UserDataHolder<
         if (EngineUtils.hasPlaceholderAPI()) {
             PlaceholderHook.shutdown();
         }
-        PlayerBlockTracker.shutdown();
         if (this.boosterManager != null) {
             this.boosterManager.shutdown();
             this.boosterManager = null;

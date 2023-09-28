@@ -3,7 +3,6 @@ package su.nightexpress.lootconomy.skill.impl;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 import su.nexmedia.engine.api.config.JYML;
 import su.nexmedia.engine.utils.Colorizer;
 import su.nightexpress.lootconomy.LootConomyAPI;
@@ -35,7 +34,7 @@ public class SkillObjective {
         this.unlockLevel = unlockLevel;
     }
 
-    @Nullable
+    @NotNull
     public static SkillObjective read(@NotNull JYML cfg, @NotNull String path, @NotNull String name) {
         //if (!cfg.getBoolean(path + ".Enabled")) return null;
 

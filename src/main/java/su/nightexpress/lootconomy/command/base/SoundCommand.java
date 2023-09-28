@@ -26,7 +26,7 @@ public class SoundCommand extends AbstractCommand<LootConomy> {
         LootUser user = plugin.getUserManager().getUserData(player);
 
         user.getSettings().setPickupSound(!user.getSettings().isPickupSound());
-        user.saveData(this.plugin);
+        this.plugin.getUserManager().saveUser(user);
 
         plugin.getMessage(Lang.COMMAND_SOUND_DONE)
             .replace(Placeholders.GENERIC_STATE, LangManager.getBoolean(user.getSettings().isPickupSound()))

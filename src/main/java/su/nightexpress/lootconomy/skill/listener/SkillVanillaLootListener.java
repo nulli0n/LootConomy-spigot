@@ -18,7 +18,7 @@ import org.jetbrains.annotations.NotNull;
 import su.nexmedia.engine.api.manager.AbstractListener;
 import su.nexmedia.engine.utils.EngineUtils;
 import su.nexmedia.engine.utils.PDCUtil;
-import su.nexmedia.playerblocktracker.PlayerBlockTracker;
+import su.nexmedia.engine.utils.blocktracker.PlayerBlockTracker;
 import su.nightexpress.lootconomy.LootConomy;
 import su.nightexpress.lootconomy.config.Keys;
 import su.nightexpress.lootconomy.hook.HookId;
