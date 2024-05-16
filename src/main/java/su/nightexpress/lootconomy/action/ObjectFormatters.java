@@ -9,6 +9,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import su.nightexpress.nightcore.language.LangAssets;
 import su.nightexpress.nightcore.util.BukkitThing;
+import su.nightexpress.nightcore.util.Version;
 
 import java.util.function.Function;
 
@@ -42,5 +43,30 @@ public class ObjectFormatters {
 
     public static final ObjectFormatter<EntityType> ENITITY_TYPE = forKeyed(Registry.ENTITY_TYPE, LangAssets::get);
 
-    public static final ObjectFormatter<PotionEffectType> POTION_TYPE = forKeyed(Registry.EFFECT, LangAssets::get);
+    public static final ObjectFormatter<PotionEffectType> POTION_TYPE = new ObjectFormatter<>() {
+
+        @Override
+        @NotNull
+        public String getName(@NotNull PotionEffectType object) {
+            if (Version.isAtLeast(Version.V1_20_R3)) {
+                return BukkitThing.toString(object);
+            }
+            return object.getName().toLowerCase();
+        }
+
+        @Override
+        @NotNull
+        public String getLocalized(@NotNull PotionEffectType object) {
+            return LangAssets.get(object);
+        }
+
+        @Override
+        @Nullable
+        public PotionEffectType parseObject(@NotNull String name) {
+            if (Version.isAtLeast(Version.V1_20_R3)) {
+                return BukkitThing.fromRegistry(Registry.EFFECT, name);
+            }
+            return PotionEffectType.getByName(name);
+        }
+    };
 }

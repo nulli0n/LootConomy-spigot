@@ -22,6 +22,7 @@ import su.nightexpress.nightcore.config.FileConfig;
 import su.nightexpress.nightcore.util.ItemUtil;
 import su.nightexpress.nightcore.util.Lists;
 import su.nightexpress.nightcore.util.StringUtil;
+import su.nightexpress.nightcore.util.Version;
 import su.nightexpress.nightcore.util.wrapper.UniDouble;
 import su.nightexpress.nightcore.util.wrapper.UniInt;
 
@@ -191,7 +192,6 @@ public class Creator {
 
         Set<MoneyObjective> penalty = Lists.newSet(
             createObjective("dolphin", type, EntityType.DOLPHIN, "8e9688b950d880b55b7aa2cfcd76e5a0fa94aac6d16f78e833f7443ea29fed3", 100, MONEY_PENALTY_MEDIUM),
-            createObjective("camel", type, EntityType.CAMEL, "ba4c95bfa0b61722255389141b505cf1a38bad9b0ef543de619f0cc9221ed974", 100, MONEY_PENALTY_MEDIUM),
             createObjective("bee", type, EntityType.BEE, "cce9edbbc5fdc0d8487ac72eab239d2cacfe408d74288d6384b044111ba4de0f", 100, MONEY_PENALTY_MEDIUM),
             createObjective("ocelot", type, EntityType.OCELOT, "5657cd5c2989ff97570fec4ddcdc6926a68a3393250c1be1f0b114a1db1", 100, MONEY_PENALTY_MEDIUM),
             createObjective("horse", type, EntityType.HORSE, "a996399fff9cbcfb7ba677dd0c2d104229d1cc2307a6f075a882da4694ef80ae", 100, MONEY_PENALTY_MEDIUM),
@@ -205,7 +205,10 @@ public class Creator {
             createObjective("trader_llama", type, EntityType.TRADER_LLAMA, "8424780b3c5c5351cf49fb5bf41fcb289491df6c430683c84d7846188db4f84d", 100, MONEY_PENALTY_MEDIUM),
             createObjective("iron_golem", type, EntityType.IRON_GOLEM, "a9ceb73d97cf5dc32e333dbef7af25f39e42033d684649075ba4681af2a3c01b", 100, MONEY_PENALTY_MEDIUM),
             createObjective("snowman", type, EntityType.SNOWMAN, "8e8d206f61e6de8a79d0cb0bcd98aced464cbfefc921b4160a25282163112a", 100, MONEY_PENALTY_MEDIUM)
-            );
+        );
+        if (Version.isAtLeast(Version.V1_20_R3)) {
+            penalty.add(createObjective("camel", type, EntityType.CAMEL, "ba4c95bfa0b61722255389141b505cf1a38bad9b0ef543de619f0cc9221ed974", 100, MONEY_PENALTY_MEDIUM));
+        }
         generateObjectives("kill_entity_penalty", penalty);
 
 
