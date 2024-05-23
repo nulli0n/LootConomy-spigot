@@ -299,10 +299,11 @@ public class MoneyManager extends AbstractManager<LootConomyPlugin> {
                 // Otherwise spawn money items depends on portions amount.
                 else {
                     int portions = dropInfo.rollPortions();
+                    double leftAmount = moneyAmount;
 
-                    while (moneyAmount > 0 && portions > 0) {
+                    while (leftAmount > 0 && portions > 0) {
                         //System.out.println("moneyAmount = " + moneyAmount);
-                        double cutAmount = portions == 1 ? moneyAmount : currency.round(Rnd.getDouble(moneyAmount));
+                        double cutAmount = portions == 1 ? leftAmount : currency.round(Rnd.getDouble(leftAmount));
                         //System.out.println("cutAmount = " + cutAmount);
                         //System.out.println("==========================");
                         if (cutAmount == 0D) continue;
@@ -314,7 +315,7 @@ public class MoneyManager extends AbstractManager<LootConomyPlugin> {
                             loot.add(moneyItem);
                         }
 
-                        moneyAmount = currency.round(moneyAmount - cutAmount);
+                        leftAmount = currency.round(leftAmount - cutAmount);
                         portions--;
                     }
 

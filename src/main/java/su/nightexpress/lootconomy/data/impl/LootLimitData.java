@@ -44,7 +44,7 @@ public class LootLimitData {
     public void addCurrency(@NotNull String id, double amount) {
         if (amount <= 0D) return;
 
-        this.getCurrencyEarned().put(id.toLowerCase(), this.getCurrencyEarned(id) + amount);
+        this.currencyEarned.put(id.toLowerCase(), this.getCurrencyEarned(id) + amount);
     }
 
     public double getCurrencyEarned(@NotNull Currency currency) {
@@ -52,7 +52,7 @@ public class LootLimitData {
     }
 
     public double getCurrencyEarned(@NotNull String id) {
-        return this.getCurrencyEarned().getOrDefault(id.toLowerCase(), 0D);
+        return this.currencyEarned.getOrDefault(id.toLowerCase(), 0D);
     }
 
     public Map<String, Double> getCurrencyEarned() {
