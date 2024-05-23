@@ -67,8 +67,9 @@ public class MoneyManager extends AbstractManager<LootConomyPlugin> {
         if (Config.LOOT_MERGE_ENABLED.get()) {
             this.addTask(this.plugin.createTask(this::mergeMoneyItems).setSecondsInterval(Config.LOOT_MERGE_INTERVAL.get()));
         }
-
-        this.addTask(this.plugin.createTask(this::forcePickup).setTicksInterval(Config.INVENTORY_SIZE_BYPASS_INTERVAL.get()));
+        if (Config.INVENTORY_SIZE_BYPASS_ENABLED.get()) {
+            this.addTask(this.plugin.createTask(this::forcePickup).setTicksInterval(Config.INVENTORY_SIZE_BYPASS_INTERVAL.get()));
+        }
         this.addTask(this.plugin.createAsyncTask(this::playMoneyEffect).setTicksInterval(5L));
     }
 
@@ -395,7 +396,7 @@ public class MoneyManager extends AbstractManager<LootConomyPlugin> {
     public void forcePickup() {
         for (Player player : plugin.getServer().getOnlinePlayers()) {
             if (player.getInventory().firstEmpty() != -1) continue;
-            if (!MoneyUtils.isDisabledWorld(player.getWorld())) continue;
+            if (MoneyUtils.isDisabledWorld(player.getWorld())) continue;
 
             player.getNearbyEntities(2, 2, 2).stream().filter(e -> e instanceof Item).forEach(entity -> {
                 Item item = (Item) entity;
