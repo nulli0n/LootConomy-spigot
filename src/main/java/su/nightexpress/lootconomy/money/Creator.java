@@ -98,7 +98,6 @@ public class Creator {
             createObjective("snow", type, List.of(Tag.SNOW), new ItemStack(Material.SNOW_BLOCK), 0.1, MONEY_LOWEST),
             createObjective("clay", type, Material.CLAY, 5, MONEY_LOW),
             createObjective("gravel", type, Material.GRAVEL, 5, MONEY_LOW),
-            createObjective("suspicious_gravel", type, Material.SUSPICIOUS_GRAVEL, 5, MONEY_LOW),
             createObjective("soul_sand", type, Material.SOUL_SAND, 1, MONEY_LOW),
             createObjective("mycelium", type, Material.MYCELIUM, 0.2, MONEY_LOW)
         );
@@ -111,7 +110,6 @@ public class Creator {
         Set<MoneyObjective> berries = Lists.newSet(
             createObjective("acacia_logs", type, List.of(Tag.ACACIA_LOGS), new ItemStack(Material.ACACIA_LOG), 10, MONEY_LOW),
             createObjective("birch_logs", type, List.of(Tag.BIRCH_LOGS), new ItemStack(Material.BIRCH_LOG), 15, MONEY_LOW),
-            createObjective("cherry_logs", type, List.of(Tag.CHERRY_LOGS), new ItemStack(Material.CHERRY_LOG), 15, MONEY_LOW),
             createObjective("crimson_stems", type, List.of(Tag.CRIMSON_STEMS), new ItemStack(Material.CRIMSON_STEM), 15, MONEY_LOW),
             createObjective("dark_oak_logs", type, List.of(Tag.DARK_OAK_LOGS), new ItemStack(Material.DARK_OAK_LOG), 15, MONEY_LOW),
             createObjective("jungle_logs", type, List.of(Tag.JUNGLE_LOGS), new ItemStack(Material.JUNGLE_LOG), 20, MONEY_LOW),
@@ -121,6 +119,10 @@ public class Creator {
             createObjective("warped_stems", type, List.of(Tag.WARPED_STEMS), new ItemStack(Material.WARPED_STEM), 15, MONEY_LOW),
             createObjective("leaves", type, List.of(Tag.LEAVES), new ItemStack(Material.OAK_LEAVES), 3, MONEY_LOWEST)
         );
+        if (Version.isAtLeast(Version.V1_20_R2)) {
+            berries.add(createObjective("cherry_logs", type, List.of(Tag.CHERRY_LOGS), new ItemStack(Material.CHERRY_LOG), 15, MONEY_LOW));
+        }
+
         generateObjectives("woodcutting", berries);
     }
 

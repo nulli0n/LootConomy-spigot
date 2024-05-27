@@ -17,7 +17,7 @@ public class RankBoosterInfo extends BoosterInfo {
 
     @NotNull
     public static RankBoosterInfo read(@NotNull FileConfig config, @NotNull String path, @NotNull String rank) {
-        Multiplier multiplier = Multiplier.read(config, path + ".Multiplier");
+        Multiplier multiplier = Multiplier.read(config, path);
         int priority = config.getInt(path + ".Priority");
 
         return new RankBoosterInfo(rank, priority, multiplier);

@@ -34,7 +34,7 @@ public class ScheduledBoosterInfo extends BoosterInfo {
 
     @NotNull
     public static ScheduledBoosterInfo read(@NotNull FileConfig config, @NotNull String path) {
-        Multiplier multiplier = Multiplier.read(config, path + ".Multiplier");
+        Multiplier multiplier = Multiplier.read(config, path);
 
         Map<DayOfWeek, Set<LocalTime>> startTimes = new HashMap<>();
         for (String dayName : config.getSection(path + ".Start_Times")) {
