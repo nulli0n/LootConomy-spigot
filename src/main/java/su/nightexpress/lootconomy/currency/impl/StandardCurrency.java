@@ -74,6 +74,11 @@ public class StandardCurrency<T extends CurrencyHandler> implements Currency {
     }
 
     @Override
+    public boolean isRoundToInt() {
+        return this.settings.isRoundToInt();
+    }
+
+    @Override
     public boolean isDirectToBalance() {
         return this.settings.isDirectToBalance();
     }

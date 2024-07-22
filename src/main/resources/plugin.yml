@@ -10,5 +10,6 @@ softdepend:
   - ExcellentEnchants
   - PlaceholderAPI
   - CoinsEngine
+  - PlayerPoints
   - Vault
 api-version: 1.18

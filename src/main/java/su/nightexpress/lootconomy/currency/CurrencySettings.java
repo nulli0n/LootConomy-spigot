@@ -29,6 +29,7 @@ public class CurrencySettings {
     private final String      dropFormat;
     private final UniParticle groundEffect;
     private final UniSound    pickupSound;
+    private final boolean roundToInt;
     private final boolean     directToBalance;
     private final double      dailyLimit;
     private final DeathPenalty deathPenalty;
@@ -42,6 +43,7 @@ public class CurrencySettings {
         @NotNull String dropFormat,
         @NotNull UniParticle groundEffect,
         @NotNull UniSound pickupSound,
+        boolean roundToInt,
         boolean directToBalance,
         double dailyLimit,
         @NotNull DeathPenalty deathPenalty,
@@ -54,6 +56,7 @@ public class CurrencySettings {
         this.dropFormat = dropFormat;
         this.groundEffect = groundEffect;
         this.pickupSound = pickupSound;
+        this.roundToInt = roundToInt;
         this.directToBalance = directToBalance;
         this.dailyLimit = dailyLimit;
         this.deathPenalty = deathPenalty;
@@ -85,6 +88,11 @@ public class CurrencySettings {
             "- " + Placeholders.GENERIC_AMOUNT,
             "- " + Placeholders.CURRENCY_NAME,
             "[*] This setting is useless for some currencies (e.g. " + HookId.COINS_ENGINE + ")"
+        ).read(config);
+
+        boolean roundToInt = ConfigValue.create(path + ".Round_To_Int",
+            false,
+            "Sets whether or not dropped item amount will be rounded to a whole number (integer) instead of being decimal."
         ).read(config);
 
         boolean directToBalance = ConfigValue.create(path + ".Instant_Pickup",
@@ -139,7 +147,7 @@ public class CurrencySettings {
             itemStyle.put(0, handler.getDefaultIcon());
         }
 
-        return new CurrencySettings(enabled, name, format, dropFormat, groundEffect, pickupSound, directToBalance, dailyLimit, deathPenalty, itemStyle);
+        return new CurrencySettings(enabled, name, format, dropFormat, groundEffect, pickupSound, roundToInt, directToBalance, dailyLimit, deathPenalty, itemStyle);
     }
 
     /*public void write(@NotNull FileConfig config, @NotNull String path) {
@@ -173,6 +181,10 @@ public class CurrencySettings {
     @NotNull
     public String getDropFormat() {
         return dropFormat;
+    }
+
+    public boolean isRoundToInt() {
+        return roundToInt;
     }
 
     public boolean isDirectToBalance() {

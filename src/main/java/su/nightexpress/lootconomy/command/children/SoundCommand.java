@@ -19,7 +19,7 @@ public class SoundCommand {
             .description(Lang.COMMAND_SOUND_DESC)
             .permission(Perms.COMMAND_SOUND)
             .playerOnly()
-
+            .executes((context, arguments) -> execte(plugin, context, arguments))
         );
     }
 

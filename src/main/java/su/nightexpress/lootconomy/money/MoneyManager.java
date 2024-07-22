@@ -281,6 +281,10 @@ public class MoneyManager extends AbstractManager<LootConomyPlugin> {
                     moneyAmount *= Booster.getMultiplier(currency, boosters);
                 }
 
+                if (currency.isRoundToInt()) {
+                    moneyAmount = Math.floor(moneyAmount);
+                }
+
                 // Do not drop zero amount.
                 if (moneyAmount == 0D) continue;
 
@@ -303,7 +307,7 @@ public class MoneyManager extends AbstractManager<LootConomyPlugin> {
 
                     while (leftAmount > 0 && portions > 0) {
                         //System.out.println("moneyAmount = " + moneyAmount);
-                        double cutAmount = portions == 1 ? leftAmount : currency.round(Rnd.getDouble(leftAmount));
+                        double cutAmount = portions == 1 ? leftAmount : currency.cutRandom(leftAmount);// currency.round(Rnd.getDouble(leftAmount));
                         //System.out.println("cutAmount = " + cutAmount);
                         //System.out.println("==========================");
                         if (cutAmount == 0D) continue;

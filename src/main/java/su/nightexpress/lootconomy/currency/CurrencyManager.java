@@ -5,6 +5,7 @@ import org.jetbrains.annotations.Nullable;
 import su.nightexpress.lootconomy.LootConomyPlugin;
 import su.nightexpress.lootconomy.api.currency.Currency;
 import su.nightexpress.lootconomy.api.currency.CurrencyHandler;
+import su.nightexpress.lootconomy.currency.handler.PlayerPointsHandler;
 import su.nightexpress.lootconomy.currency.handler.VaultEconomyHandler;
 import su.nightexpress.lootconomy.currency.impl.CoinsEngineCurrency;
 import su.nightexpress.lootconomy.currency.impl.StandardCurrency;
@@ -44,6 +45,9 @@ public class CurrencyManager extends AbstractManager<LootConomyPlugin> {
 
         if (Plugins.isLoaded(HookId.COINS_ENGINE)) {
             CoinsEngineCurrency.register(this);
+        }
+        if (Plugins.isLoaded(HookId.PLAYER_POINTS)) {
+            this.registerCurrency(PlayerPointsHandler.ID, PlayerPointsHandler::new);
         }
     }
 

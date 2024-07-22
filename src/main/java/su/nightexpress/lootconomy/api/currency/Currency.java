@@ -6,6 +6,7 @@ import su.nightexpress.lootconomy.Placeholders;
 import su.nightexpress.lootconomy.money.object.DeathPenalty;
 import su.nightexpress.nightcore.util.NumberUtil;
 import su.nightexpress.nightcore.util.placeholder.Placeholder;
+import su.nightexpress.nightcore.util.random.Rnd;
 import su.nightexpress.nightcore.util.wrapper.UniParticle;
 import su.nightexpress.nightcore.util.wrapper.UniSound;
 
@@ -35,6 +36,16 @@ public interface Currency extends Placeholder {
         return NumberUtil.round(amount);
     }
 
+    default double cutRandom(double fullAmount) {
+        double cut = Rnd.getDouble(fullAmount);
+
+        if (this.isRoundToInt()) {
+            cut = Math.ceil(cut);
+        }
+
+        return this.round(cut);
+    }
+
     default boolean hasDailyLimit() {
         return this.getDailyLimit() >= 0D;
     }
@@ -54,6 +65,8 @@ public interface Currency extends Placeholder {
     @NotNull UniParticle getGroundEffect();
 
     @NotNull UniSound getPickupSound();
+
+    boolean isRoundToInt();
 
     boolean isDirectToBalance();
 

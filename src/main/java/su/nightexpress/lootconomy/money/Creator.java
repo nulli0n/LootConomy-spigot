@@ -206,7 +206,9 @@ public class Creator {
             createObjective("llama", type, EntityType.LLAMA, "9f7d90b305aa64313c8d4404d8d652a96eba8a754b67f4347dcccdd5a6a63398", 100, MONEY_PENALTY_MEDIUM),
             createObjective("trader_llama", type, EntityType.TRADER_LLAMA, "8424780b3c5c5351cf49fb5bf41fcb289491df6c430683c84d7846188db4f84d", 100, MONEY_PENALTY_MEDIUM),
             createObjective("iron_golem", type, EntityType.IRON_GOLEM, "a9ceb73d97cf5dc32e333dbef7af25f39e42033d684649075ba4681af2a3c01b", 100, MONEY_PENALTY_MEDIUM),
-            createObjective("snowman", type, EntityType.SNOWMAN, "8e8d206f61e6de8a79d0cb0bcd98aced464cbfefc921b4160a25282163112a", 100, MONEY_PENALTY_MEDIUM)
+            createObjective("snowman", type, EntityType.SNOWMAN, "8e8d206f61e6de8a79d0cb0bcd98aced464cbfefc921b4160a25282163112a", 100, MONEY_PENALTY_MEDIUM),
+            createObjective("sniffer", type, EntityType.SNIFFER, "fe5a8341c478a134302981e6a7758ea4ecfd8d62a0df4067897e75502f9b25de", 100, MONEY_PENALTY_MEDIUM)
+
         );
         if (Version.isAtLeast(Version.V1_20_R3)) {
             penalty.add(createObjective("camel", type, EntityType.CAMEL, "ba4c95bfa0b61722255389141b505cf1a38bad9b0ef543de619f0cc9221ed974", 100, MONEY_PENALTY_MEDIUM));
@@ -231,6 +233,9 @@ public class Creator {
             createObjective("wither_skeleton", type, EntityType.WITHER_SKELETON, new ItemStack(Material.WITHER_SKELETON_SKULL), 70, MONEY_MEDIUM),
             createObjective("skeleton_horse", type, EntityType.SKELETON_HORSE, "47effce35132c86ff72bcae77dfbb1d22587e94df3cbc2570ed17cf8973a", 35, MONEY_MEDIUM)
         );
+        if (Version.isAtLeast(Version.MC_1_21)) {
+            skeletons.add(createObjective("bogged", type, EntityType.valueOf("BOGGED"), "a3b9003ba2d05562c75119b8a62185c67130e9282f7acbac4bc2824c21eb95d9", 65, MONEY_MEDIUM));
+        }
         generateObjectives("kill_entity_skeletons", skeletons);
 
 
@@ -250,6 +255,9 @@ public class Creator {
             createObjective("wolf", type, EntityType.WOLF, "28d408842e76a5a454dc1c7e9ac5c1a8ac3f4ad34d6973b5275491dff8c5c251", 30, MONEY_LOW),
             createObjective("bat", type, EntityType.BAT, "3820a10db222f69ac2215d7d10dca47eeafa215553764a2b81bafd479e7933d1", 30, MONEY_LOW)
         );
+        if (Version.isAtLeast(Version.MC_1_21)) {
+            animals.add(createObjective("armadillo", type, EntityType.valueOf("ARMADILLO"), "9852b33ba294f560090752d113fe728cbc7dd042029a38d5382d65a2146068b7", 45, MONEY_LOW));
+        }
         generateObjectives("kill_entity_animals", animals);
 
 
@@ -294,6 +302,9 @@ public class Creator {
             createObjective("vex", type, EntityType.VEX, "5e7330c7d5cd8a0a55ab9e95321535ac7ae30fe837c37ea9e53bea7ba2de86b", 66, MONEY_MEDIUM),
             createObjective("silverfish", type, EntityType.SILVERFISH, "da91dab8391af5fda54acd2c0b18fbd819b865e1a8f1d623813fa761e924540", 33, MONEY_LOW)
         );
+        if (Version.isAtLeast(Version.MC_1_21)) {
+            various.add(createObjective("breeze", type, EntityType.valueOf("BREEZE"), "a275728af7e6a29c88125b675a39d88ae9919bb61fdc200337fed6ab0c49d65c", 55, MONEY_MEDIUM_HIGH));
+        }
         generateObjectives("kill_entity_various", various);
 
 
