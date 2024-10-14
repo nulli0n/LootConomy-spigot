@@ -7,7 +7,6 @@ import su.nightexpress.lootconomy.LootConomyPlugin;
 public class Keys {
 
     public static NamespacedKey entityNoLoot;
-    public static NamespacedKey brewingHolder;
 
     public static NamespacedKey itemAmount;
     public static NamespacedKey itemOwner;
@@ -18,7 +17,6 @@ public class Keys {
 
     public static void load(@NotNull LootConomyPlugin plugin) {
         entityNoLoot = new NamespacedKey(plugin, "entity.no_loot");
-        brewingHolder = new NamespacedKey(plugin, "brewing.holder");
 
         itemAmount = new NamespacedKey(plugin, "money.amount");
         itemOwner = new NamespacedKey(plugin, "money.owner");

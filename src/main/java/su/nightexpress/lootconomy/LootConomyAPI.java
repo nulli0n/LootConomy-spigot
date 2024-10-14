@@ -9,10 +9,15 @@ import su.nightexpress.lootconomy.money.MoneyManager;
 
 public class LootConomyAPI {
 
-    public static LootConomyPlugin plugin;
+    private static LootConomyPlugin plugin;
 
     public static void setup(@NotNull LootConomyPlugin plugin) {
         LootConomyAPI.plugin = plugin;
+    }
+
+    @NotNull
+    public static LootConomyPlugin getPlugin() {
+        return plugin;
     }
 
     @NotNull

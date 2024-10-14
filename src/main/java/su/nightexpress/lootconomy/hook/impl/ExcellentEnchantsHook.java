@@ -1,22 +1,24 @@
 package su.nightexpress.lootconomy.hook.impl;
 
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
-import su.nightexpress.excellentenchants.api.enchantment.EnchantmentData;
-import su.nightexpress.excellentenchants.enchantment.impl.tool.TelekinesisEnchant;
-import su.nightexpress.excellentenchants.enchantment.impl.weapon.NimbleEnchant;
-import su.nightexpress.excellentenchants.enchantment.registry.EnchantRegistry;
-import su.nightexpress.excellentenchants.enchantment.util.EnchantUtils;
+import su.nightexpress.nightcore.util.BukkitThing;
 
 public class ExcellentEnchantsHook {
 
-    public static boolean hasTelekinesis(@NotNull ItemStack tool) {
-        EnchantmentData data = EnchantRegistry.getById(TelekinesisEnchant.ID);
-        return data != null && EnchantUtils.contains(tool, data.getEnchantment());
-    }
+//    public static boolean hasTelekinesis(@NotNull ItemStack tool) {
+//        CustomEnchantment enchantment = EnchantRegistry.getById(TelekinesisEnchant.ID);
+//        return enchantment != null && EnchantUtils.contains(tool, enchantment.getBukkitEnchantment());
+//    }
 
     public static boolean hasNimble(@NotNull ItemStack tool) {
-        EnchantmentData data = EnchantRegistry.getById(NimbleEnchant.ID);
-        return data != null && EnchantUtils.contains(tool, data.getEnchantment());
+        Enchantment enchantment = BukkitThing.getEnchantment("nimble");
+        return enchantment != null &&  tool.getEnchantmentLevel(enchantment) != 0;
+    }
+
+    public static boolean hasTelekinesis(@NotNull ItemStack tool) {
+        Enchantment enchantment = BukkitThing.getEnchantment("telekinesis");
+        return enchantment != null &&  tool.getEnchantmentLevel(enchantment) != 0;
     }
 }

@@ -9,6 +9,7 @@ import su.nightexpress.lootconomy.booster.config.ScheduledBoosterInfo;
 import su.nightexpress.lootconomy.currency.handler.VaultEconomyHandler;
 import su.nightexpress.nightcore.config.ConfigValue;
 import su.nightexpress.nightcore.util.BukkitThing;
+import su.nightexpress.nightcore.util.Lists;
 import su.nightexpress.nightcore.util.Plugins;
 import su.nightexpress.nightcore.util.StringUtil;
 
@@ -26,7 +27,7 @@ public class Config {
     public static final String DIR_OBJECTIVES = "/objectives/";
 
     public static final ConfigValue<Set<String>> DISABLED_WORLDS = ConfigValue.create("General.Disabled_Worlds",
-        Set.of("my_world", "another_world"),
+        Lists.newSet("my_world", "another_world"),
         "A list of worlds, where no currency will be dropped.");
 
     public static final ConfigValue<Boolean> LOOT_PROTECTION = ConfigValue.create("Loot.Protection.Enabled",
@@ -69,7 +70,7 @@ public class Config {
     public static final ConfigValue<Set<CreatureSpawnEvent.SpawnReason>> ABUSE_IGNORE_SPAWN_REASONS = ConfigValue.forSet("Abuse_Protection.Ignore_SpawnReasons",
         raw -> StringUtil.getEnum(raw, CreatureSpawnEvent.SpawnReason.class).orElse(null),
         (cfg, path, set) -> cfg.set(path, set.stream().map(Enum::name).toList()),
-        Set.of(
+        Lists.newSet(
             CreatureSpawnEvent.SpawnReason.EGG,
             CreatureSpawnEvent.SpawnReason.SPAWNER,
             CreatureSpawnEvent.SpawnReason.SPAWNER_EGG,
@@ -85,7 +86,7 @@ public class Config {
     public static final ConfigValue<Set<GameMode>> ABUSE_IGNORE_GAME_MODES = ConfigValue.forSet("Abuse_Protection.Ignore_GameModes",
         raw -> StringUtil.getEnum(raw, GameMode.class).orElse(null),
         (cfg, path, set) -> cfg.set(path, set.stream().map(Enum::name).toList()),
-        Set.of(GameMode.CREATIVE),
+        Lists.newSet(GameMode.CREATIVE),
         "Disables currency drops for players in certain gamemodes.",
         "https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/GameMode.html"
     );
@@ -93,7 +94,7 @@ public class Config {
     public static final ConfigValue<Set<Material>> ABUSE_IGNORE_BLOCK_GENERATION = ConfigValue.forSet("Abuse_Protection.Ignore_Block_Generation",
         BukkitThing::getMaterial,
         (cfg, path, set) -> cfg.set(path, set.stream().map(BukkitThing::toString).toList()),
-        Set.of(
+        Lists.newSet(
             Material.STONE,
             Material.COBBLESTONE,
             Material.OBSIDIAN
@@ -105,7 +106,7 @@ public class Config {
     public static final ConfigValue<Set<Material>> ABUSE_IGNORE_FERTILIZED = ConfigValue.forSet("Abuse_Protection.Ignore_Fertilized",
         BukkitThing::getMaterial,
         (cfg, path, set) -> cfg.set(path, set.stream().map(BukkitThing::toString).toList()),
-        Set.of(
+        Lists.newSet(
             Material.WHEAT,
             Material.CARROTS,
             Material.POTATOES,
@@ -148,7 +149,7 @@ public class Config {
             "example",
             new ScheduledBoosterInfo(
                 new Multiplier(Map.of(VaultEconomyHandler.ID, 1.25)),
-                Map.of(DayOfWeek.SATURDAY, Set.of(LocalTime.of(16, 0))),
+                Map.of(DayOfWeek.SATURDAY, Lists.newSet(LocalTime.of(16, 0))),
                 7200
             )
         ),
@@ -170,20 +171,4 @@ public class Config {
         "List of persistent currency boosters based on player permission group(s).",
         "Use the 'Priority' option to define booster's priority to guarantee that players with multiple permission groups will get the best one."
     );
-
-    /*@Deprecated
-    public static final ConfigValue<Map<String, BoosterInfo>> BOOSTERS_CUSTOM = ConfigValue.forMap("Boosters.Custom",
-        (cfg, path, id) -> BoosterInfo.read(cfg, path + "." + id),
-        (cfg, path, map) -> map.forEach((id, info) -> info.write(cfg, path + "." + id)),
-        Map.of(
-            "xp_money_1_25", new BoosterInfo(new Multiplier(Map.of(VaultEconomyHandler.ID, 1.25))),
-            "xp_money_1_5", new BoosterInfo(new Multiplier(Map.of(VaultEconomyHandler.ID, 1.5))),
-            "money_2", new BoosterInfo(new Multiplier(Map.of(VaultEconomyHandler.ID, 2D))),
-            "xp_2", new BoosterInfo(new Multiplier(Map.of(VaultEconomyHandler.ID, 1D)))
-        ),
-        "List of custom XP / currency boosters to be given via booster commands.",
-        "You can create as many boosters as you want.",
-        "But keep in mind that only one personal booster per skill can be active at the same time.",
-        "If player already has a booster for certain skill, it will be replaced with a new one."
-    );*/
 }

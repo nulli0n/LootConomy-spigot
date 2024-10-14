@@ -22,21 +22,21 @@ public class Lang extends CoreLang {
     public static final LangString COMMAND_ARGUMENT_NAME_Y          = LangString.of("Command.Argument.Name.Y", "y");
     public static final LangString COMMAND_ARGUMENT_NAME_Z          = LangString.of("Command.Argument.Name.Z", "z");
 
-    public static final LangString COMMAND_BOOSTS_DESC = LangString.of("Command.Boosters.Desc",
-        "View all current boosters.");
+    public static final LangString COMMAND_BOOSTS_DESC                = LangString.of("Command.Boosters.Desc", "View all current boosters.");
+    public static final LangString COMMAND_BOOSTER_DESC               = LangString.of("Command.Booster.Desc", "Booster management.");
+    public static final LangString COMMAND_BOOSTER_ACTIVATE_DESC      = LangString.of("Command.Booster.Activate.Desc", "Activate global scheduled booster.");
+    public static final LangString COMMAND_BOOSTER_CREATE_DESC        = LangString.of("Command.Booster.Create.Desc", "Create global or player booster.");
+    public static final LangString COMMAND_BOOSTER_INFO_DESC          = LangString.of("Command.Booster.Info.Desc", "View active booster names.");
+    public static final LangString COMMAND_BOOSTER_REMOVE_DESC_GLOBAL = LangString.of("Command.Booster.Remove.Desc.Global", "Remove global booster.");
+    public static final LangString COMMAND_BOOSTER_REMOVE_DESC_PLAYER = LangString.of("Command.Booster.Remove.Desc.Player", "Remove player booster.");
 
-    public static final LangString COMMAND_BOOSTER_DESC = LangString.of("Command.Booster.Desc",
-        "Booster management.");
-
-    public static final LangString COMMAND_BOOSTER_ACTIVATE_DESC = LangString.of("Command.Booster.Activate.Desc",
-        "Activate global scheduled booster.");
+    public static final LangString COMMAND_OBJECTIVES_DESC = LangString.of("Command.Objectives.Desc", "View money objectives.");
+    public static final LangString COMMAND_DROP_DESC       = LangString.of("Command.Drop.Desc", "Create and drop currency item.");
+    public static final LangString COMMAND_SOUND_DESC      = LangString.of("Command.Sound.Desc", "Toggle money pickup sound.");
 
     public static final LangText COMMAND_BOOSTER_ACTIVATE_DONE = LangText.of("Command.Booster.Activate.Done",
         LIGHT_GRAY.enclose("Global scheduled booster activated!")
     );
-
-    public static final LangString COMMAND_BOOSTER_CREATE_DESC = LangString.of("Command.Booster.Create.Desc",
-        "Create global or player booster.");
 
     public static final LangText COMMAND_BOOSTER_CREATE_DONE_GLOBAL = LangText.of("Command.Booster.Create.Done.Global",
         TAG_NO_PREFIX,
@@ -59,10 +59,6 @@ public class Lang extends CoreLang {
         " "
     );
 
-
-    public static final LangString COMMAND_BOOSTER_INFO_DESC = LangString.of("Command.Booster.Info.Desc",
-        "View active booster names.");
-
     public static final LangText COMMAND_BOOSTER_INFO_NOTHING = LangText.of("Command.Booster.Info.Nothing",
         LIGHT_GRAY.enclose(LIGHT_RED.enclose("✘") + " There are no active boosters.")
     );
@@ -83,12 +79,6 @@ public class Lang extends CoreLang {
         CURRENCY_NAME + " x" + GENERIC_AMOUNT
     );
 
-    public static final LangString COMMAND_BOOSTER_REMOVE_DESC_GLOBAL = LangString.of("Command.Booster.Remove.Desc.Global",
-        "Remove global booster.");
-
-    public static final LangString COMMAND_BOOSTER_REMOVE_DESC_PLAYER = LangString.of("Command.Booster.Remove.Desc.Player",
-        "Remove player booster.");
-
     public static final LangText COMMAND_BOOSTER_REMOVE_DONE_PLAYER = LangText.of("Command.Booster.Remove.Done.Player",
         LIGHT_GRAY.enclose("Removed " + LIGHT_YELLOW.enclose(GENERIC_NAME) + " booster from " + LIGHT_YELLOW.enclose(PLAYER_NAME) + ".")
     );
@@ -102,29 +92,19 @@ public class Lang extends CoreLang {
     );
 
 
-    public static final LangString COMMAND_OBJECTIVES_DESC = LangString.of("Command.Objectives.Desc",
-        "View money objectives.");
 
     public static final LangText COMMAND_OBJECTIVES_DONE_OTHERS = LangText.of("Command.Objectives.Done.Others",
-        LIGHT_GRAY.enclose("Opened objectives menu for " + LIGHT_YELLOW.enclose(PLAYER_NAME) + "."));
-
-
-    public static final LangString COMMAND_DROP_DESC = LangString.of("Command.Drop.Desc",
-        "Create and drop currency item.");
+        LIGHT_GRAY.enclose("Opened objectives menu for " + LIGHT_YELLOW.enclose(PLAYER_NAME) + ".")
+    );
 
     public static final LangText COMMAND_DROP_DONE = LangText.of("Command.Drop.Done",
         LIGHT_GRAY.enclose("Dropped " + LIGHT_YELLOW.enclose("x" + GENERIC_AMOUNT + " " + GENERIC_MIN + " - " + GENERIC_MAX) + " item(s) at " + LIGHT_YELLOW.enclose(LOCATION_X) + ", " + LIGHT_YELLOW.enclose(LOCATION_Y) + ", " + LIGHT_YELLOW.enclose(LOCATION_Z) + " in " + LIGHT_YELLOW.enclose(LOCATION_WORLD) + ".")
     );
 
-
-    public static final LangString COMMAND_SOUND_DESC = LangString.of("Command.Sound.Desc",
-        "Toggle money pickup sound.");
-
     public static final LangText COMMAND_SOUND_DONE = LangText.of("Command.Sound.Done",
         SOUND.enclose(Sound.UI_BUTTON_CLICK),
         LIGHT_GRAY.enclose("Money pickup sound: " + LIGHT_YELLOW.enclose(GENERIC_STATE))
     );
-
 
     public static final LangText ERROR_INVALID_BOOSTER = LangText.of("Error.InvalidBooster",
         LIGHT_RED.enclose("Invalid booster!"));
@@ -207,7 +187,7 @@ public class Lang extends CoreLang {
 
     public static final LangString BOOSTER_LIST_ENTRY_CURRENCY = LangString.of("Booster.List.Entry.Currency",
         LIGHT_YELLOW.enclose("✔ " + LIGHT_GRAY.enclose(CURRENCY_NAME + ": ") +
-            HOVER.enclose(GENERIC_TOTAL, LIGHT_GRAY.enclose("Including:") + TAG_LINE_BREAK + GENERIC_ENTRY)
+            HOVER.encloseHint(GENERIC_TOTAL, LIGHT_GRAY.enclose("Including:") + TAG_LINE_BREAK + GENERIC_ENTRY)
         )
     );
 

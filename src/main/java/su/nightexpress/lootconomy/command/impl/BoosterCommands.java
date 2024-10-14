@@ -1,4 +1,4 @@
-package su.nightexpress.lootconomy.command.children;
+package su.nightexpress.lootconomy.command.impl;
 
 import org.jetbrains.annotations.NotNull;
 import su.nightexpress.lootconomy.LootConomyPlugin;
@@ -13,6 +13,7 @@ import su.nightexpress.nightcore.command.experimental.CommandContext;
 import su.nightexpress.nightcore.command.experimental.argument.ArgumentTypes;
 import su.nightexpress.nightcore.command.experimental.argument.ParsedArguments;
 import su.nightexpress.nightcore.command.experimental.node.ChainedNode;
+import su.nightexpress.nightcore.command.experimental.node.DirectNode;
 import su.nightexpress.nightcore.util.Lists;
 import su.nightexpress.nightcore.util.NumberUtil;
 import su.nightexpress.nightcore.util.TimeUtil;
@@ -23,94 +24,100 @@ import java.util.Map;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.stream.Collectors;
 
-public class BoosterCommand {
+public class BoosterCommands {
 
-    private static final String ARG_NAME       = "name";
-    private static final String ARG_CURRENCY   = "currency";
-    private static final String ARG_MULTIPLIER = "multiplier";
-    private static final String ARG_DURATION   = "duration";
-    private static final String ARG_PLAYER     = "player";
+    public static void load(@NotNull LootConomyPlugin plugin) {
+        ChainedNode node = plugin.getRootNode();
 
-    public static void inject(@NotNull LootConomyPlugin plugin, @NotNull ChainedNode node) {
+        node.addChildren(DirectNode.builder(plugin, "boosts")
+            .description(Lang.COMMAND_BOOSTS_DESC)
+            .permission(Perms.COMMAND_BOOSTS)
+            .executes((context, arguments) -> showBoosts(plugin, context))
+        );
+
         node.addChildren(ChainedNode.builder(plugin, "booster")
             .description(Lang.COMMAND_BOOSTER_DESC)
             .permission(Perms.COMMAND_BOOSTER)
             .addDirect("create", builder -> builder
                 .description(Lang.COMMAND_BOOSTER_CREATE_DESC)
-                .withArgument(ArgumentTypes.string(ARG_NAME)
+                .withArgument(ArgumentTypes.string(CommandArguments.NAME)
                     .required()
                     .localized(Lang.COMMAND_ARGUMENT_NAME_NAME)
                 )
-                .withArgument(CommandArguments.currency(plugin, ARG_CURRENCY)
-                    .required()
-                )
-                .withArgument(ArgumentTypes.decimalAbs(ARG_MULTIPLIER)
+                .withArgument(CommandArguments.currency(plugin, CommandArguments.CURRENCY).required())
+                .withArgument(ArgumentTypes.decimalAbs(CommandArguments.MULTIPLIER)
                     .required()
                     .localized(Lang.COMMAND_ARGUMENT_NAME_MULTIPLIER)
                     .withSamples(tabContext -> Lists.newList("1.5", "2.0", "2.5", "3.0"))
                 )
-                .withArgument(ArgumentTypes.integerAbs(ARG_DURATION)
+                .withArgument(ArgumentTypes.integerAbs(CommandArguments.DURATION)
                     .required()
                     .localized(Lang.COMMAND_ARGUMENT_NAME_DURATION)
                     .withSamples(tabContext -> Lists.newList("300", "3600", "7200", "86400"))
                 )
-                .withArgument(ArgumentTypes.playerName(ARG_PLAYER))
-                .executes((context, arguments) -> executeCreate(plugin, context, arguments))
+                .withArgument(ArgumentTypes.playerName(CommandArguments.PLAYER))
+                .executes((context, arguments) -> create(plugin, context, arguments))
             )
             .addDirect("activate", builder -> builder
                 .description(Lang.COMMAND_BOOSTER_ACTIVATE_DESC)
-                .withArgument(ArgumentTypes.string(ARG_NAME)
+                .withArgument(ArgumentTypes.string(CommandArguments.NAME)
                     .required()
                     .localized(Lang.COMMAND_ARGUMENT_NAME_NAME)
                     .withSamples(tabContext -> new ArrayList<>(plugin.getBoosterManager().getScheduledBoosterMap().keySet()))
                 )
-                .executes((context, arguments) -> executeActivate(plugin, context, arguments))
+                .executes((context, arguments) -> activate(plugin, context, arguments))
             )
             .addDirect("remove", builder -> builder
                 .description(Lang.COMMAND_BOOSTER_REMOVE_DESC_GLOBAL)
-                .withArgument(ArgumentTypes.string(ARG_NAME)
+                .withArgument(ArgumentTypes.string(CommandArguments.NAME)
                     .required()
                     .localized(Lang.COMMAND_ARGUMENT_NAME_NAME)
                     .withSamples(tabContext -> new ArrayList<>(plugin.getBoosterManager().getBoosterMap().keySet()))
                 )
-                .executes((context, arguments) -> executeRemove(plugin, context, arguments))
+                .executes((context, arguments) -> remove(plugin, context, arguments))
             )
             .addDirect("removefor", builder -> builder
                 .description(Lang.COMMAND_BOOSTER_REMOVE_DESC_PLAYER)
-                .withArgument(ArgumentTypes.playerName(ARG_PLAYER)
+                .withArgument(ArgumentTypes.playerName(CommandArguments.PLAYER)
                     .required())
-                .withArgument(ArgumentTypes.string(ARG_NAME)
+                .withArgument(ArgumentTypes.string(CommandArguments.NAME)
                     .required()
                     .localized(Lang.COMMAND_ARGUMENT_NAME_NAME)
                 )
-                .executes((context, arguments) -> executeRemoveFor(plugin, context, arguments))
+                .executes((context, arguments) -> removeFor(plugin, context, arguments))
             )
             .addDirect("info", builder -> builder
                 .description(Lang.COMMAND_BOOSTER_INFO_DESC)
-                .withArgument(ArgumentTypes.playerName(ARG_PLAYER))
-                .executes((context, arguments) -> executeInfo(plugin, context, arguments))
+                .withArgument(ArgumentTypes.playerName(CommandArguments.PLAYER))
+                .executes((context, arguments) -> printInfo(plugin, context, arguments))
             )
         );
     }
 
-    public static boolean executeCreate(@NotNull LootConomyPlugin plugin, @NotNull CommandContext context, @NotNull ParsedArguments arguments) {
-        String name = arguments.getStringArgument(ARG_NAME);
-        Currency currency = arguments.getArgument(ARG_CURRENCY, Currency.class);
-        double modifier = arguments.getDoubleArgument(ARG_MULTIPLIER);
-        int duration = arguments.getIntArgument(ARG_DURATION);
+    private static boolean showBoosts(@NotNull LootConomyPlugin plugin, @NotNull CommandContext context) {
+        plugin.getBoosterManager().printBoosters(context.getSender());
+        return true;
+    }
+
+    private static boolean create(@NotNull LootConomyPlugin plugin, @NotNull CommandContext context, @NotNull ParsedArguments arguments) {
+        String name = arguments.getStringArgument(CommandArguments.NAME);
+        Currency currency = arguments.getArgument(CommandArguments.CURRENCY, Currency.class);
+        double modifier = arguments.getDoubleArgument(CommandArguments.MULTIPLIER);
+        int duration = arguments.getIntArgument(CommandArguments.DURATION);
 
         Multiplier multiplier = new Multiplier().withCurrency(currency, modifier);
         ExpirableBooster booster = new ExpirableBooster(multiplier, duration);
 
-        if (arguments.hasArgument(ARG_PLAYER)) {
-            String playerName = arguments.getStringArgument(ARG_PLAYER);
-            plugin.getUserManager().getUserDataAndPerformAsync(playerName, user -> {
+        if (arguments.hasArgument(CommandArguments.PLAYER)) {
+            String playerName = arguments.getStringArgument(CommandArguments.PLAYER);
+            plugin.getUserManager().manageUser(playerName, user -> {
                 if (user == null) {
                     context.errorBadPlayer();
                     return;
                 }
 
                 user.addBooster(name, booster);
+                plugin.getUserManager().scheduleSave(user);
 
                 context.send(Lang.COMMAND_BOOSTER_CREATE_DONE_PLAYER.getMessage()
                     .replace(Placeholders.GENERIC_NAME, name)
@@ -133,16 +140,16 @@ public class BoosterCommand {
         return true;
     }
 
-    public static boolean executeActivate(@NotNull LootConomyPlugin plugin, @NotNull CommandContext context, @NotNull ParsedArguments arguments) {
-        String name = arguments.getStringArgument(ARG_NAME);
+    private static boolean activate(@NotNull LootConomyPlugin plugin, @NotNull CommandContext context, @NotNull ParsedArguments arguments) {
+        String name = arguments.getStringArgument(CommandArguments.NAME);
         if (plugin.getBoosterManager().activateBooster(name)) {
             return context.sendSuccess(Lang.COMMAND_BOOSTER_ACTIVATE_DONE.getMessage());
         }
         return context.sendFailure(Lang.ERROR_INVALID_BOOSTER.getMessage());
     }
 
-    public static boolean executeRemove(@NotNull LootConomyPlugin plugin, @NotNull CommandContext context, @NotNull ParsedArguments arguments) {
-        String name = arguments.getStringArgument(ARG_NAME);
+    private static boolean remove(@NotNull LootConomyPlugin plugin, @NotNull CommandContext context, @NotNull ParsedArguments arguments) {
+        String name = arguments.getStringArgument(CommandArguments.NAME);
 
         if (plugin.getBoosterManager().removeBooster(name)) {
             context.send(Lang.COMMAND_BOOSTER_REMOVE_DONE_GLOBAL.getMessage()
@@ -155,16 +162,17 @@ public class BoosterCommand {
         return true;
     }
 
-    public static boolean executeRemoveFor(@NotNull LootConomyPlugin plugin, @NotNull CommandContext context, @NotNull ParsedArguments arguments) {
-        String name = arguments.getStringArgument(ARG_NAME);
-        String playerName = arguments.getStringArgument(ARG_PLAYER);
-        plugin.getUserManager().getUserDataAndPerformAsync(playerName, user -> {
+    private static boolean removeFor(@NotNull LootConomyPlugin plugin, @NotNull CommandContext context, @NotNull ParsedArguments arguments) {
+        String name = arguments.getStringArgument(CommandArguments.NAME);
+        String playerName = arguments.getStringArgument(CommandArguments.PLAYER);
+        plugin.getUserManager().manageUser(playerName, user -> {
             if (user == null) {
                 context.errorBadPlayer();
                 return;
             }
 
             if (user.removeBooster(name)) {
+                plugin.getUserManager().scheduleSave(user);
                 context.send(Lang.COMMAND_BOOSTER_REMOVE_DONE_PLAYER.getMessage()
                     .replace(Placeholders.GENERIC_NAME, name)
                     .replace(Placeholders.PLAYER_NAME, user.getName()));
@@ -176,13 +184,13 @@ public class BoosterCommand {
         return true;
     }
 
-    public static boolean executeInfo(@NotNull LootConomyPlugin plugin, @NotNull CommandContext context, @NotNull ParsedArguments arguments) {
+    private static boolean printInfo(@NotNull LootConomyPlugin plugin, @NotNull CommandContext context, @NotNull ParsedArguments arguments) {
         Map<String, ExpirableBooster> boosterMap = new HashMap<>();
 
-        if (arguments.hasArgument(ARG_PLAYER)) {
-            String playerName = arguments.getStringArgument(ARG_PLAYER);
+        if (arguments.hasArgument(CommandArguments.PLAYER)) {
+            String playerName = arguments.getStringArgument(CommandArguments.PLAYER);
             AtomicBoolean check = new AtomicBoolean(true);
-            plugin.getUserManager().getUserDataAndPerformAsync(playerName, user -> {
+            plugin.getUserManager().manageUser(playerName, user -> {
                 if (user == null) {
                     context.errorBadPlayer();
                     check.set(false);

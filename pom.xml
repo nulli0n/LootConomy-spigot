@@ -6,7 +6,7 @@
 
     <groupId>su.nightexpress.lootconomy</groupId>
     <artifactId>LootConomy</artifactId>
-    <version>2.0.4</version>
+    <version>2.0.5</version>
 
     <properties>
         <maven.compiler.source>17</maven.compiler.source>
@@ -33,17 +33,11 @@
         <repository>
             <id>lumine-repo</id>
             <url>https://mvn.lumine.io/repository/maven-public/</url>
-            <snapshots>
-                <enabled>false</enabled>
-            </snapshots>
         </repository>
 
         <repository>
             <id>lumine-snapshot</id>
             <url>http://mvn.lumine.io/repository/maven-snapshots/</url>
-            <snapshots>
-                <enabled>false</enabled>
-            </snapshots>
         </repository>
 
         <repository>
@@ -72,13 +66,13 @@
         <dependency>
             <groupId>su.nightexpress.nightcore</groupId>
             <artifactId>nightcore</artifactId>
-            <version>2.6.2</version>
+            <version>2.6.4</version>
         </dependency>
 
         <dependency>
             <groupId>me.clip</groupId>
             <artifactId>placeholderapi</artifactId>
-            <version>2.10.10</version>
+            <version>2.11.6</version>
             <scope>provided</scope>
         </dependency>
 
@@ -97,15 +91,9 @@
         </dependency>
 
         <dependency>
-            <groupId>su.nightexpress.excellentenchants</groupId>
-            <artifactId>Core</artifactId>
-            <version>4.0.4</version>
-        </dependency>
-
-        <dependency>
             <groupId>su.nightexpress.coinsengine</groupId>
             <artifactId>CoinsEngine</artifactId>
-            <version>2.3.3</version>
+            <version>2.3.5</version>
         </dependency>
     </dependencies>
 

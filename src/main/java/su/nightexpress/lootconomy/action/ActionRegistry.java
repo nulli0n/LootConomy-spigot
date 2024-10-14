@@ -3,15 +3,7 @@ package su.nightexpress.lootconomy.action;
 import org.bukkit.event.Event;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.block.BlockBreakEvent;
-import org.bukkit.event.block.BlockFertilizeEvent;
-import org.bukkit.event.enchantment.EnchantItemEvent;
-import org.bukkit.event.entity.EntityBreedEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
-import org.bukkit.event.entity.EntityTameEvent;
-import org.bukkit.event.inventory.BrewEvent;
-import org.bukkit.event.inventory.CraftItemEvent;
-import org.bukkit.event.inventory.FurnaceExtractEvent;
-import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.player.PlayerFishEvent;
 import org.bukkit.event.player.PlayerHarvestBlockEvent;
 import org.bukkit.event.player.PlayerShearEntityEvent;
@@ -23,7 +15,10 @@ import su.nightexpress.lootconomy.hook.impl.MythicMobsHook;
 import su.nightexpress.nightcore.manager.SimpleManager;
 import su.nightexpress.nightcore.util.Plugins;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
 import java.util.function.Consumer;
 
 public class ActionRegistry extends SimpleManager<LootConomyPlugin> {
@@ -38,25 +33,15 @@ public class ActionRegistry extends SimpleManager<LootConomyPlugin> {
     protected void onLoad() {
         // Block Material related
         this.registerAction(BlockBreakEvent.class, EventPriority.HIGHEST, ActionTypes.BLOCK_BREAK);
-        //this.registerAction(BlockFertilizeEvent.class, EventPriority.MONITOR, ActionTypes.BLOCK_FERTILIZE);
         this.registerAction(PlayerHarvestBlockEvent.class, EventPriority.MONITOR, ActionTypes.BLOCK_HARVEST);
 
         // Entity Type related
-        //this.registerAction(EntityBreedEvent.class, EventPriority.MONITOR, ActionTypes.ENTITY_BREED);
         this.registerAction(EntityDeathEvent.class, EventPriority.MONITOR, ActionTypes.ENTITY_KILL);
         this.registerAction(EntityDeathEvent.class, EventPriority.MONITOR, ActionTypes.ENTITY_SHOOT);
         this.registerAction(PlayerShearEntityEvent.class, EventPriority.MONITOR, ActionTypes.ENTITY_SHEAR);
-        //this.registerAction(EntityTameEvent.class, EventPriority.MONITOR, ActionTypes.ENTITY_TAME);
 
         // Item Material related
-        //this.registerAction(CraftItemEvent.class, EventPriority.MONITOR, ActionTypes.ITEM_CRAFT);
-        //this.registerAction(InventoryClickEvent.class, EventPriority.MONITOR, ActionTypes.ITEM_DISENCHANT);
-        //this.registerAction(EnchantItemEvent.class, EventPriority.MONITOR, ActionTypes.ITEM_ENCHANT);
         this.registerAction(PlayerFishEvent.class, EventPriority.MONITOR, ActionTypes.ITEM_FISH);
-        //this.registerAction(FurnaceExtractEvent.class, EventPriority.MONITOR, ActionTypes.ITEM_FURNACE);
-
-        // PotionEffectType related
-        //this.registerAction(BrewEvent.class, EventPriority.MONITOR, ActionTypes.POTION_BREW);
 
         this.registerHooks();
     }

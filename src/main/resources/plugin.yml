@@ -6,10 +6,8 @@ author: NightExpress
 depend: [nightcore]
 softdepend:
   - MythicMobs
-  - AdvancedMobArena
-  - ExcellentEnchants
   - PlaceholderAPI
   - CoinsEngine
   - PlayerPoints
   - Vault
-api-version: 1.18
+api-version: 1.19

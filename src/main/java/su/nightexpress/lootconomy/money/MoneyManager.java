@@ -55,11 +55,9 @@ public class MoneyManager extends AbstractManager<LootConomyPlugin> {
 
     @Override
     protected void onLoad() {
-        this.createDefaults();
+        this.loadDefaults();
         this.loadObjectives();
-
-        this.objectiveTypesMenu = new ObjectiveTypesMenu(this.plugin);
-        this.objectivesMenu = new ObjectivesMenu(this.plugin);
+        this.loadUI();
 
         this.addListener(new MoneyItemListener(this.plugin, this));
         this.addListener(new AbuseListener(this.plugin));
@@ -82,7 +80,7 @@ public class MoneyManager extends AbstractManager<LootConomyPlugin> {
         this.objectiveMap.clear();
     }
 
-    private void createDefaults() {
+    private void loadDefaults() {
         Creator creator = new Creator(this.plugin);
         creator.create();
     }
@@ -97,6 +95,11 @@ public class MoneyManager extends AbstractManager<LootConomyPlugin> {
             }
             config.saveChanges();
         }
+    }
+
+    private void loadUI() {
+        this.objectiveTypesMenu = new ObjectiveTypesMenu(this.plugin);
+        this.objectivesMenu = new ObjectivesMenu(this.plugin);
     }
 
     public void openObjectivesMenu(@NotNull Player player) {

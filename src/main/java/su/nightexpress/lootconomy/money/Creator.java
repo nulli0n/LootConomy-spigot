@@ -139,7 +139,9 @@ public class Creator {
             createObjective("wheat", type, Material.WHEAT, 100, MONEY_LOW),
             createObjective("nether_wart", type, Material.NETHER_WART, 100, MONEY_LOW),
             createObjective("red_mushroom", type, Material.RED_MUSHROOM, 100, MONEY_LOW),
-            createObjective("brown_mushroom", type, Material.BROWN_MUSHROOM, 100, MONEY_LOW)
+            createObjective("brown_mushroom", type, Material.BROWN_MUSHROOM, 100, MONEY_LOW),
+            createObjective("sugar_cane", type, Material.SUGAR_CANE, 100, MONEY_LOW),
+            createObjective("bamboo", type, Material.BAMBOO, 100, MONEY_LOW)
         );
         generateObjectives("farming_crops", crops);
 

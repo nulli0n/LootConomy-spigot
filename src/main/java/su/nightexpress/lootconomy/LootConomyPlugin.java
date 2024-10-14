@@ -3,7 +3,8 @@ package su.nightexpress.lootconomy;
 import org.jetbrains.annotations.NotNull;
 import su.nightexpress.lootconomy.action.ActionRegistry;
 import su.nightexpress.lootconomy.booster.BoosterManager;
-import su.nightexpress.lootconomy.command.children.*;
+import su.nightexpress.lootconomy.command.impl.BaseCommands;
+import su.nightexpress.lootconomy.command.impl.BoosterCommands;
 import su.nightexpress.lootconomy.config.Config;
 import su.nightexpress.lootconomy.config.Keys;
 import su.nightexpress.lootconomy.config.Lang;
@@ -16,8 +17,6 @@ import su.nightexpress.lootconomy.hook.impl.PlaceholderHook;
 import su.nightexpress.lootconomy.money.MoneyManager;
 import su.nightexpress.nightcore.NightDataPlugin;
 import su.nightexpress.nightcore.command.experimental.ImprovedCommands;
-import su.nightexpress.nightcore.command.experimental.impl.ReloadCommand;
-import su.nightexpress.nightcore.command.experimental.node.ChainedNode;
 import su.nightexpress.nightcore.config.PluginDetails;
 import su.nightexpress.nightcore.util.Plugins;
 import su.nightexpress.nightcore.util.blocktracker.PlayerBlockTracker;
@@ -43,8 +42,7 @@ public class LootConomyPlugin extends NightDataPlugin<LootUser> implements Impro
 
     @Override
     public void enable() {
-        LootConomyAPI.setup(this);
-        Keys.load(this);
+        this.loadAPI();
 
         this.currencyManager = new CurrencyManager(this);
         this.currencyManager.setup();
@@ -57,7 +55,7 @@ public class LootConomyPlugin extends NightDataPlugin<LootUser> implements Impro
         PlayerBlockTracker.initialize();
         PlayerBlockTracker.BLOCK_FILTERS.add(block -> true);
 
-        this.registerCommands();
+        this.loadCommands();
 
         this.actionRegistry = new ActionRegistry(this);
         this.actionRegistry.setup();
@@ -90,16 +88,14 @@ public class LootConomyPlugin extends NightDataPlugin<LootUser> implements Impro
         if (this.actionRegistry != null) this.actionRegistry.shutdown();
     }
 
-    private void registerCommands() {
-        ChainedNode rootNode = this.getRootNode();
+    private void loadAPI() {
+        LootConomyAPI.setup(this);
+        Keys.load(this);
+    }
 
-        ReloadCommand.inject(this, rootNode, Perms.COMMAND_RELOAD);
-        DropCommand.inject(this, rootNode);
-        // InfoCommand
-        ObjectivesCommand.inject(this, rootNode);
-        SoundCommand.inject(this, rootNode);
-        BoosterCommand.inject(this, rootNode);
-        BoostsCommand.inject(this, rootNode);
+    private void loadCommands() {
+        BaseCommands.load(this);
+        BoosterCommands.load(this);
     }
 
     @Override

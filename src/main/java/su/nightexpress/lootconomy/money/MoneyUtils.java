@@ -44,6 +44,7 @@ public class MoneyUtils {
         return null;
     }
 
+    @NotNull
     public static String getCustomMultiplier(@NotNull String name) {
         return Config.OBJECTIVE_CUSTOM_MULTIPLIERS_LIST.get().getOrDefault(name.toLowerCase(), "");
     }

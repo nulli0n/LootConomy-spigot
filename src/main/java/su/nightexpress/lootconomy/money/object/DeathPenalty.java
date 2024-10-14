@@ -9,8 +9,8 @@ import su.nightexpress.nightcore.util.wrapper.UniDouble;
 public class DeathPenalty {
 
     private final boolean   enabled;
-    private final boolean forPvE;
-    private final boolean forPvP;
+    private final boolean   forPvE;
+    private final boolean   forPvP;
     private final boolean   dropItem;
     private final double    chance;
     private final UniDouble amount;

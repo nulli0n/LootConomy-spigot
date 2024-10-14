@@ -143,8 +143,8 @@ public class ObjectivesMenu extends ConfigMenu<LootConomyPlugin> implements Auto
             ItemReplacer.create(icon).hideFlags().trimmed()
                 .setDisplayName(this.objectiveName)
                 .setLore(this.objectiveLore)
-                .replaceLoreExact(GENERIC_CURRENCY, rewards)
-                .replaceLoreExact(GENERIC_OBJECTS, objects)
+                .replace(GENERIC_CURRENCY, rewards)
+                .replace(GENERIC_OBJECTS, objects)
                 .replace(GENERIC_NAME, objective.getDisplayName())
                 .writeMeta();
 

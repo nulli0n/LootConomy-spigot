@@ -61,8 +61,12 @@ public class DataHandler extends AbstractUserDataHandler<LootConomyPlugin, LootU
     @Override
     public void onSynchronize() {
         this.plugin.getUserManager().getLoaded().forEach(user -> {
+            if (plugin.getUserManager().isScheduledToSave(user)) return;
+
             LootUser fetched = this.getUser(user.getId());
             if (fetched == null) return;
+
+            if (!user.isSyncReady()) return;
 
             user.getBoosterMap().clear();
             user.getBoosterMap().putAll(fetched.getBoosterMap());
