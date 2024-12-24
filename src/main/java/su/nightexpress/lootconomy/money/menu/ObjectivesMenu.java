@@ -1,35 +1,36 @@
 package su.nightexpress.lootconomy.money.menu;
 
+import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
-import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.InventoryView;
+import org.bukkit.inventory.MenuType;
 import org.jetbrains.annotations.NotNull;
+import su.nightexpress.economybridge.EconomyBridge;
+import su.nightexpress.economybridge.api.Currency;
 import su.nightexpress.lootconomy.LootConomyPlugin;
-import su.nightexpress.lootconomy.action.ActionType;
-import su.nightexpress.lootconomy.api.currency.Currency;
 import su.nightexpress.lootconomy.booster.impl.Booster;
 import su.nightexpress.lootconomy.config.Config;
-import su.nightexpress.lootconomy.config.Lang;
+import su.nightexpress.lootconomy.currency.CurrencySettings;
 import su.nightexpress.lootconomy.data.impl.LootLimitData;
 import su.nightexpress.lootconomy.data.impl.LootUser;
+import su.nightexpress.lootconomy.loot.handler.LootAction;
+import su.nightexpress.lootconomy.loot.handler.LootActions;
+import su.nightexpress.lootconomy.loot.objective.ObjectiveCategory;
 import su.nightexpress.lootconomy.money.object.MoneyObjective;
 import su.nightexpress.nightcore.config.ConfigValue;
 import su.nightexpress.nightcore.config.FileConfig;
-import su.nightexpress.nightcore.menu.MenuOptions;
-import su.nightexpress.nightcore.menu.MenuSize;
-import su.nightexpress.nightcore.menu.MenuViewer;
-import su.nightexpress.nightcore.menu.api.AutoFill;
-import su.nightexpress.nightcore.menu.api.AutoFilled;
-import su.nightexpress.nightcore.menu.impl.ConfigMenu;
-import su.nightexpress.nightcore.menu.item.ItemHandler;
-import su.nightexpress.nightcore.menu.item.MenuItem;
-import su.nightexpress.nightcore.menu.link.Linked;
-import su.nightexpress.nightcore.menu.link.ViewLink;
-import su.nightexpress.nightcore.util.ItemReplacer;
-import su.nightexpress.nightcore.util.ItemUtil;
+import su.nightexpress.nightcore.ui.menu.MenuViewer;
+import su.nightexpress.nightcore.ui.menu.data.ConfigBased;
+import su.nightexpress.nightcore.ui.menu.data.Filled;
+import su.nightexpress.nightcore.ui.menu.data.MenuFiller;
+import su.nightexpress.nightcore.ui.menu.data.MenuLoader;
+import su.nightexpress.nightcore.ui.menu.item.MenuItem;
+import su.nightexpress.nightcore.ui.menu.type.LinkedMenu;
 import su.nightexpress.nightcore.util.Lists;
 import su.nightexpress.nightcore.util.NumberUtil;
-import su.nightexpress.nightcore.util.placeholder.PlaceholderMap;
+import su.nightexpress.nightcore.util.bukkit.NightItem;
+import su.nightexpress.nightcore.util.placeholder.Replacer;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -40,42 +41,31 @@ import java.util.stream.IntStream;
 import static su.nightexpress.lootconomy.Placeholders.*;
 import static su.nightexpress.nightcore.util.text.tag.Tags.*;
 
-public class ObjectivesMenu extends ConfigMenu<LootConomyPlugin> implements AutoFilled<MoneyObjective>, Linked<ActionType<?, ?>> {
+@SuppressWarnings("UnstableApiUsage")
+public class ObjectivesMenu extends LinkedMenu<LootConomyPlugin, ObjectiveCategory> implements Filled<MoneyObjective>, ConfigBased {
 
-    public static final String FILE_NAME = "objectives.yml";
+    public static final String FILE_NAME = "objective_items.yml";
 
     private static final String GENERIC_OBJECTS = "%objects%";
-
-    private final ItemHandler returnHandler;
-    private final ViewLink<ActionType<?, ?>> link;
+    private static final String GENERIC_REWARDS = "%rewards%";
 
     private String       objectiveName;
     private List<String> objectiveLore;
-    private List<String> objectsLore;
-    private String       loreCurrencyLimit;
-    private String       loreCurrencyAvail;
-    private String       loreCurrencyPenalty;
-    private int[]        objectSlots;
+    private int[]        objectiveSlots;
+
+    private String       objectEntry;
+    private String       objectCurrencyLimit;
+    private String       objectCurrencyGood;
+    private String       objectCurrencyBad;
 
     public ObjectivesMenu(@NotNull LootConomyPlugin plugin) {
-        super(plugin, FileConfig.loadOrExtract(plugin, Config.DIR_UI, FILE_NAME));
-        this.link = new ViewLink<>();
+        super(plugin, MenuType.GENERIC_9X6, BLACK.enclose("Currency Objectives"));
 
-        this.addHandler(this.returnHandler = ItemHandler.forReturn(this, (viewer, event) -> {
-            this.runNextTick(() -> plugin.getMoneyManager().openObjectivesMenu(viewer.getPlayer()));
-        }));
-
-        this.load();
-    }
-
-    @NotNull
-    @Override
-    public ViewLink<ActionType<?, ?>> getLink() {
-        return link;
+        this.load(FileConfig.loadOrExtract(plugin, Config.DIR_UI, FILE_NAME));
     }
 
     @Override
-    public void onPrepare(@NotNull MenuViewer viewer, @NotNull MenuOptions options) {
+    protected void onPrepare(@NotNull MenuViewer viewer, @NotNull InventoryView view) {
         this.autoFill(viewer);
     }
 
@@ -85,140 +75,110 @@ public class ObjectivesMenu extends ConfigMenu<LootConomyPlugin> implements Auto
     }
 
     @Override
-    public void onAutoFill(@NotNull MenuViewer viewer, @NotNull AutoFill<MoneyObjective> autoFill) {
+    @NotNull
+    public MenuFiller<MoneyObjective> createFiller(@NotNull MenuViewer viewer) {
+        var autoFill = MenuFiller.builder(this);
+
         Player player = viewer.getPlayer();
-        ActionType<?, ?> type = this.getLink(player);
-        LootUser user = plugin.getUserManager().getUserData(player);
+        ObjectiveCategory category = this.getLink(player);
+        LootUser user = plugin.getUserManager().getOrFetch(player);
         LootLimitData limitData = user.getLimitData();
 
         Collection<Booster> boosters = this.plugin.getBoosterManager().getBoosters(player);
 
-        autoFill.setSlots(this.objectSlots);
-        autoFill.setItems(this.plugin.getMoneyManager().getObjectives(type).stream().filter(MoneyObjective::canDrop).sorted(Comparator.comparing(MoneyObjective::getId)).toList());
+        autoFill.setSlots(this.objectiveSlots);
+        autoFill.setItems(this.plugin.getMoneyManager().getObjectives(category).stream().filter(MoneyObjective::canDrop).sorted(Comparator.comparing(MoneyObjective::getId)).toList());
         autoFill.setItemCreator(objective -> {
+            LootAction<?, ?> action = LootActions.getByName(objective.getActionName());
+            if (action == null) return new NightItem(Material.AIR);
+
             List<String> objects = new ArrayList<>();
-            for (String line : this.objectsLore) {
-                if (line.contains(GENERIC_NAME)) {
-                    objective.getObjects().stream().map(type::getObjectLocalizedName).sorted(String::compareTo).forEach(object -> {
-                        objects.add(line.replace(GENERIC_NAME, object));
-                    });
-                }
-                else objects.add(line);
-            }
+            objective.getObjects().forEach(objectId -> {
+                String localized = action.getObjectLocalizedName(objectId);
+
+                objects.add(Replacer.create().replace(GENERIC_NAME, localized).apply(this.objectEntry));
+            });
 
             List<String> rewards = new ArrayList<>();
             objective.getCurrencyDrops().forEach((id, drop) -> {
                 if (drop.isEmpty()) return;
 
-                Currency currency = this.plugin.getCurrencyManager().getCurrency(id);
+                Currency currency = EconomyBridge.getCurrency(id);
                 if (currency == null) return;
 
-                double multiplier = Booster.getMultiplier(currency, boosters);
+                CurrencySettings settings = plugin.getCurrencyManager().getSettings(currency);
+                if (settings == null) return;
+
+                double multiplier = drop.isPenalty() ? 1D : Booster.getMultiplier(currency, boosters);
 
                 String format;
-                if (currency.hasDailyLimit() && limitData.isLimitExceed(currency)) {
-                    format = this.loreCurrencyLimit;
+                if (settings.hasDailyLimit() && limitData.isLimitExceed(currency, settings)) {
+                    format = this.objectCurrencyLimit;
                 }
                 else {
-                    format = drop.isPenalty() ? this.loreCurrencyPenalty : this.loreCurrencyAvail;
-                }
-
-                if (drop.isPenalty()) {
-                    multiplier = 1D;
+                    format = drop.isPenalty() ? this.objectCurrencyBad : this.objectCurrencyGood;
                 }
 
                 double min = Math.abs(drop.getMinAmount()) * multiplier;
                 double max = Math.abs(drop.getMaxAmount()) * multiplier;
 
-                PlaceholderMap placeholderMap = new PlaceholderMap(currency.getPlaceholders());
-                placeholderMap
-                    .add(GENERIC_MIN, () -> currency.format(min))
-                    .add(GENERIC_MAX, () -> currency.format(max))
-                    .add(GENERIC_CHANCE, () -> NumberUtil.format(drop.getChance()));
-
-                rewards.add(placeholderMap.replacer().apply(format));
+                rewards.add(Replacer.create()
+                    .replace(GENERIC_MIN, () -> currency.format(min))
+                    .replace(GENERIC_MAX, () -> currency.format(max))
+                    .replace(GENERIC_CHANCE, () -> NumberUtil.format(drop.getChance()))
+                    .replace(currency.replacePlaceholders())
+                    .apply(format)
+                );
             });
 
-            ItemStack icon = objective.getIcon();
-            ItemReplacer.create(icon).hideFlags().trimmed()
+            return objective.getIcon()
+                .setHideComponents(true)
                 .setDisplayName(this.objectiveName)
                 .setLore(this.objectiveLore)
-                .replace(GENERIC_CURRENCY, rewards)
-                .replace(GENERIC_OBJECTS, objects)
-                .replace(GENERIC_NAME, objective.getDisplayName())
-                .writeMeta();
-
-            return icon;
+                .replacement(replacer -> replacer
+                    .replace(GENERIC_REWARDS, rewards)
+                    .replace(GENERIC_OBJECTS, objects)
+                    .replace(GENERIC_NAME, objective.getDisplayName())
+                );
         });
-        autoFill.setClickAction(objective -> (viewer1, event) -> {
 
-        });
+        return autoFill.build();
     }
 
     @Override
-    @NotNull
-    protected MenuOptions createDefaultOptions() {
-        return new MenuOptions(BLACK.enclose("Currency Objectives"), MenuSize.CHEST_54);
-    }
-
-    @Override
-    @NotNull
-    protected List<MenuItem> createDefaultItems() {
-        List<MenuItem> list = new ArrayList<>();
-
-        ItemStack prevPage = ItemUtil.getSkinHead(SKIN_ARROW_LEFT);
-        ItemUtil.editMeta(prevPage, meta -> {
-            meta.setDisplayName(Lang.EDITOR_ITEM_PREVIOUS_PAGE.getDefaultName());
-        });
-        list.add(new MenuItem(prevPage).setSlots(45).setPriority(10).setHandler(ItemHandler.forPreviousPage(this)));
-
-        ItemStack nextPage = ItemUtil.getSkinHead(SKIN_ARROW_RIGHT);
-        ItemUtil.editMeta(nextPage, meta -> {
-            meta.setDisplayName(Lang.EDITOR_ITEM_NEXT_PAGE.getDefaultName());
-        });
-        list.add(new MenuItem(nextPage).setSlots(53).setPriority(10).setHandler(ItemHandler.forNextPage(this)));
-
-        ItemStack back = ItemUtil.getSkinHead(SKIN_ARROW_DOWN);
-        ItemUtil.editMeta(back, meta -> {
-            meta.setDisplayName(Lang.EDITOR_ITEM_RETURN.getDefaultName());
-        });
-        list.add(new MenuItem(back).setSlots(49).setPriority(10).setHandler(this.returnHandler));
-
-        return list;
-    }
-
-    @Override
-    protected void loadAdditional() {
+    public void loadConfiguration(@NotNull FileConfig config, @NotNull MenuLoader loader) {
         this.objectiveName = ConfigValue.create("Objective.Name",
             LIGHT_YELLOW.enclose(BOLD.enclose(GENERIC_NAME))
-        ).read(cfg);
+        ).read(config);
 
-        this.objectiveLore = ConfigValue.create("Objective.Lore.General", Lists.newList(
+        this.objectiveLore = ConfigValue.create("Objective.Lore", Lists.newList(
             GENERIC_OBJECTS,
-            "",
-            LIGHT_GREEN.enclose("✔") + LIGHT_GRAY.enclose(" - Possible reward."),
-            LIGHT_RED.enclose("[❗]") + LIGHT_GRAY.enclose(" - Possible penalty."),
-            "",
-            LIGHT_YELLOW.enclose(BOLD.enclose("Loot:")),
-            GENERIC_CURRENCY
-        )).read(cfg);
+            EMPTY_IF_ABOVE,
+            GENERIC_REWARDS
+        )).read(config);
 
-        this.objectsLore = ConfigValue.create("Objective.Objects", Lists.newList(
+        this.objectEntry = ConfigValue.create("Objective.Objects.Entry",
             LIGHT_GRAY.enclose(GENERIC_NAME)
-        )).read(cfg);
+        ).read(config);
 
-        this.loreCurrencyAvail = ConfigValue.create("Objective.Lore.Currency.Available",
-            LIGHT_GREEN.enclose("✔ " + LIGHT_GRAY.enclose(CURRENCY_NAME + ": ") + GENERIC_MIN + LIGHT_GRAY.enclose(" ⬌ ") + GENERIC_MAX + " " + GRAY.enclose("(" + WHITE.enclose(GENERIC_CHANCE + "%)")))
-        ).read(cfg);
+        this.objectCurrencyGood = ConfigValue.create("Objective.Objects.Currency.Available",
+            GREEN.enclose("↑ " + GENERIC_MIN + GRAY.enclose(" ⬌ ") + GENERIC_MAX + " " + GRAY.enclose("(" + WHITE.enclose(GENERIC_CHANCE + "%") + ")"))
+        ).read(config);
 
-        this.loreCurrencyPenalty = ConfigValue.create("Objective.Lore.Currency.Penalty",
-            LIGHT_RED.enclose("[❗] " + LIGHT_GRAY.enclose(CURRENCY_NAME + ": ") + GENERIC_MIN + LIGHT_GRAY.enclose(" ⬌ ") + GENERIC_MAX + " " + GRAY.enclose("(" + WHITE.enclose(GENERIC_CHANCE + "%)")))
-        ).read(cfg);
+        this.objectCurrencyBad = ConfigValue.create("Objective.Objects.Currency.Penalty",
+            RED.enclose("↓ " + GENERIC_MIN + GRAY.enclose(" ⬌ ") + GENERIC_MAX + " " + GRAY.enclose("(" + WHITE.enclose(GENERIC_CHANCE + "%") + ")"))
+        ).read(config);
 
-        this.loreCurrencyLimit = ConfigValue.create("Objective.Lore.Currency.LimitReached",
-            LIGHT_ORANGE.enclose("✘ " + LIGHT_GRAY.enclose(CURRENCY_NAME + ": ") + GENERIC_MIN + LIGHT_GRAY.enclose(" ⬌ ") + GENERIC_MAX + " " + LIGHT_RED.enclose("(Daily Limit)"))
-        ).read(cfg);
+        this.objectCurrencyLimit = ConfigValue.create("Objective.Objects.Currency.LimitReached",
+            YELLOW.enclose("⏳ " + GENERIC_MIN + GRAY.enclose(" ⬌ ") + GENERIC_MAX + " " + YELLOW.enclose("(Max. Today)"))
+        ).read(config);
 
-        this.objectSlots = ConfigValue.create("Objective.Slots", IntStream.range(0, 45).toArray()).read(cfg);
+        this.objectiveSlots = ConfigValue.create("Objective.Slots", IntStream.range(0, 45).toArray()).read(config);
+
+        loader.addDefaultItem(MenuItem.buildNextPage(this, 53));
+        loader.addDefaultItem(MenuItem.buildPreviousPage(this, 45));
+        loader.addDefaultItem(MenuItem.buildReturn(this, 49, (viewer, event) -> {
+            this.runNextTick(() -> plugin.getMoneyManager().openObjectivesMenu(viewer.getPlayer()));
+        }));
     }
 }

@@ -3,7 +3,7 @@ package su.nightexpress.lootconomy.command.impl;
 import org.jetbrains.annotations.NotNull;
 import su.nightexpress.lootconomy.LootConomyPlugin;
 import su.nightexpress.lootconomy.Placeholders;
-import su.nightexpress.lootconomy.api.currency.Currency;
+import su.nightexpress.economybridge.api.Currency;
 import su.nightexpress.lootconomy.booster.Multiplier;
 import su.nightexpress.lootconomy.booster.impl.ExpirableBooster;
 import su.nightexpress.lootconomy.command.CommandArguments;
@@ -117,24 +117,26 @@ public class BoosterCommands {
                 }
 
                 user.addBooster(name, booster);
-                plugin.getUserManager().scheduleSave(user);
+                plugin.getUserManager().save(user);
 
-                context.send(Lang.COMMAND_BOOSTER_CREATE_DONE_PLAYER.getMessage()
+                Lang.COMMAND_BOOSTER_CREATE_DONE_PLAYER.getMessage().send(context.getSender(), replacer -> replacer
                     .replace(Placeholders.GENERIC_NAME, name)
                     .replace(Placeholders.PLAYER_NAME, user.getName())
                     .replace(Placeholders.GENERIC_MULTIPLIER, NumberUtil.format(modifier))
                     .replace(Placeholders.GENERIC_DURATION, TimeUtil.formatDuration(booster.getExpireDate()))
-                    .replace(currency.replacePlaceholders()));
+                    .replace(currency.replacePlaceholders())
+                );
             });
         }
         else {
             plugin.getBoosterManager().addBooster(name, booster, true);
 
-            context.send(Lang.COMMAND_BOOSTER_CREATE_DONE_GLOBAL.getMessage()
+            Lang.COMMAND_BOOSTER_CREATE_DONE_GLOBAL.getMessage().send(context.getSender(), replacer -> replacer
                 .replace(Placeholders.GENERIC_NAME, name)
                 .replace(Placeholders.GENERIC_MULTIPLIER, NumberUtil.format(modifier))
                 .replace(Placeholders.GENERIC_DURATION, TimeUtil.formatDuration(booster.getExpireDate()))
-                .replace(currency.replacePlaceholders()));
+                .replace(currency.replacePlaceholders())
+            );
         }
 
         return true;
@@ -152,8 +154,9 @@ public class BoosterCommands {
         String name = arguments.getStringArgument(CommandArguments.NAME);
 
         if (plugin.getBoosterManager().removeBooster(name)) {
-            context.send(Lang.COMMAND_BOOSTER_REMOVE_DONE_GLOBAL.getMessage()
-                .replace(Placeholders.GENERIC_NAME, name));
+            Lang.COMMAND_BOOSTER_REMOVE_DONE_GLOBAL.getMessage().send(context.getSender(), replacer -> replacer
+                .replace(Placeholders.GENERIC_NAME, name)
+            );
         }
         else {
             context.send(Lang.COMMAND_BOOSTER_REMOVE_ERROR_NOTHING.getMessage());
@@ -172,10 +175,11 @@ public class BoosterCommands {
             }
 
             if (user.removeBooster(name)) {
-                plugin.getUserManager().scheduleSave(user);
-                context.send(Lang.COMMAND_BOOSTER_REMOVE_DONE_PLAYER.getMessage()
+                plugin.getUserManager().save(user);
+                Lang.COMMAND_BOOSTER_REMOVE_DONE_PLAYER.getMessage().send(context.getSender(), replacer -> replacer
                     .replace(Placeholders.GENERIC_NAME, name)
-                    .replace(Placeholders.PLAYER_NAME, user.getName()));
+                    .replace(Placeholders.PLAYER_NAME, user.getName())
+                );
             }
             else {
                 context.send(Lang.COMMAND_BOOSTER_REMOVE_ERROR_NOTHING.getMessage());
@@ -209,7 +213,7 @@ public class BoosterCommands {
             return context.sendSuccess(Lang.COMMAND_BOOSTER_INFO_NOTHING.getMessage());
         }
 
-        return context.sendSuccess(Lang.COMMAND_BOOSTER_INFO_LIST.getMessage()
+        Lang.COMMAND_BOOSTER_INFO_LIST.getMessage().send(context.getSender(), replacer -> replacer
             .replace(Placeholders.GENERIC_ENTRY, list -> {
                 boosterMap.forEach((name, booster) -> {
                     String currencies = booster.getMultiplier().getCurrencyMap().entrySet().stream()
@@ -223,6 +227,9 @@ public class BoosterCommands {
                         .replace(Placeholders.GENERIC_CURRENCY, currencies)
                     );
                 });
-            }));
+            })
+        );
+
+        return true;
     }
 }

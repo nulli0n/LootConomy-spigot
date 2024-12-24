@@ -7,10 +7,11 @@ import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 import su.nightexpress.lootconomy.LootConomyPlugin;
 import su.nightexpress.lootconomy.Placeholders;
-import su.nightexpress.lootconomy.api.currency.Currency;
+import su.nightexpress.economybridge.api.Currency;
 import su.nightexpress.lootconomy.command.CommandArguments;
 import su.nightexpress.lootconomy.config.Lang;
 import su.nightexpress.lootconomy.config.Perms;
+import su.nightexpress.lootconomy.currency.CurrencySettings;
 import su.nightexpress.lootconomy.data.impl.LootUser;
 import su.nightexpress.lootconomy.money.MoneyUtils;
 import su.nightexpress.nightcore.command.experimental.CommandContext;
@@ -29,7 +30,7 @@ public class BaseCommands {
     public static void load(@NotNull LootConomyPlugin plugin) {
         ChainedNode node = plugin.getRootNode();
 
-        ReloadCommand.inject(plugin, node, Perms.COMMAND_RELOAD);
+        node.addChildren(ReloadCommand.builder(plugin, Perms.COMMAND_RELOAD));
 
         node.addChildren(DirectNode.builder(plugin, "objectives")
             .description(Lang.COMMAND_OBJECTIVES_DESC)
@@ -99,7 +100,7 @@ public class BaseCommands {
         plugin.getMoneyManager().openObjectivesMenu(player);
 
         if (player != context.getSender()) {
-            context.send(Lang.COMMAND_OBJECTIVES_DONE_OTHERS.getMessage().replace(Placeholders.forPlayer(player)));
+            Lang.COMMAND_OBJECTIVES_DONE_OTHERS.getMessage().send(context.getSender(), replacer -> replacer.replace(Placeholders.forPlayer(player)));
         }
 
         return true;
@@ -109,17 +110,23 @@ public class BaseCommands {
         Player player = context.getExecutor();
         if (player == null) return false;
 
-        LootUser user = plugin.getUserManager().getUserData(player);
+        LootUser user = plugin.getUserManager().getOrFetch(player);
 
         user.getSettings().setPickupSound(!user.getSettings().isPickupSound());
-        plugin.getUserManager().scheduleSave(user);
+        plugin.getUserManager().save(user);
 
-        return context.sendSuccess(Lang.COMMAND_SOUND_DONE.getMessage()
-            .replace(Placeholders.GENERIC_STATE, Lang.getEnabledOrDisabled(user.getSettings().isPickupSound())));
+        Lang.COMMAND_SOUND_DONE.getMessage().send(context.getSender(), replacer -> replacer
+            .replace(Placeholders.GENERIC_STATE, Lang.getEnabledOrDisabled(user.getSettings().isPickupSound()))
+        );
+
+        return true;
     }
 
     public static boolean dropItem(@NotNull LootConomyPlugin plugin, @NotNull CommandContext context, @NotNull ParsedArguments arguments) {
         Currency currency = arguments.getArgument(CommandArguments.CURRENCY, Currency.class);
+        CurrencySettings settings = plugin.getCurrencyManager().getSettings(currency);
+        if (settings == null) return false;
+
         World world = arguments.getWorldArgument(CommandArguments.WORLD);
 
         double min = arguments.getDoubleArgument(CommandArguments.MIN_AMOUNT);
@@ -134,17 +141,19 @@ public class BaseCommands {
         Location location = new Location(world, x, y, z);
 
         for (int i = 0; i < count; i++) {
-            double amount = currency.round(Rnd.getDouble(min, max));
+            double amount = currency.fineValue(Rnd.getDouble(min, max));
             if (amount <= 0) continue;
 
-            ItemStack item = MoneyUtils.createMoney(currency, amount);
+            ItemStack item = MoneyUtils.createMoney(currency, settings, amount);
             world.dropItem(location, item);
         }
 
-        return context.sendSuccess(Lang.COMMAND_DROP_DONE.getMessage()
+        Lang.COMMAND_DROP_DONE.getMessage().send(context.getSender(), replacer -> replacer
             .replace(Placeholders.GENERIC_MIN, currency.format(min))
             .replace(Placeholders.GENERIC_MAX, currency.format(max))
             .replace(Placeholders.GENERIC_AMOUNT, NumberUtil.format(count))
-            .replace(Placeholders.forLocation(location)));
+            .replace(Placeholders.forLocation(location))
+        );
+        return true;
     }
 }

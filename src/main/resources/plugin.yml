@@ -3,11 +3,10 @@ main: su.nightexpress.lootconomy.LootConomyPlugin
 version: '${project.version}'
 description: Spread your economy & currencies across the world in a natural way!
 author: NightExpress
-depend: [nightcore]
+depend:
+  - nightcore
+  - EconomyBridge
 softdepend:
   - MythicMobs
   - PlaceholderAPI
-  - CoinsEngine
-  - PlayerPoints
-  - Vault
-api-version: 1.19
+api-version: 1.21

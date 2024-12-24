@@ -1,7 +1,7 @@
 package su.nightexpress.lootconomy.booster.impl;
 
 import org.jetbrains.annotations.NotNull;
-import su.nightexpress.lootconomy.api.currency.Currency;
+import su.nightexpress.economybridge.api.Currency;
 import su.nightexpress.lootconomy.booster.Multiplier;
 import su.nightexpress.lootconomy.booster.config.BoosterInfo;
 
@@ -25,7 +25,7 @@ public class Booster {
     }
 
     public static double getMultiplier(@NotNull Currency currency, @NotNull Collection<Booster> boosters) {
-        return getMultiplier(currency.getId(), boosters);
+        return getMultiplier(currency.getInternalId(), boosters);
     }
 
     public static double getMultiplier(@NotNull String id, @NotNull Collection<Booster> boosters) {
@@ -33,7 +33,7 @@ public class Booster {
     }
 
     public static double getPercent(@NotNull Currency currency, @NotNull Collection<Booster> boosters) {
-        return getPercent(currency.getId(), boosters);
+        return getPercent(currency.getInternalId(), boosters);
     }
 
     public static double getPercent(@NotNull String id, @NotNull Collection<Booster> boosters) {

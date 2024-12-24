@@ -13,28 +13,34 @@ import su.nightexpress.lootconomy.data.serialize.BoosterMultiplierSerializer;
 import su.nightexpress.lootconomy.data.serialize.ExpirableBoosterSerializer;
 import su.nightexpress.lootconomy.data.serialize.LimitDataSerializer;
 import su.nightexpress.lootconomy.data.serialize.UserSettingsSerializer;
-import su.nightexpress.nightcore.database.AbstractUserDataHandler;
-import su.nightexpress.nightcore.database.sql.SQLColumn;
-import su.nightexpress.nightcore.database.sql.SQLValue;
-import su.nightexpress.nightcore.database.sql.column.ColumnType;
+import su.nightexpress.nightcore.db.AbstractUserDataManager;
+import su.nightexpress.nightcore.db.sql.column.Column;
+import su.nightexpress.nightcore.db.sql.column.ColumnType;
+import su.nightexpress.nightcore.db.sql.query.impl.SelectQuery;
+import su.nightexpress.nightcore.db.sql.query.type.ValuedQuery;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.*;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
 import java.util.function.Function;
 
-public class DataHandler extends AbstractUserDataHandler<LootConomyPlugin, LootUser> {
+public class DataHandler extends AbstractUserDataManager<LootConomyPlugin, LootUser> {
 
-    private final  Function<ResultSet, LootUser> userFunction;
-
-    private static final SQLColumn COLUMN_LIMIT_DATA = SQLColumn.of("limitdata", ColumnType.STRING);
-    private static final SQLColumn COLUMN_BOOSTERS   = SQLColumn.of("boosters", ColumnType.STRING);
-    private static final SQLColumn COLUMN_SETTINGS   = SQLColumn.of("settings", ColumnType.STRING);
+    private static final Column COLUMN_LIMIT_DATA = Column.of("limitdata", ColumnType.STRING);
+    private static final Column COLUMN_BOOSTERS   = Column.of("boosters", ColumnType.STRING);
+    private static final Column COLUMN_SETTINGS   = Column.of("settings", ColumnType.STRING);
 
     public DataHandler(@NotNull LootConomyPlugin plugin) {
         super(plugin);
+    }
 
-        this.userFunction = resultSet -> {
+    @Override
+    @NotNull
+    protected Function<ResultSet, LootUser> createUserFunction() {
+        return resultSet -> {
             try {
                 UUID uuid = UUID.fromString(resultSet.getString(COLUMN_USER_ID.getName()));
                 String name = resultSet.getString(COLUMN_USER_NAME.getName());
@@ -50,7 +56,7 @@ public class DataHandler extends AbstractUserDataHandler<LootConomyPlugin, LootU
                 UserSettings settings = this.gson.fromJson(resultSet.getString(COLUMN_SETTINGS.getName()), new TypeToken<UserSettings>(){}.getType());
                 if (settings == null) settings = new UserSettings();
 
-                return new LootUser(plugin, uuid, name, dateCreated, lastOnline, limitData, boosters, settings);
+                return new LootUser(uuid, name, dateCreated, lastOnline, limitData, boosters, settings);
             }
             catch (SQLException ex) {
                 return null;
@@ -59,14 +65,35 @@ public class DataHandler extends AbstractUserDataHandler<LootConomyPlugin, LootU
     }
 
     @Override
+    protected void addUpsertQueryData(@NotNull ValuedQuery<?, LootUser> query) {
+        query.setValue(COLUMN_LIMIT_DATA, user -> this.gson.toJson(user.getLimitData()));
+        query.setValue(COLUMN_BOOSTERS, user -> this.gson.toJson(user.getBoosterMap()));
+        query.setValue(COLUMN_SETTINGS, user -> this.gson.toJson(user.getSettings()));
+    }
+
+    @Override
+    protected void addSelectQueryData(@NotNull SelectQuery<LootUser> query) {
+        query.column(COLUMN_LIMIT_DATA);
+        query.column(COLUMN_SETTINGS);
+        query.column(COLUMN_BOOSTERS);
+    }
+
+    @Override
+    protected void addTableColumns(@NotNull List<Column> columns) {
+        columns.add(COLUMN_LIMIT_DATA);
+        columns.add(COLUMN_SETTINGS);
+        columns.add(COLUMN_BOOSTERS);
+    }
+
+    @Override
     public void onSynchronize() {
         this.plugin.getUserManager().getLoaded().forEach(user -> {
-            if (plugin.getUserManager().isScheduledToSave(user)) return;
+            if (user.isAutoSavePlanned()) return;
 
             LootUser fetched = this.getUser(user.getId());
             if (fetched == null) return;
 
-            if (!user.isSyncReady()) return;
+            if (!user.isAutoSyncReady()) return;
 
             user.getBoosterMap().clear();
             user.getBoosterMap().putAll(fetched.getBoosterMap());
@@ -78,33 +105,10 @@ public class DataHandler extends AbstractUserDataHandler<LootConomyPlugin, LootU
     @Override
     @NotNull
     protected GsonBuilder registerAdapters(@NotNull GsonBuilder builder) {
-        return super.registerAdapters(builder
+        return builder
             .registerTypeAdapter(UserSettings.class, new UserSettingsSerializer())
             .registerTypeAdapter(LootLimitData.class, new LimitDataSerializer())
             .registerTypeAdapter(Multiplier.class, new BoosterMultiplierSerializer())
-            .registerTypeAdapter(ExpirableBooster.class, new ExpirableBoosterSerializer())
-        );
-    }
-
-    @Override
-    @NotNull
-    protected List<SQLColumn> getExtraColumns() {
-        return Arrays.asList(COLUMN_LIMIT_DATA, COLUMN_SETTINGS, COLUMN_BOOSTERS);
-    }
-
-    @Override
-    @NotNull
-    protected List<SQLValue> getSaveColumns(@NotNull LootUser user) {
-        return Arrays.asList(
-            COLUMN_LIMIT_DATA.toValue(this.gson.toJson(user.getLimitData())),
-            COLUMN_BOOSTERS.toValue(this.gson.toJson(user.getBoosterMap())),
-            COLUMN_SETTINGS.toValue(this.gson.toJson(user.getSettings()))
-        );
-    }
-
-    @Override
-    @NotNull
-    protected Function<ResultSet, LootUser> getUserFunction() {
-        return this.userFunction;
+            .registerTypeAdapter(ExpirableBooster.class, new ExpirableBoosterSerializer());
     }
 }

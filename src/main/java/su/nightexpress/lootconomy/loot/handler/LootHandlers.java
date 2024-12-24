@@ -1,4 +1,4 @@
-package su.nightexpress.lootconomy.action;
+package su.nightexpress.lootconomy.loot.handler;
 
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -6,11 +6,9 @@ import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.data.Ageable;
 import org.bukkit.block.data.BlockData;
+import org.bukkit.damage.DamageType;
 import org.bukkit.entity.*;
 import org.bukkit.event.block.BlockBreakEvent;
-import org.bukkit.event.block.BlockFertilizeEvent;
-import org.bukkit.event.entity.EntityDamageByEntityEvent;
-import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.player.PlayerFishEvent;
 import org.bukkit.event.player.PlayerHarvestBlockEvent;
@@ -18,30 +16,39 @@ import org.bukkit.event.player.PlayerShearEntityEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.Vector;
 import org.jetbrains.annotations.NotNull;
-import su.nightexpress.lootconomy.hook.HookId;
+import su.nightexpress.lootconomy.LootConomyPlugin;
+import su.nightexpress.lootconomy.api.loot.LootHandler;
+import su.nightexpress.lootconomy.api.loot.LootProvider;
 import su.nightexpress.lootconomy.hook.impl.ExcellentEnchantsHook;
-import su.nightexpress.lootconomy.hook.impl.MythicMobsHook;
 import su.nightexpress.lootconomy.money.MoneyUtils;
 import su.nightexpress.nightcore.util.LocationUtil;
-import su.nightexpress.nightcore.util.Plugins;
 import su.nightexpress.nightcore.util.blocktracker.PlayerBlockTracker;
 
 import java.util.function.Consumer;
 
-public class EventHelpers {
+@SuppressWarnings("UnstableApiUsage")
+public class LootHandlers {
 
-    private static <O> void dropLoot(@NotNull Player player, @NotNull O object, @NotNull LootProcessor<O> processor, @NotNull Location location) {
+    private static <O> void dropLoot(@NotNull LootConomyPlugin plugin,
+                                     @NotNull Player player,
+                                     @NotNull O object,
+                                     @NotNull LootProvider<O> provider,
+                                     @NotNull Location location) {
         Location center = LocationUtil.setCenter3D(location.clone());
-        dropLoot(player, object, processor, itemStack -> {
+        dropLoot(plugin, player, object, provider, itemStack -> {
             player.getWorld().dropItem(center, itemStack);
         });
     }
 
-    private static <O> void dropLoot(@NotNull Player player, @NotNull O object, @NotNull LootProcessor<O> processor, @NotNull Consumer<ItemStack> consumer) {
-        processor.getLoot(player, object, 1).forEach(consumer);
+    private static <O> void dropLoot(@NotNull LootConomyPlugin plugin,
+                                     @NotNull Player player,
+                                     @NotNull O object,
+                                     @NotNull LootProvider<O> provider,
+                                     @NotNull Consumer<ItemStack> consumer) {
+        provider.createLoot(plugin, player, object).forEach(consumer);
     }
 
-    public static final EventHelper<BlockBreakEvent, Material> BLOCK_BREAK = (plugin, event, processor) -> {
+    public static final LootHandler<BlockBreakEvent, Material> BLOCK_BREAK = (plugin, event, provider) -> {
         Block block = event.getBlock();
         BlockData blockData = block.getBlockData();
         Material blockType = block.getType();
@@ -68,7 +75,7 @@ public class EventHelpers {
             BlockBreakEvent event2 = new BlockBreakEvent(block, player);
             Location center = LocationUtil.setCenter3D(event2.getBlock().getLocation());
 
-            dropLoot(player, blockType, processor, itemStack -> {
+            dropLoot(plugin, player, blockType, provider, itemStack -> {
                 if (ExcellentEnchantsHook.hasTelekinesis(tool)) {
                     plugin.getMoneyManager().pickupMoney(player, itemStack);
                     return;
@@ -79,82 +86,80 @@ public class EventHelpers {
         return true;
     };
 
-    public static final EventHelper<PlayerHarvestBlockEvent, Material> BLOCK_HARVEST = (plugin, event, processor) -> {
+    public static final LootHandler<PlayerHarvestBlockEvent, Material> BLOCK_HARVEST = (plugin, event, provider) -> {
         Block block = event.getHarvestedBlock();
         if (PlayerBlockTracker.isTracked(block)) {
             return false;
         }
 
         Player player = event.getPlayer();
-        dropLoot(player, block.getType(), processor, block.getLocation());
-        return true;
-    };
-
-    public static final EventHelper<BlockFertilizeEvent, Material> BLOCK_FERTILIZE = (plugin, event, processor) -> {
-        Player player = event.getPlayer();
-        if (player == null) return false;
-
-        Block block = event.getBlock();
-        dropLoot(player, block.getType(), processor, block.getLocation());
-
-        event.getBlocks().forEach(blockState -> {
-            dropLoot(player, blockState.getType(), processor, blockState.getLocation());
+        //dropLoot(plugin, player, block.getType(), provider, block.getLocation());
+        dropLoot(plugin, player, block.getType(), provider, itemStack -> {
+            event.getItemsHarvested().add(itemStack);
         });
         return true;
     };
 
-    public static final EventHelper<EntityDeathEvent, EntityType> ENTITY_KILL = (plugin, event, processor) -> {
+    public static final LootHandler<EntityDeathEvent, EntityType> ENTITY_KILL = (plugin, event, provider) -> {
         LivingEntity entity = event.getEntity();
-        if (entity instanceof Player) return false;
-        if (MoneyUtils.isDevastated(entity)) return false;
-        if (Plugins.isLoaded(HookId.MYTHIC_MOBS) && MythicMobsHook.isMythicMob(entity)) return false;
-        if (entity.getVehicle() instanceof Minecart || entity.getVehicle() instanceof Boat) return false;
-        if (entity.getLastDamageCause() != null && entity.getLastDamageCause().getCause() == EntityDamageEvent.DamageCause.CRAMMING) return false;
 
+        // Do not drop money if not killed by a player.
         Player killer = entity.getKiller();
         if (killer == null) return false;
 
-        dropLoot(killer, entity.getType(), processor, itemStack -> {
+        // Do not drop money if mob is handled by other plugin or if it was spawned by specific source.
+        if (MoneyUtils.isDevastated(entity)) return false;
+        if (!MoneyUtils.isVanillaMob(entity)) return false;
+
+        // Do not drop money for mobs inside non-living (boats, minecarts) vehicles.
+        Entity vehicle = entity.getVehicle();
+        if (!(vehicle instanceof LivingEntity)) return false;
+
+        // Do not drop money if mob died from cramming.
+        var lastCause = entity.getLastDamageCause();
+        if (lastCause != null && lastCause.getDamageSource().getDamageType() == DamageType.CRAMMING) return false;
+
+        dropLoot(plugin, killer, entity.getType(), provider, itemStack -> {
             event.getDrops().add(itemStack);
         });
         return true;
     };
 
-    public static final EventHelper<EntityDeathEvent, EntityType> ENTITY_SHOOT = (plugin, event, processor) -> {
-        LivingEntity entity = event.getEntity();
-        if (MoneyUtils.isDevastated(entity)) return false;
+//    public static final LootHandler<EntityDeathEvent, EntityType> ENTITY_SHOOT = (plugin, event, provider) -> {
+//        LivingEntity entity = event.getEntity();
+//        if (MoneyUtils.isDevastated(entity)) return false;
+//
+//        Player killer = entity.getKiller();
+//        if (killer == null) return false;
+//
+//        if (!(entity.getLastDamageCause() instanceof EntityDamageByEntityEvent ede)) return false;
+//        if (!(ede.getDamager() instanceof Projectile)) return false;
+//
+//        // Do not count MythicMobs here.
+//        if (Plugins.isLoaded(HookId.MYTHIC_MOBS) && MythicMobsHook.isMythicMob(entity)) return false;
+//
+//        dropLoot(plugin, killer, entity.getType(), provider, itemStack -> {
+//            event.getDrops().add(itemStack);
+//        });
+//        return true;
+//    };
 
-        Player killer = entity.getKiller();
-        if (killer == null) return false;
-
-        if (!(entity.getLastDamageCause() instanceof EntityDamageByEntityEvent ede)) return false;
-        if (!(ede.getDamager() instanceof Projectile)) return false;
-
-        // Do not count MythicMobs here.
-        if (Plugins.isLoaded(HookId.MYTHIC_MOBS) && MythicMobsHook.isMythicMob(entity)) return false;
-
-        dropLoot(killer, entity.getType(), processor, itemStack -> {
-            event.getDrops().add(itemStack);
-        });
-        return true;
-    };
-
-    public static final EventHelper<PlayerShearEntityEvent, EntityType> ENTITY_SHEAR = (plugin, event, processor) -> {
+    public static final LootHandler<PlayerShearEntityEvent, EntityType> ENTITY_SHEAR = (plugin, event, provider) -> {
         Player player = event.getPlayer();
         Entity entity = event.getEntity();
 
-        dropLoot(player, entity.getType(), processor, entity.getLocation());
+        dropLoot(plugin, player, entity.getType(), provider, entity.getLocation());
         return true;
     };
 
-    public static final EventHelper<PlayerFishEvent, Material> ITEM_FISH = (plugin, event, processor) -> {
+    public static final LootHandler<PlayerFishEvent, Material> ITEM_FISH = (plugin, event, provider) -> {
         if (event.getState() != PlayerFishEvent.State.CAUGHT_FISH) return false;
 
         Entity caught = event.getCaught();
         if (!(caught instanceof Item item)) return false;
 
         Player player = event.getPlayer();
-        dropLoot(player, item.getItemStack().getType(), processor, itemStack -> {
+        dropLoot(plugin, player, item.getItemStack().getType(), provider, itemStack -> {
             Location locHook = event.getHook().getLocation();
             Location locPlayer = player.getLocation();
 

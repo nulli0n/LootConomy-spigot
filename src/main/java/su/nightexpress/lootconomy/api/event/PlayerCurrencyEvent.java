@@ -5,7 +5,7 @@ import org.bukkit.event.Cancellable;
 import org.bukkit.event.Event;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import su.nightexpress.lootconomy.api.currency.Currency;
+import su.nightexpress.economybridge.api.Currency;
 import su.nightexpress.lootconomy.money.object.MoneyObjective;
 
 public abstract class PlayerCurrencyEvent extends Event implements Cancellable {

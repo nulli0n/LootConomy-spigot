@@ -12,9 +12,13 @@ import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import su.nightexpress.lootconomy.api.currency.Currency;
+import su.nightexpress.economybridge.api.Currency;
 import su.nightexpress.lootconomy.config.Config;
 import su.nightexpress.lootconomy.config.Keys;
+import su.nightexpress.lootconomy.currency.CurrencySettings;
+import su.nightexpress.lootconomy.hook.HookId;
+import su.nightexpress.lootconomy.hook.impl.mythicmobs.MythicMobsHook;
+import su.nightexpress.lootconomy.loot.handler.LootActions;
 import su.nightexpress.lootconomy.money.object.MoneyObjective;
 import su.nightexpress.nightcore.util.*;
 import su.nightexpress.nightcore.util.text.NightMessage;
@@ -22,6 +26,22 @@ import su.nightexpress.nightcore.util.text.NightMessage;
 import java.util.UUID;
 
 public class MoneyUtils {
+
+    public static boolean hasMythicMobs() {
+        return Plugins.isInstalled(HookId.MYTHIC_MOBS);
+    }
+
+    public static boolean isVanillaMob(@NotNull Entity entity) {
+        if (hasMythicMobs() && MythicMobsHook.isMythicMob(entity)) return false;
+
+        return !(entity instanceof Player);
+    }
+
+    @NotNull
+    public static String getDefaultActionCategory(@NotNull String actionName) {
+        var action = LootActions.getByName(actionName);
+        return action == null ? Placeholders.DEFAULT : action.getDefaultCategory();
+    }
 
     @SuppressWarnings("UnstableApiUsage")
     @Nullable
@@ -63,36 +83,36 @@ public class MoneyUtils {
     }
 
     @NotNull
-    public static ItemStack createMoney(@NotNull Currency currency, double amount) {
-        return createMoney(currency, amount, null, null);
+    public static ItemStack createMoney(@NotNull Currency currency, @NotNull CurrencySettings settings, double amount) {
+        return createMoney(currency, settings, amount, null, null);
     }
 
     @NotNull
-    public static ItemStack createMoney(@NotNull Currency currency, double amount, @Nullable UUID ownerId) {
-        return createMoney(currency, amount, ownerId, null);
+    public static ItemStack createMoney(@NotNull Currency currency, @NotNull CurrencySettings settings, double amount, @Nullable UUID ownerId) {
+        return createMoney(currency, settings, amount, ownerId, null);
     }
 
     @NotNull
-    public static ItemStack createMoney(@NotNull Currency currency, double amount, @Nullable UUID ownerId, @Nullable MoneyObjective objective) {
+    public static ItemStack createMoney(@NotNull Currency currency, @NotNull CurrencySettings settings, double amount, @Nullable UUID ownerId, @Nullable MoneyObjective objective) {
         if (amount == 0D) throw new IllegalArgumentException("Money amount can not be zero!");
 
         // Get item model depends on the money amount.
-        ItemStack item = currency.getIcon(amount);
+        ItemStack item = settings.getIcon(amount);
 
-        double finalMoney = currency.round(amount);
+        double finalMoney = currency.fineValue(amount);
         ItemUtil.editMeta(item, meta -> {
             PDCUtil.set(meta, Keys.itemAmount, finalMoney);
-            PDCUtil.set(meta, Keys.itemCurrency, currency.getId());
+            PDCUtil.set(meta, Keys.itemCurrency, currency.getInternalId());
             PDCUtil.set(meta, Keys.itemId, UUID.randomUUID().toString());
             if (objective != null) {
                 PDCUtil.set(meta, Keys.itemObjective, objective.getId());
-                PDCUtil.set(meta, Keys.itemActionType, objective.getActionType().getName());
+                PDCUtil.set(meta, Keys.itemActionType, objective.getActionName());
             }
             if (Config.LOOT_PROTECTION.get() && ownerId != null) {
                 PDCUtil.set(meta, Keys.itemOwner, ownerId);
             }
 
-            meta.setDisplayName(NightMessage.asLegacy(currency.dropFormat(amount)));
+            meta.setDisplayName(NightMessage.asLegacy(settings.dropFormat(currency, amount)));
         });
         return item;
     }

@@ -3,10 +3,10 @@ package su.nightexpress.lootconomy.config;
 import org.bukkit.GameMode;
 import org.bukkit.Material;
 import org.bukkit.event.entity.CreatureSpawnEvent;
+import su.nightexpress.economybridge.currency.CurrencyId;
 import su.nightexpress.lootconomy.booster.Multiplier;
 import su.nightexpress.lootconomy.booster.config.RankBoosterInfo;
 import su.nightexpress.lootconomy.booster.config.ScheduledBoosterInfo;
-import su.nightexpress.lootconomy.currency.handler.VaultEconomyHandler;
 import su.nightexpress.nightcore.config.ConfigValue;
 import su.nightexpress.nightcore.util.BukkitThing;
 import su.nightexpress.nightcore.util.Lists;
@@ -53,6 +53,9 @@ public class Config {
         "Sets how often (in ticks) plugin will check each player with full inventory for currency items around to pickup.",
         "1 second = 20 ticks.",
         "Setting this option to low values may damage server's performance.");
+//
+//    public static final ConfigValue<Map<String, ObjectiveCategory>> OBJECTIVE_CATEGORIES = ConfigValue.forMapById("Objectives.Categories",
+//        (cfg, path) -> ObjectiveCategory.read(cfg, path))
 
     public static final ConfigValue<Boolean> OBJECTIVE_CUSTOM_MULTIPLIERS_ENABLED = ConfigValue.create("Objectives.Custom_Multipliers.Enabled",
         false,
@@ -148,7 +151,7 @@ public class Config {
         Map.of(
             "example",
             new ScheduledBoosterInfo(
-                new Multiplier(Map.of(VaultEconomyHandler.ID, 1.25)),
+                new Multiplier(Map.of(CurrencyId.VAULT, 1.25)),
                 Map.of(DayOfWeek.SATURDAY, Lists.newSet(LocalTime.of(16, 0))),
                 7200
             )
@@ -162,10 +165,10 @@ public class Config {
         (cfg, path, map) -> map.forEach((id, info) -> info.write(cfg, path + "." + id)),
         Map.of(
             "vip", new RankBoosterInfo("vip", 10,
-                new Multiplier(Map.of(VaultEconomyHandler.ID, 1.25))
+                new Multiplier(Map.of(CurrencyId.VAULT, 1.25))
             ),
             "premium", new RankBoosterInfo("premium", 20,
-                new Multiplier(Map.of(VaultEconomyHandler.ID, 1.5))
+                new Multiplier(Map.of(CurrencyId.VAULT, 1.5))
             )
         ),
         "List of persistent currency boosters based on player permission group(s).",

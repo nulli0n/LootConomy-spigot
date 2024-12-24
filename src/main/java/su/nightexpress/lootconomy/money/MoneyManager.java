@@ -8,10 +8,15 @@ import org.bukkit.event.entity.EntityPickupItemEvent;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import su.nightexpress.economybridge.EconomyBridge;
 import su.nightexpress.lootconomy.LootConomyPlugin;
 import su.nightexpress.lootconomy.Placeholders;
-import su.nightexpress.lootconomy.action.ActionType;
-import su.nightexpress.lootconomy.api.currency.Currency;
+import su.nightexpress.lootconomy.currency.CurrencySettings;
+import su.nightexpress.lootconomy.hook.HookId;
+import su.nightexpress.lootconomy.hook.impl.mythicmobs.MythicMobsHook;
+import su.nightexpress.lootconomy.hook.impl.mythicmobs.MythicMobsListener;
+import su.nightexpress.lootconomy.loot.handler.LootAction;
+import su.nightexpress.economybridge.api.Currency;
 import su.nightexpress.lootconomy.api.event.PlayerCurrencyGainEvent;
 import su.nightexpress.lootconomy.api.event.PlayerCurrencyLootCreateEvent;
 import su.nightexpress.lootconomy.api.event.PlayerCurrencyLoseEvent;
@@ -21,63 +26,75 @@ import su.nightexpress.lootconomy.config.Lang;
 import su.nightexpress.lootconomy.config.Perms;
 import su.nightexpress.lootconomy.data.impl.LootLimitData;
 import su.nightexpress.lootconomy.data.impl.LootUser;
+import su.nightexpress.lootconomy.loot.handler.LootActions;
+import su.nightexpress.lootconomy.loot.listener.LootListener;
+import su.nightexpress.lootconomy.loot.objective.ObjectiveCategory;
 import su.nightexpress.lootconomy.money.listener.AbuseListener;
 import su.nightexpress.lootconomy.money.listener.MoneyItemListener;
-import su.nightexpress.lootconomy.money.menu.ObjectiveTypesMenu;
+import su.nightexpress.lootconomy.money.menu.CategoriesMenu;
 import su.nightexpress.lootconomy.money.menu.ObjectivesMenu;
 import su.nightexpress.lootconomy.money.object.DeathPenalty;
 import su.nightexpress.lootconomy.money.object.DropInfo;
 import su.nightexpress.lootconomy.money.object.MoneyObjective;
 import su.nightexpress.nightcore.config.FileConfig;
-import su.nightexpress.nightcore.language.message.LangMessage;
+import su.nightexpress.nightcore.manager.AbstractListener;
 import su.nightexpress.nightcore.manager.AbstractManager;
-import su.nightexpress.nightcore.util.ItemUtil;
-import su.nightexpress.nightcore.util.NumberUtil;
+import su.nightexpress.nightcore.util.*;
 import su.nightexpress.nightcore.util.random.Rnd;
 
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.function.Supplier;
+import java.util.stream.Collectors;
 
 public class MoneyManager extends AbstractManager<LootConomyPlugin> {
 
-    private final Map<ActionType<?, ?>, Map<String, MoneyObjective>> objectiveMap;
+    private final Map<String, ObjectiveCategory> categoryMap;
+    private final Map<String, Map<String, MoneyObjective>> objectiveMap;
 
     private final Set<Item> trackedLoot;
 
-    private ObjectiveTypesMenu objectiveTypesMenu;
-    private ObjectivesMenu     objectivesMenu;
+    private CategoriesMenu categoriesMenu;
+    private ObjectivesMenu objectivesMenu;
 
     public MoneyManager(@NotNull LootConomyPlugin plugin) {
         super(plugin);
+        this.categoryMap = new HashMap<>();
         this.objectiveMap = new HashMap<>();
         this.trackedLoot = ConcurrentHashMap.newKeySet();
     }
 
     @Override
     protected void onLoad() {
+        LootActions.registerDefaults();
+        this.registerHooks();
+
         this.loadDefaults();
+        this.loadCategories();
         this.loadObjectives();
         this.loadUI();
 
         this.addListener(new MoneyItemListener(this.plugin, this));
         this.addListener(new AbuseListener(this.plugin));
+        this.addListener(new LootListener(this.plugin));
 
         if (Config.LOOT_MERGE_ENABLED.get()) {
-            this.addTask(this.plugin.createTask(this::mergeMoneyItems).setSecondsInterval(Config.LOOT_MERGE_INTERVAL.get()));
+            this.addTask(this::mergeMoneyItems, Config.LOOT_MERGE_INTERVAL.get());
         }
         if (Config.INVENTORY_SIZE_BYPASS_ENABLED.get()) {
-            this.addTask(this.plugin.createTask(this::forcePickup).setTicksInterval(Config.INVENTORY_SIZE_BYPASS_INTERVAL.get()));
+            this.addTask(this::forcePickup, Config.INVENTORY_SIZE_BYPASS_INTERVAL.get());
         }
-        this.addTask(this.plugin.createAsyncTask(this::playMoneyEffect).setTicksInterval(5L));
+        this.addAsyncTask(this::playMoneyEffect, 5L);
     }
 
     @Override
     protected void onShutdown() {
         if (this.objectivesMenu != null) this.objectivesMenu.clear();
-        if (this.objectiveTypesMenu != null) this.objectiveTypesMenu.clear();
+        if (this.categoriesMenu != null) this.categoriesMenu.clear();
 
         this.trackedLoot.clear();
         this.objectiveMap.clear();
+        this.categoryMap.clear();
     }
 
     private void loadDefaults() {
@@ -85,43 +102,115 @@ public class MoneyManager extends AbstractManager<LootConomyPlugin> {
         creator.create();
     }
 
+    private void registerHooks() {
+        this.registerExternal(HookId.MYTHIC_MOBS, () -> {
+            MythicMobsHook.register();
+            return new MythicMobsListener(this.plugin);
+        });
+    }
+
+    private void registerExternal(@NotNull String plugin, @NotNull Supplier<AbstractListener<LootConomyPlugin>> consumer) {
+        if (Plugins.isLoaded(plugin)) {
+            this.plugin.info("Found " + plugin + "! Registering new objective types...");
+            this.addListener(consumer.get());
+        }
+    }
+
+    private void loadCategories() {
+        FileConfig config = this.plugin.getConfig();
+
+        config.getSection("Objectives.Categories").forEach(sId -> {
+            ObjectiveCategory category = ObjectiveCategory.read(config, "Objectives.Categories." + sId, sId);
+            this.categoryMap.put(category.getId(), category);
+        });
+
+        this.plugin.info("Loaded " + this.categoryMap.size() + " categories.");
+    }
+
     private void loadObjectives() {
         for (FileConfig config : FileConfig.loadAll(this.plugin.getDataFolder() + Config.DIR_OBJECTIVES)) {
             for (String object : config.getSection("")) {
-                MoneyObjective objective = MoneyObjective.read(plugin, config, object, object);
-                if (objective == null) continue;
+                MoneyObjective objective = MoneyObjective.read(config, object, object);
+                if (!this.validateObjective(objective, config)) continue;
 
-                this.objectiveMap.computeIfAbsent(objective.getActionType(), k -> new HashMap<>()).put(objective.getId(), objective);
+                this.objectiveMap.computeIfAbsent(objective.getActionName(), k -> new HashMap<>()).put(objective.getId(), objective);
             }
             config.saveChanges();
         }
     }
 
+    private boolean validateObjective(@NotNull MoneyObjective objective, @NotNull FileConfig config) {
+        String id = objective.getId();
+        String fileName = config.getFile().getName();
+
+        var action = LootActions.getByName(objective.getActionName());
+        if (action == null) {
+            plugin.error("Invalid 'ActionType' for '" + id + "' objective (File: '" + fileName + "').");
+            return false;
+        }
+
+        if (!this.hasCategory(objective.getCategory())) {
+            plugin.warn("Invalid 'Category' for '" + id + "' objective (File: '" + fileName + "').");
+        }
+
+        objective.getObjects().forEach(objectId -> {
+            if (action.parse(objectId) == null) {
+                plugin.warn("Unknown object '" + objectId + "' in '" + id + "' objective (File: '" + fileName + "').");
+            }
+        });
+
+        return true;
+    }
+
     private void loadUI() {
-        this.objectiveTypesMenu = new ObjectiveTypesMenu(this.plugin);
+        this.categoriesMenu = new CategoriesMenu(this.plugin);
         this.objectivesMenu = new ObjectivesMenu(this.plugin);
     }
 
     public void openObjectivesMenu(@NotNull Player player) {
-        this.objectiveTypesMenu.open(player);
+        this.categoriesMenu.open(player);
     }
 
-    public void openObjectivesMenu(@NotNull Player player, @NotNull ActionType<?, ?> type) {
-        this.objectivesMenu.open(player, type);
+    public void openObjectivesMenu(@NotNull Player player, @NotNull ObjectiveCategory category) {
+        this.objectivesMenu.open(player, category);
+    }
+
+    public boolean hasCategory(@NotNull String id) {
+        return this.getCategoryById(id) != null;
     }
 
     @NotNull
-    public Map<ActionType<?, ?>, Map<String, MoneyObjective>> getObjectiveMap() {
+    public Map<String, ObjectiveCategory> getCategoryMap() {
+        return this.categoryMap;
+    }
+
+    @Nullable
+    public ObjectiveCategory getCategoryById(@NotNull String id) {
+        return this.categoryMap.get(id.toLowerCase());
+    }
+
+    @Nullable
+    public ObjectiveCategory getCategoryByObjective(@NotNull MoneyObjective objective) {
+        return this.getCategoryById(objective.getCategory());
+    }
+
+    @NotNull
+    public Set<ObjectiveCategory> getCategories() {
+        return new HashSet<>(this.categoryMap.values());
+    }
+
+    @NotNull
+    public Map<String, Map<String, MoneyObjective>> getObjectiveMap() {
         return objectiveMap;
     }
 
     @NotNull
-    public Map<String, MoneyObjective> getObjectivesMap(@NotNull ActionType<?, ?> actionType) {
-        return this.objectiveMap.getOrDefault(actionType, Collections.emptyMap());
+    public Map<String, MoneyObjective> getObjectivesMap(@NotNull LootAction<?, ?> actionType) {
+        return this.objectiveMap.getOrDefault(actionType.getId(), Collections.emptyMap());
     }
 
     @NotNull
-    public Collection<MoneyObjective> getObjectives(@NotNull ActionType<?, ?> actionType) {
+    public Collection<MoneyObjective> getObjectives(@NotNull LootAction<?, ?> actionType) {
         return this.getObjectivesMap(actionType).values();
     }
 
@@ -134,8 +223,13 @@ public class MoneyManager extends AbstractManager<LootConomyPlugin> {
         return objectives;
     }
 
+    @NotNull
+    public Set<MoneyObjective> getObjectives(@NotNull ObjectiveCategory category) {
+        return this.getObjectives().stream().filter(objective -> objective.isCategory(category)).collect(Collectors.toSet());
+    }
+
     @Nullable
-    public MoneyObjective getObjective(@NotNull ActionType<?, ?> actionType, @NotNull String id) {
+    public MoneyObjective getObjective(@NotNull LootAction<?, ?> actionType, @NotNull String id) {
         return this.getObjectivesMap(actionType).get(id.toLowerCase());
     }
 
@@ -150,7 +244,7 @@ public class MoneyManager extends AbstractManager<LootConomyPlugin> {
         String currencyId = MoneyUtils.getCurrencyId(itemStack);
         if (currencyId == null) return null;
 
-        return this.plugin.getCurrencyManager().getCurrency(currencyId);
+        return EconomyBridge.getCurrency(currencyId);
     }
 
     @Nullable
@@ -161,7 +255,7 @@ public class MoneyManager extends AbstractManager<LootConomyPlugin> {
         String actionName = MoneyUtils.getActionName(itemStack);
         if (actionName == null) return null;
 
-        ActionType<?, ?> actionType = this.plugin.getActionRegistry().getActionType(actionName);
+        var actionType = LootActions.getByName(actionName);
         if (actionType == null) return null;
 
         return this.getObjective(actionType, objectiveId);
@@ -192,67 +286,83 @@ public class MoneyManager extends AbstractManager<LootConomyPlugin> {
         return this.loseMoney(player, currency, money, null);
     }
 
-    public boolean loseMoney(@NotNull Player player, @NotNull Currency currency, double money, @Nullable MoneyObjective objective) {
-        PlayerCurrencyLoseEvent event = new PlayerCurrencyLoseEvent(player, currency, money, objective);
+    public boolean loseMoney(@NotNull Player player, @NotNull Currency originCurrency, double originAmount, @Nullable MoneyObjective objective) {
+        PlayerCurrencyLoseEvent event = new PlayerCurrencyLoseEvent(player, originCurrency, originAmount, objective);
         plugin.getPluginManager().callEvent(event);
         if (event.isCancelled()) return false;
 
-        money = event.getAmount();
-        currency = event.getCurrency();
-        currency.getHandler().take(player, money);
+        double amount = event.getAmount();
+        Currency currency = event.getCurrency();
+        currency.take(player, amount);
 
-        LangMessage message = (objective == null ? Lang.CURRENCY_LOST_DEATH : Lang.CURRENCY_LOST_PENALTY).getMessage()
-            .replace(Placeholders.GENERIC_AMOUNT, currency.format(money))
-            .replace(Placeholders.GENERIC_BALANCE, currency.format(currency.getHandler().getBalance(player)));
+        (objective == null ? Lang.CURRENCY_LOST_DEATH : Lang.CURRENCY_LOST_PENALTY).getMessage().send(player, replacer -> {
+            replacer
+                .replace(Placeholders.GENERIC_AMOUNT, currency.format(amount))
+                .replace(Placeholders.GENERIC_BALANCE, currency.format(currency.getBalance(player)));
 
-        if (objective != null) {
-            message = message.replace(Placeholders.GENERIC_NAME, objective.getDisplayName());
-        }
-        message.send(player);
-
-        return true;
-    }
-
-    public boolean gainMoney(@NotNull Player player, @NotNull Currency currency, double money) {
-        return this.gainMoney(player, currency, money, null);
-    }
-
-    public boolean gainMoney(@NotNull Player player, @NotNull Currency currency, double money, @Nullable MoneyObjective objective) {
-        PlayerCurrencyGainEvent event = new PlayerCurrencyGainEvent(player, currency, money, objective);
-        plugin.getPluginManager().callEvent(event);
-        if (event.isCancelled()) return false;
-
-        money = event.getAmount();
-        currency = event.getCurrency();
-        currency.getHandler().give(player, money);
-
-        LootUser user = plugin.getUserManager().getUserData(player);
-        if (user.getSettings().isPickupSound()) {
-            currency.getPickupSound().play(player);
-        }
-
-        Lang.CURRENCY_PICKUP.getMessage()
-            .replace(Placeholders.GENERIC_AMOUNT, currency.format(money))
-            .replace(Placeholders.GENERIC_BALANCE, currency.format(currency.getHandler().getBalance(player)))
-            .send(player);
-
-        return true;
-    }
-
-    @NotNull
-    public <O> List<ItemStack> createLoot(@NotNull Player player, @NotNull ActionType<?, O> type, @NotNull O object) {
-        return this.createLoot(player, type, object, 1);
-    }
-
-    @NotNull
-    public <O> List<ItemStack> createLoot(@NotNull Player player, @NotNull ActionType<?, O> type, @NotNull O object, int amount) {
-        List<ItemStack> loot = new ArrayList<>();
-        this.getObjectives(type).forEach(objective -> {
-            if (objective.hasObject(type.getObjectName(object))) {
-                loot.addAll(this.createLoot(player, objective, amount));
+            if (objective != null) {
+                replacer.replace(Placeholders.GENERIC_NAME, objective.getDisplayName());
             }
         });
-        return loot;
+
+//        if (objective != null) {
+//            message = message.replace(Placeholders.GENERIC_NAME, objective.getDisplayName());
+//        }
+        //message.send(player);
+
+        return true;
+    }
+
+    public boolean gainMoney(@NotNull Player player, @NotNull Currency currency, double amount) {
+        return this.gainMoney(player, currency, amount, null);
+    }
+
+    public boolean gainMoney(@NotNull Player player, @NotNull Currency originCurrency, double originAmount, @Nullable MoneyObjective objective) {
+        PlayerCurrencyGainEvent event = new PlayerCurrencyGainEvent(player, originCurrency, originAmount, objective);
+        plugin.getPluginManager().callEvent(event);
+        if (event.isCancelled()) return false;
+
+        double amount = event.getAmount();
+        Currency currency = event.getCurrency();
+        currency.give(player, amount);
+
+        CurrencySettings settings = plugin.getCurrencyManager().getSettings(currency);
+        if (settings != null) {
+            LootUser user = plugin.getUserManager().getOrFetch(player);
+            if (user.getSettings().isPickupSound()) {
+                settings.getPickupSound().play(player);
+            }
+        }
+
+        Lang.CURRENCY_PICKUP.getMessage().send(player, replacer -> replacer
+            .replace(Placeholders.GENERIC_AMOUNT, currency.format(amount))
+            .replace(Placeholders.GENERIC_BALANCE, currency.format(currency.getBalance(player)))
+        );
+
+        return true;
+    }
+
+//    @NotNull
+//    @Deprecated
+//    public <O> List<ItemStack> createLoot(@NotNull Player player, @NotNull LootAction<?, O> type, @NotNull O object) {
+//        return this.createLoot(player, type, object, 1);
+//    }
+//
+//    @NotNull
+//    @Deprecated
+//    public <O> List<ItemStack> createLoot(@NotNull Player player, @NotNull LootAction<?, O> type, @NotNull O object, int amount) {
+//        List<ItemStack> loot = new ArrayList<>();
+//        this.getObjectives(type).forEach(objective -> {
+//            if (objective.hasObject(type.getObjectName(object))) {
+//                loot.addAll(this.createLoot(player, objective, amount));
+//            }
+//        });
+//        return loot;
+//    }
+
+    @NotNull
+    public List<MoneyObjective> getObjectives(@NotNull LootAction<?, ?> action, @NotNull String objectId) {
+        return this.getObjectives(action).stream().filter(objective -> objective.hasObject(objectId)).toList();
     }
 
     @NotNull
@@ -261,22 +371,26 @@ public class MoneyManager extends AbstractManager<LootConomyPlugin> {
     }
 
     @NotNull
-    public List<ItemStack> createLoot(@NotNull Player player, @NotNull MoneyObjective objective, int amount) {
+    public List<ItemStack> createLoot(@NotNull Player player, @NotNull MoneyObjective objective, int instances) {
         List<ItemStack> loot = new ArrayList<>();
 
         if (!objective.canDrop()) return loot;
 
-        LootUser user = plugin.getUserManager().getUserData(player);
+        LootUser user = plugin.getUserManager().getOrFetch(player);
         LootLimitData limitData = user.getLimitData();
 
         Collection<Booster> boosters = plugin.getBoosterManager().getBoosters(player);
 
-        for (Currency currency : plugin.getCurrencyManager().getCurrencies()) {
-            if (currency.hasDailyLimit() && limitData.isLimitExceed(currency)) continue; // Do not attempt to drop money if limit is exceed and only if limit is still enabled.
+        for (Currency currency : EconomyBridge.getCurrencies()) {
+            CurrencySettings settings = plugin.getCurrencyManager().getSettings(currency);
+            if (settings == null) continue;
 
-            for (int count = 0; count < amount; count++) {
+            // Do not drop money if limit is exceed and only if limit is still enabled.
+            if (settings.hasDailyLimit() && limitData.isLimitExceed(currency, settings)) continue;
+
+            for (int count = 0; count < instances; count++) {
                 DropInfo dropInfo = objective.getCurrencyDrop(currency);
-                double moneyAmount = currency.round(dropInfo.rollAmountNaturally());
+                double moneyAmount = currency.fineValue(dropInfo.rollAmountNaturally());
 
                 // Apply boosters only for positive amount.
                 if (moneyAmount > 0D) {
@@ -284,7 +398,7 @@ public class MoneyManager extends AbstractManager<LootConomyPlugin> {
                     moneyAmount *= Booster.getMultiplier(currency, boosters);
                 }
 
-                if (currency.isRoundToInt()) {
+                if (settings.isRoundToInt()) {
                     moneyAmount = Math.floor(moneyAmount);
                 }
 
@@ -300,7 +414,7 @@ public class MoneyManager extends AbstractManager<LootConomyPlugin> {
                 boolean dropped;
 
                 // Add directly to balance if enabled.
-                if (currency.isDirectToBalance()) {
+                if (settings.isDirectToBalance()) {
                     dropped = this.pickupMoney(player, currency, moneyAmount, objective);
                 }
                 // Otherwise spawn money items depends on portions amount.
@@ -310,7 +424,7 @@ public class MoneyManager extends AbstractManager<LootConomyPlugin> {
 
                     while (leftAmount > 0 && portions > 0) {
                         //System.out.println("moneyAmount = " + moneyAmount);
-                        double cutAmount = portions == 1 ? leftAmount : currency.cutRandom(leftAmount);// currency.round(Rnd.getDouble(leftAmount));
+                        double cutAmount = portions == 1 ? leftAmount : settings.cutRandom(currency, leftAmount);// currency.round(Rnd.getDouble(leftAmount));
                         //System.out.println("cutAmount = " + cutAmount);
                         //System.out.println("==========================");
                         if (cutAmount == 0D) continue;
@@ -318,11 +432,11 @@ public class MoneyManager extends AbstractManager<LootConomyPlugin> {
                         PlayerCurrencyLootCreateEvent event = new PlayerCurrencyLootCreateEvent(player, currency, cutAmount, objective);
                         plugin.getPluginManager().callEvent(event);
                         if (!event.isCancelled()) {
-                            ItemStack moneyItem = MoneyUtils.createMoney(event.getCurrency(), event.getAmount(), player.getUniqueId(), event.getObjective());
+                            ItemStack moneyItem = MoneyUtils.createMoney(event.getCurrency(), settings, event.getAmount(), player.getUniqueId(), event.getObjective());
                             loot.add(moneyItem);
                         }
 
-                        leftAmount = currency.round(leftAmount - cutAmount);
+                        leftAmount = currency.fineValue(leftAmount - cutAmount);
                         portions--;
                     }
 
@@ -330,15 +444,15 @@ public class MoneyManager extends AbstractManager<LootConomyPlugin> {
                 }
 
                 // Add limit only if currency was actually dropped/added.
-                if (dropped && currency.hasDailyLimit()) {
-                    if (!player.hasPermission(Perms.BYPASS_DAILY_LIMIT) && !player.hasPermission(Perms.PREFIX_BYPASS_DAILY_LIMIT + currency.getId())) {
+                if (dropped && settings.hasDailyLimit()) {
+                    if (!player.hasPermission(Perms.BYPASS_DAILY_LIMIT) && !player.hasPermission(Perms.PREFIX_BYPASS_DAILY_LIMIT + currency.getInternalId())) {
                         limitData.addCurrency(currency, moneyAmount);
 
-                        if (limitData.isLimitExceed(currency)) {
-                            Lang.CURRENCY_LIMIT_NOTIFY.getMessage()
-                                .replace(Placeholders.GENERIC_MAX, currency.format(currency.getDailyLimit()))
+                        if (limitData.isLimitExceed(currency, settings)) {
+                            Lang.CURRENCY_LIMIT_NOTIFY.getMessage().send(player, replacer -> replacer
+                                .replace(Placeholders.GENERIC_MAX, currency.format(settings.getDailyLimit()))
                                 .replace(currency.replacePlaceholders())
-                                .send(player);
+                            );
                         }
                     }
                 }
@@ -363,11 +477,14 @@ public class MoneyManager extends AbstractManager<LootConomyPlugin> {
         }
         else isPvP = false;
 
-        this.plugin.getCurrencyManager().getCurrencies().forEach(currency -> {
+        EconomyBridge.getCurrencies().forEach(currency -> {
             if (player.hasPermission(Perms.BYPASS_DEATH_PENALTY)) return;
-            if (player.hasPermission(Perms.PREFIX_BYPASS_DEATH_PENALTY + currency.getId())) return;
+            if (player.hasPermission(Perms.PREFIX_BYPASS_DEATH_PENALTY + currency.getInternalId())) return;
 
-            DeathPenalty deathPenalty = currency.getDeathPenalty();
+            CurrencySettings settings = plugin.getCurrencyManager().getSettings(currency);
+            if (settings == null) return;
+
+            DeathPenalty deathPenalty = settings.getDeathPenalty();
             if (!deathPenalty.isEnabled()) return;
             if (isPvP && !deathPenalty.isForPvP()) return;
             if (!isPvP && !deathPenalty.isForPvE()) return;
@@ -377,13 +494,13 @@ public class MoneyManager extends AbstractManager<LootConomyPlugin> {
             double percent = deathPenalty.rollAmount();
             if (percent <= 0) return;
 
-            double balance = currency.getHandler().getBalance(player);
+            double balance = currency.getBalance(player);
             double amount = NumberUtil.round(balance * percent / 100D);
             if (amount <= 0D) return;
 
             if (this.loseMoney(player, currency, amount)) {
                 if (deathPenalty.isDropItem()) {
-                    ItemStack item = MoneyUtils.createMoney(currency, amount);
+                    ItemStack item = MoneyUtils.createMoney(currency, settings, amount);
                     list.add(item);
                 }
             }
@@ -397,7 +514,10 @@ public class MoneyManager extends AbstractManager<LootConomyPlugin> {
             Currency currency = this.getCurrency(item.getItemStack());
             if (currency == null) return;
 
-            currency.getGroundEffect().play(item.getLocation().clone().add(0, 0.1, 0), 0.15, 0.15, 2);
+            CurrencySettings settings = plugin.getCurrencyManager().getSettings(currency);
+            if (settings == null) return;
+
+            settings.getGroundEffect().play(item.getLocation().clone().add(0, 0.1, 0), 0.15, 0.15, 2);
         });
     }
 
@@ -425,7 +545,8 @@ public class MoneyManager extends AbstractManager<LootConomyPlugin> {
 
             ItemStack originStack = item.getItemStack();
             Currency originCurrency = this.getCurrency(originStack);
-            if (originCurrency == null) {
+            CurrencySettings settings = originCurrency == null ? null : plugin.getCurrencyManager().getSettings(originCurrency);
+            if (originCurrency == null || settings == null) {
                 item.remove();
                 return;
             }
@@ -449,7 +570,7 @@ public class MoneyManager extends AbstractManager<LootConomyPlugin> {
                 near.remove();
             }
 
-            ItemStack money = MoneyUtils.createMoney(originCurrency, originAmount, originOwner);
+            ItemStack money = MoneyUtils.createMoney(originCurrency, settings, originAmount, originOwner);
             item.setCustomName(ItemUtil.getItemName(money));
             item.setItemStack(money);
         });

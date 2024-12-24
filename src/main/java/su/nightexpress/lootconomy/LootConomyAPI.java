@@ -2,8 +2,6 @@ package su.nightexpress.lootconomy;
 
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
-import su.nightexpress.lootconomy.api.currency.Currency;
 import su.nightexpress.lootconomy.data.impl.LootUser;
 import su.nightexpress.lootconomy.money.MoneyManager;
 
@@ -11,8 +9,12 @@ public class LootConomyAPI {
 
     private static LootConomyPlugin plugin;
 
-    public static void setup(@NotNull LootConomyPlugin plugin) {
+    static void setup(@NotNull LootConomyPlugin plugin) {
         LootConomyAPI.plugin = plugin;
+    }
+
+    static void clear() {
+        plugin = null;
     }
 
     @NotNull
@@ -22,12 +24,7 @@ public class LootConomyAPI {
 
     @NotNull
     public static LootUser getUserData(@NotNull Player player) {
-        return plugin.getUserManager().getUserData(player);
-    }
-
-    @Nullable
-    public static Currency getCurrency(@NotNull String id) {
-        return plugin.getCurrencyManager().getCurrency(id);
+        return plugin.getUserManager().getOrFetch(player);
     }
 
     @NotNull

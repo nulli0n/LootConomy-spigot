@@ -1,7 +1,8 @@
 package su.nightexpress.lootconomy.data.impl;
 
 import org.jetbrains.annotations.NotNull;
-import su.nightexpress.lootconomy.api.currency.Currency;
+import su.nightexpress.economybridge.api.Currency;
+import su.nightexpress.lootconomy.currency.CurrencySettings;
 import su.nightexpress.nightcore.util.TimeUtil;
 
 import java.time.LocalDate;
@@ -29,8 +30,8 @@ public class LootLimitData {
         return TimeUtil.toEpochMillis(LocalDateTime.of(LocalDate.now().plusDays(1), LocalTime.MIDNIGHT)) + 100L;
     }
 
-    public boolean isLimitExceed(@NotNull Currency currency) {
-        return this.getCurrencyEarned(currency) >= currency.getDailyLimit();
+    public boolean isLimitExceed(@NotNull Currency currency, @NotNull CurrencySettings settings) {
+        return this.getCurrencyEarned(currency) >= settings.getDailyLimit();
     }
 
     public boolean isExpired() {
@@ -38,7 +39,7 @@ public class LootLimitData {
     }
 
     public void addCurrency(@NotNull Currency currency, double amount) {
-        this.addCurrency(currency.getId(), amount);
+        this.addCurrency(currency.getInternalId(), amount);
     }
 
     public void addCurrency(@NotNull String id, double amount) {
@@ -48,7 +49,7 @@ public class LootLimitData {
     }
 
     public double getCurrencyEarned(@NotNull Currency currency) {
-        return this.getCurrencyEarned(currency.getId());
+        return this.getCurrencyEarned(currency.getInternalId());
     }
 
     public double getCurrencyEarned(@NotNull String id) {

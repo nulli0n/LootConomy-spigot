@@ -2,9 +2,8 @@ package su.nightexpress.lootconomy.data.impl;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import su.nightexpress.lootconomy.LootConomyPlugin;
 import su.nightexpress.lootconomy.booster.impl.ExpirableBooster;
-import su.nightexpress.nightcore.database.AbstractUser;
+import su.nightexpress.nightcore.db.AbstractUser;
 
 import java.util.Collection;
 import java.util.HashMap;
@@ -12,7 +11,7 @@ import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
-public class LootUser extends AbstractUser<LootConomyPlugin> {
+public class LootUser extends AbstractUser {
 
     private final Map<String, ExpirableBooster> boosterMap;
     private final UserSettings  settings;
@@ -20,7 +19,7 @@ public class LootUser extends AbstractUser<LootConomyPlugin> {
     private LootLimitData limitData;
 
     @NotNull
-    public static LootUser create(@NotNull LootConomyPlugin plugin, @NotNull UUID uuid, @NotNull String name) {
+    public static LootUser create(@NotNull UUID uuid, @NotNull String name) {
         long dateCreated = System.currentTimeMillis();
         long lastOnline = System.currentTimeMillis();
 
@@ -28,18 +27,17 @@ public class LootUser extends AbstractUser<LootConomyPlugin> {
         UserSettings settings = new UserSettings();
         LootLimitData limitData = LootLimitData.create();
 
-        return new LootUser(plugin, uuid, name, dateCreated, lastOnline, limitData, boosterMap, settings);
+        return new LootUser(uuid, name, dateCreated, lastOnline, limitData, boosterMap, settings);
     }
 
-    public LootUser(@NotNull LootConomyPlugin plugin,
-                    @NotNull UUID uuid,
+    public LootUser(@NotNull UUID uuid,
                     @NotNull String name,
                     long lastOnline,
                     long dateCreated,
                     @NotNull LootLimitData limitData,
                     @NotNull Map<String, ExpirableBooster> boosterMap,
                     @NotNull UserSettings settings) {
-        super(plugin, uuid, name, dateCreated, lastOnline);
+        super(uuid, name, dateCreated, lastOnline);
         this.setLimitData(limitData);
         this.boosterMap = new ConcurrentHashMap<>(boosterMap);
         this.settings = settings;

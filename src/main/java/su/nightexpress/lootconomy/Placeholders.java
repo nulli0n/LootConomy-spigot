@@ -1,5 +1,8 @@
 package su.nightexpress.lootconomy;
 
+import su.nightexpress.lootconomy.loot.objective.ObjectiveCategory;
+import su.nightexpress.nightcore.util.placeholder.PlaceholderList;
+
 public class Placeholders extends su.nightexpress.nightcore.util.Placeholders {
 
     public static final String URL_WIKI            = "https://github.com/nulli0n/LootConomy-spigot/wiki/";
@@ -27,5 +30,15 @@ public class Placeholders extends su.nightexpress.nightcore.util.Placeholders {
     public static final String CURRENCY_ID   = "%currency_id%";
     public static final String CURRENCY_NAME = "%currency_name%";
 
+    public static final String CATEGORY_ID          = "%category_id%";
+    public static final String CATEGORY_NAME        = "%category_name%";
+    public static final String CATEGORY_DESCRIPTION = "%category_description%";
+
     public static final String SIGN_HEADER = "MH";
+
+    public static final PlaceholderList<ObjectiveCategory> CATEGORY = PlaceholderList.create(list -> list
+        .add(CATEGORY_ID, ObjectiveCategory::getId)
+        .add(CATEGORY_NAME, ObjectiveCategory::getName)
+        .add(CATEGORY_DESCRIPTION, category -> String.join(TAG_LINE_BREAK, category.getDescription()))
+    );
 }

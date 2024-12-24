@@ -12,7 +12,7 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 import su.nightexpress.lootconomy.LootConomyPlugin;
-import su.nightexpress.lootconomy.api.currency.Currency;
+import su.nightexpress.economybridge.api.Currency;
 import su.nightexpress.lootconomy.money.MoneyManager;
 import su.nightexpress.lootconomy.money.MoneyUtils;
 import su.nightexpress.nightcore.manager.AbstractListener;

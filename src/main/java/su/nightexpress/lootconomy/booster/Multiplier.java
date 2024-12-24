@@ -1,7 +1,7 @@
 package su.nightexpress.lootconomy.booster;
 
 import org.jetbrains.annotations.NotNull;
-import su.nightexpress.lootconomy.api.currency.Currency;
+import su.nightexpress.economybridge.api.Currency;
 import su.nightexpress.nightcore.config.FileConfig;
 import su.nightexpress.nightcore.util.NumberUtil;
 
@@ -39,16 +39,16 @@ public class Multiplier {
 
     @NotNull
     public Multiplier withCurrency(@NotNull Currency currency, double multiplier) {
-        this.currencyMap.put(currency.getId(), multiplier);
+        this.currencyMap.put(currency.getInternalId(), multiplier);
         return this;
     }
 
     public boolean has(@NotNull Currency currency) {
-        return this.currencyMap.containsKey(currency.getId());
+        return this.currencyMap.containsKey(currency.getInternalId());
     }
 
     public double getMultiplier(@NotNull Currency currency) {
-        return this.getMultiplier(currency.getId());
+        return this.getMultiplier(currency.getInternalId());
     }
 
     public double getMultiplier(@NotNull String curId) {
@@ -56,7 +56,7 @@ public class Multiplier {
     }
 
     public double getAsPercent(@NotNull Currency currency) {
-        return this.getAsPercent(currency.getId());
+        return this.getAsPercent(currency.getInternalId());
     }
 
     public double getAsPercent(@NotNull String curId) {

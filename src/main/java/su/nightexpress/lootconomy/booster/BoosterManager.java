@@ -4,6 +4,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import su.nightexpress.economybridge.EconomyBridge;
 import su.nightexpress.lootconomy.LootConomyPlugin;
 import su.nightexpress.lootconomy.Placeholders;
 import su.nightexpress.lootconomy.booster.config.BoosterInfo;
@@ -44,7 +45,7 @@ public class BoosterManager extends AbstractManager<LootConomyPlugin> {
 
         this.addListener(new BoosterListener(this.plugin, this));
 
-        this.addTask(this.plugin.createAsyncTask(this::tickScheduledBoosters).setSecondsInterval(Config.BOOSTER_SCHEDULER_INTERVAL.get()));
+        this.addAsyncTask(this::tickScheduledBoosters, Config.BOOSTER_SCHEDULER_INTERVAL.get());
     }
 
     @Override
@@ -139,7 +140,7 @@ public class BoosterManager extends AbstractManager<LootConomyPlugin> {
     public Set<Booster> getBoosters(@NotNull Player player) {
         Set<Booster> boosters = new HashSet<>();
 
-        LootUser user = plugin.getUserManager().getUserData(player);
+        LootUser user = plugin.getUserManager().getOrFetch(player);
 
         // If user has personal booster with the name as global ones, use global one only.
         Set<ExpirableBooster> customBoosters = this.getBoosters();
@@ -202,10 +203,10 @@ public class BoosterManager extends AbstractManager<LootConomyPlugin> {
     }
 
     public void notifyBooster(@NotNull ExpirableBooster booster, @NotNull LangText text) {
-        text.getMessage()
+        text.getMessage().broadcast(replacer -> replacer
             .replace(Placeholders.GENERIC_TIME, TimeUtil.formatDuration(booster.getExpireDate()))
             .replace(Placeholders.GENERIC_ENTRY, list -> {
-                plugin.getCurrencyManager().getCurrencies().forEach(currency -> {
+                EconomyBridge.getCurrencies().forEach(currency -> {
                     if (!booster.getMultiplier().has(currency)) return;
 
                     list.add(currency.replacePlaceholders().apply(Lang.BOOSTER_NOTIFY_ENTRY.getString())
@@ -214,7 +215,7 @@ public class BoosterManager extends AbstractManager<LootConomyPlugin> {
                     );
                 });
             })
-            .broadcast();
+        );
     }
 
     public void printBoosters(@NotNull CommandSender sender) {
@@ -222,10 +223,10 @@ public class BoosterManager extends AbstractManager<LootConomyPlugin> {
         Set<Booster> globalBoosters = new HashSet<>(this.getBoosters());
         userBoosters.removeAll(globalBoosters);
 
-        Lang.BOOSTER_LIST_INFO.getMessage()
+        Lang.BOOSTER_LIST_INFO.getMessage().send(sender, replacer -> replacer
             .replace(Placeholders.GENERIC_GLOBAL, list -> this.addPrintInfo(list, globalBoosters, Lang.BOOSTER_LIST_GLOBAL_NOTHING))
             .replace(Placeholders.GENERIC_PERSONAL, list -> this.addPrintInfo(list, userBoosters, Lang.BOOSTER_LIST_PERSONAL_NOTHING))
-            .send(sender);
+        );
     }
 
     private void addPrintInfo(@NotNull List<String> list, @NotNull Collection<Booster> boosters, @NotNull LangString fallback) {
@@ -234,7 +235,7 @@ public class BoosterManager extends AbstractManager<LootConomyPlugin> {
             return;
         }
 
-        this.plugin.getCurrencyManager().getCurrencies().forEach(currency -> {
+        EconomyBridge.getCurrencies().forEach(currency -> {
             double percent = Booster.getPercent(currency, boosters);
             double modifier = Booster.getMultiplier(currency, boosters);
             if (percent == 0D) return;
