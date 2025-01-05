@@ -113,7 +113,7 @@ public class LootHandlers {
 
         // Do not drop money for mobs inside non-living (boats, minecarts) vehicles.
         Entity vehicle = entity.getVehicle();
-        if (!(vehicle instanceof LivingEntity)) return false;
+        if (vehicle != null && !(vehicle instanceof LivingEntity)) return false;
 
         // Do not drop money if mob died from cramming.
         var lastCause = entity.getLastDamageCause();
