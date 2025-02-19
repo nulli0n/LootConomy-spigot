@@ -168,8 +168,8 @@ public class Creator {
         crops.add(build("sugar_cane", type, Material.SUGAR_CANE, new NightItem(Material.SUGAR_CANE), 100, MONEY_LOW));
         crops.add(build("bamboo", type, Material.BAMBOO, new NightItem(Material.BAMBOO), 100, MONEY_LOW));
 
-        berries.add(build("sweet_berries", harvest, Material.SWEET_BERRIES, new NightItem(Material.SWEET_BERRIES), 100, MONEY_LOW));
-        berries.add(build("glow_berries", harvest, Material.GLOW_BERRIES, new NightItem(Material.GLOW_BERRIES), 100, MONEY_LOW));
+        berries.add(build("sweet_berries", harvest, Material.SWEET_BERRY_BUSH, new NightItem(Material.SWEET_BERRIES), 100, MONEY_LOW));
+        berries.add(build("glow_berries", harvest, Lists.newSet(Material.CAVE_VINES, Material.CAVE_VINES_PLANT), new NightItem(Material.GLOW_BERRIES), 100, MONEY_LOW));
 
         writeConfig("gather_crops", crops);
         writeConfig("gather_berries", berries);

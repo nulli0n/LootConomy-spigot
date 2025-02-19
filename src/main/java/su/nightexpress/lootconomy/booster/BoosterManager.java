@@ -235,6 +235,8 @@ public class BoosterManager extends AbstractManager<LootConomyPlugin> {
             return;
         }
 
+        boosters.removeIf(booster -> booster instanceof ExpirableBooster expirableBooster && expirableBooster.isExpired());
+
         EconomyBridge.getCurrencies().forEach(currency -> {
             double percent = Booster.getPercent(currency, boosters);
             double modifier = Booster.getMultiplier(currency, boosters);
