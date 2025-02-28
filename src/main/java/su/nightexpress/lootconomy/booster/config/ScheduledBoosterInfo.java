@@ -5,9 +5,9 @@ import su.nightexpress.lootconomy.booster.Multiplier;
 import su.nightexpress.lootconomy.booster.impl.ExpirableBooster;
 import su.nightexpress.nightcore.config.FileConfig;
 import su.nightexpress.nightcore.util.StringUtil;
+import su.nightexpress.nightcore.util.TimeUtil;
 
 import java.time.DayOfWeek;
-import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
@@ -103,11 +103,11 @@ public class ScheduledBoosterInfo extends BoosterInfo {
     }*/
 
     public boolean isReady() {
-        DayOfWeek day = LocalDate.now().getDayOfWeek();
+        DayOfWeek day = TimeUtil.getCurrentDate().getDayOfWeek();
         Set<LocalTime> times = this.getStartTimes().get(day);
         if (times == null || times.isEmpty()) return false;
 
-        LocalTime timeNow = LocalTime.now().truncatedTo(ChronoUnit.MINUTES);
+        LocalTime timeNow = TimeUtil.getCurrentTime().truncatedTo(ChronoUnit.MINUTES);
         return times.stream().anyMatch(stored -> stored.equals(timeNow));
     }
 

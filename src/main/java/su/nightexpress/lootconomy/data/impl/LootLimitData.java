@@ -5,7 +5,6 @@ import su.nightexpress.economybridge.api.Currency;
 import su.nightexpress.lootconomy.currency.CurrencySettings;
 import su.nightexpress.nightcore.util.TimeUtil;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.HashMap;
@@ -27,7 +26,7 @@ public class LootLimitData {
     }
 
     public static long generateExpireTimestamp() {
-        return TimeUtil.toEpochMillis(LocalDateTime.of(LocalDate.now().plusDays(1), LocalTime.MIDNIGHT)) + 100L;
+        return TimeUtil.toEpochMillis(LocalDateTime.of(TimeUtil.getCurrentDate().plusDays(1), LocalTime.MIDNIGHT)) + 100L;
     }
 
     public boolean isLimitExceed(@NotNull Currency currency, @NotNull CurrencySettings settings) {

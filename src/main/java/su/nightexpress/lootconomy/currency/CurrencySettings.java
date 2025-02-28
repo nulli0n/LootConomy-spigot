@@ -86,6 +86,11 @@ public class CurrencySettings {
             "Sets particle effect for the dropped currency item."
         ).read(config);
 
+        // Update
+        if (config.contains(path + ".Effects.Pickup_Sound.Name")) {
+            NightSound.read(config, path + ".Effects.Pickup_Sound");
+        }
+
         NightSound pickupSound = ConfigValue.create(path + ".Effects.Pickup_Sound",
             NightSound.of(Sound.BLOCK_NOTE_BLOCK_BELL),
             "Sets sound effect for a player who pickups currency item."
