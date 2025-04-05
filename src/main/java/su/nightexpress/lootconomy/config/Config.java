@@ -3,23 +3,23 @@ package su.nightexpress.lootconomy.config;
 import org.bukkit.GameMode;
 import org.bukkit.Material;
 import org.bukkit.event.entity.CreatureSpawnEvent;
+import org.jetbrains.annotations.NotNull;
 import su.nightexpress.economybridge.currency.CurrencyId;
-import su.nightexpress.lootconomy.booster.Multiplier;
-import su.nightexpress.lootconomy.booster.config.RankBoosterInfo;
-import su.nightexpress.lootconomy.booster.config.ScheduledBoosterInfo;
+import su.nightexpress.lootconomy.booster.BoosterUtils;
+import su.nightexpress.lootconomy.booster.impl.BoosterSchedule;
 import su.nightexpress.nightcore.config.ConfigValue;
 import su.nightexpress.nightcore.util.BukkitThing;
 import su.nightexpress.nightcore.util.Lists;
 import su.nightexpress.nightcore.util.Plugins;
 import su.nightexpress.nightcore.util.StringUtil;
+import su.nightexpress.nightcore.util.rankmap.DoubleRankMap;
+import su.nightexpress.nightcore.util.rankmap.RankMap;
 
-import java.time.DayOfWeek;
-import java.time.LocalTime;
 import java.util.Map;
 import java.util.Set;
 
-import static su.nightexpress.nightcore.util.text.tag.Tags.*;
-import static su.nightexpress.lootconomy.Placeholders.*;
+import static su.nightexpress.lootconomy.Placeholders.URL_DATA_VALUES;
+import static su.nightexpress.lootconomy.Placeholders.URL_ECO_BRIDGE;
 
 public class Config {
 
@@ -125,53 +125,35 @@ public class Config {
         "Not really an abuse, just a QoL (Quality of Life) feature."
     );
 
-    /*public static final ConfigValue<Integer> TOP_UPDATE_INTERVAL = ConfigValue.create("Top.Update_Interval",
-        600,
-        "Sets how often (in seconds) top level leaderboard will be fetched and updated.");
+    public static final ConfigValue<Integer> BOOSTER_TICK_INTERVAL = ConfigValue.create("Boosters.Tick_Interval",
+        1,
+        "Sets booster update interval.",
+        "[*] Do not change unless you understand what you're doing.",
+        "[Asynchronous]",
+        "[Default is 1]");
 
-    public static final ConfigValue<Integer> TOP_ENTRIES_PER_PAGE = ConfigValue.create("Top.Entries_Per_Page",
-        10,
-        "Sets how many entries per leaderboard page will be displated.");*/
+    public static final ConfigValue<Set<String>> BOOSTER_EXCLUSIVE_CURRENCIES = ConfigValue.create("Boosters.Exclusives.Currency",
+        Lists.newSet(CurrencyId.forCoinsEngine("super_coins"), "some_currency"),
+        "Boosters will have no effect on listed currencies.",
+        URL_ECO_BRIDGE
+    ).onRead(set -> Lists.modify(set, String::toLowerCase));
 
-    public static final ConfigValue<String> BOOSTER_FORMAT_POSITIVE = ConfigValue.create("Boosters.Format.Positive",
-        LIGHT_GREEN.enclose("+" + GENERIC_AMOUNT + "%"));
-
-    public static final ConfigValue<String> BOOSTER_FORMAT_NEGATIVE = ConfigValue.create("Boosters.Format.Negative",
-        LIGHT_RED.enclose(GENERIC_AMOUNT + "%"));
-
-    public static final ConfigValue<Integer> BOOSTER_SCHEDULER_INTERVAL = ConfigValue.create("Boosters.Scheduler_Interval",
-        30,
-        "Sets how often (in seconds) plugin will check out for available scheduled boosters (see below).",
-        "Setting this above 60 may cause scheduled boosters to not activate properly sometimes.",
-        "[Default is 30]");
-
-    public static final ConfigValue<Map<String, ScheduledBoosterInfo>> BOOSTERS_SCHEDULED = ConfigValue.forMap("Boosters.Scheduled",
-        (cfg, path, id) -> ScheduledBoosterInfo.read(cfg, path + "." + id),
-        (cfg, path, map) -> map.forEach((id, info) -> info.write(cfg, path + "." + id)),
-        Map.of(
-            "example",
-            new ScheduledBoosterInfo(
-                new Multiplier(Map.of(CurrencyId.VAULT, 1.25)),
-                Map.of(DayOfWeek.SATURDAY, Lists.newSet(LocalTime.of(16, 0))),
-                7200
-            )
-        ),
-        "List of global currency boosters scheduled for certain times.",
-        "You can create as many boosters as you want."
+    public static final ConfigValue<Map<String, BoosterSchedule>> BOOSTERS_BY_SCHEDULE = ConfigValue.forMapById("Boosters.BySchedule",
+        BoosterSchedule::read,
+        map -> map.putAll(BoosterUtils.getDefaultBoosterSchedules()),
+        "Global currency boosters that activates at specific day times.",
+        "You can define as many as you want."
     );
 
-    public static final ConfigValue<Map<String, RankBoosterInfo>> BOOSTERS_RANK = ConfigValue.forMap("Boosters.Rank",
-        (cfg, path, id) -> RankBoosterInfo.read(cfg, path + "." + id, id),
-        (cfg, path, map) -> map.forEach((id, info) -> info.write(cfg, path + "." + id)),
-        Map.of(
-            "vip", new RankBoosterInfo("vip", 10,
-                new Multiplier(Map.of(CurrencyId.VAULT, 1.25))
-            ),
-            "premium", new RankBoosterInfo("premium", 20,
-                new Multiplier(Map.of(CurrencyId.VAULT, 1.5))
-            )
-        ),
-        "List of persistent currency boosters based on player permission group(s).",
-        "Use the 'Priority' option to define booster's priority to guarantee that players with multiple permission groups will get the best one."
+    public static final ConfigValue<RankMap<Double>> BOOSTERS_BY_RANK = ConfigValue.create("Boosters.ByRank",
+        DoubleRankMap::read,
+        (cfg, path, map) -> map.write(cfg, path),
+        () -> DoubleRankMap.permissioned(Perms.PREFIX + "rankbooster.", 1D).addValue("vip", 1.5D).addValue("pro", 2D),
+        "Persistent currency boosters applied to players based on their rank or permissions."
     );
+
+    @NotNull
+    public static Map<String, BoosterSchedule> getBoosterScheduleMap() {
+        return BOOSTERS_BY_SCHEDULE.get();
+    }
 }

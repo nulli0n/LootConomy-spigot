@@ -35,7 +35,7 @@ public class CategoriesMenu extends NormalMenu<LootConomyPlugin> implements Fill
     private int[]        objectSlots;
 
     public CategoriesMenu(@NotNull LootConomyPlugin plugin) {
-        super(plugin, MenuType.GENERIC_9X3, BLACK.enclose("Objective Categories"));
+        super(plugin, MenuType.GENERIC_9X3, BLACK.wrap("Objective Categories"));
 
         this.load(FileConfig.loadOrExtract(plugin, Config.DIR_UI, FILE_NAME));
     }
@@ -77,14 +77,14 @@ public class CategoriesMenu extends NormalMenu<LootConomyPlugin> implements Fill
     @Override
     public void loadConfiguration(@NotNull FileConfig config, @NotNull MenuLoader loader) {
         this.objectName = ConfigValue.create("Object.Name",
-            LIGHT_YELLOW.enclose(BOLD.enclose(CATEGORY_NAME))
+            LIGHT_YELLOW.wrap(BOLD.wrap(CATEGORY_NAME))
         ).read(config);
 
         this.objectLore = ConfigValue.create("Object.Lore", Lists.newList(
             CATEGORY_DESCRIPTION,
             EMPTY_IF_ABOVE,
-            LIGHT_GRAY.enclose("There are " + LIGHT_YELLOW.enclose(GENERIC_AMOUNT) + " objectives"),
-            LIGHT_GRAY.enclose("in this category.")
+            LIGHT_GRAY.wrap("There are " + LIGHT_YELLOW.wrap(GENERIC_AMOUNT) + " objectives"),
+            LIGHT_GRAY.wrap("in this category.")
         )).read(config);
 
         this.objectSlots = ConfigValue.create("Object.Slots", new int[] {10,11,12,13,14,15,16}).read(config);

@@ -9,7 +9,7 @@ import org.jetbrains.annotations.NotNull;
 import su.nightexpress.economybridge.EconomyBridge;
 import su.nightexpress.economybridge.api.Currency;
 import su.nightexpress.lootconomy.LootConomyPlugin;
-import su.nightexpress.lootconomy.booster.impl.Booster;
+import su.nightexpress.lootconomy.booster.BoosterUtils;
 import su.nightexpress.lootconomy.config.Config;
 import su.nightexpress.lootconomy.currency.CurrencySettings;
 import su.nightexpress.lootconomy.data.impl.LootLimitData;
@@ -33,7 +33,6 @@ import su.nightexpress.nightcore.util.bukkit.NightItem;
 import su.nightexpress.nightcore.util.placeholder.Replacer;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.IntStream;
@@ -59,7 +58,7 @@ public class ObjectivesMenu extends LinkedMenu<LootConomyPlugin, ObjectiveCatego
     private String       objectCurrencyBad;
 
     public ObjectivesMenu(@NotNull LootConomyPlugin plugin) {
-        super(plugin, MenuType.GENERIC_9X6, BLACK.enclose("Currency Objectives"));
+        super(plugin, MenuType.GENERIC_9X6, BLACK.wrap("Currency Objectives"));
 
         this.load(FileConfig.loadOrExtract(plugin, Config.DIR_UI, FILE_NAME));
     }
@@ -84,7 +83,8 @@ public class ObjectivesMenu extends LinkedMenu<LootConomyPlugin, ObjectiveCatego
         LootUser user = plugin.getUserManager().getOrFetch(player);
         LootLimitData limitData = user.getLimitData();
 
-        Collection<Booster> boosters = this.plugin.getBoosterManager().getBoosters(player);
+        //Collection<Booster> boosters = this.plugin.getBoosterManager().getBoosters(player);
+        double totalBoost = plugin.getBoosterManager().getTotalBoost(player);
 
         autoFill.setSlots(this.objectiveSlots);
         autoFill.setItems(this.plugin.getMoneyManager().getObjectives(category).stream().filter(MoneyObjective::canDrop).sorted(Comparator.comparing(MoneyObjective::getId)).toList());
@@ -109,7 +109,7 @@ public class ObjectivesMenu extends LinkedMenu<LootConomyPlugin, ObjectiveCatego
                 CurrencySettings settings = plugin.getCurrencyManager().getSettings(currency);
                 if (settings == null) return;
 
-                double multiplier = drop.isPenalty() ? 1D : Booster.getMultiplier(currency, boosters);
+                double multiplier = drop.isPenalty() || !BoosterUtils.isApplicable(currency) ? 1D : totalBoost;
 
                 String format;
                 if (settings.hasDailyLimit() && limitData.isLimitExceed(currency, settings)) {
@@ -148,7 +148,7 @@ public class ObjectivesMenu extends LinkedMenu<LootConomyPlugin, ObjectiveCatego
     @Override
     public void loadConfiguration(@NotNull FileConfig config, @NotNull MenuLoader loader) {
         this.objectiveName = ConfigValue.create("Objective.Name",
-            LIGHT_YELLOW.enclose(BOLD.enclose(GENERIC_NAME))
+            LIGHT_YELLOW.wrap(BOLD.wrap(GENERIC_NAME))
         ).read(config);
 
         this.objectiveLore = ConfigValue.create("Objective.Lore", Lists.newList(
@@ -158,19 +158,19 @@ public class ObjectivesMenu extends LinkedMenu<LootConomyPlugin, ObjectiveCatego
         )).read(config);
 
         this.objectEntry = ConfigValue.create("Objective.Objects.Entry",
-            LIGHT_GRAY.enclose(GENERIC_NAME)
+            LIGHT_GRAY.wrap(GENERIC_NAME)
         ).read(config);
 
         this.objectCurrencyGood = ConfigValue.create("Objective.Objects.Currency.Available",
-            GREEN.enclose("↑ " + GENERIC_MIN + GRAY.enclose(" ⬌ ") + GENERIC_MAX + " " + GRAY.enclose("(" + WHITE.enclose(GENERIC_CHANCE + "%") + ")"))
+            GREEN.wrap("↑ " + GENERIC_MIN + GRAY.wrap(" ⬌ ") + GENERIC_MAX + " " + GRAY.wrap("(" + WHITE.wrap(GENERIC_CHANCE + "%") + ")"))
         ).read(config);
 
         this.objectCurrencyBad = ConfigValue.create("Objective.Objects.Currency.Penalty",
-            RED.enclose("↓ " + GENERIC_MIN + GRAY.enclose(" ⬌ ") + GENERIC_MAX + " " + GRAY.enclose("(" + WHITE.enclose(GENERIC_CHANCE + "%") + ")"))
+            RED.wrap("↓ " + GENERIC_MIN + GRAY.wrap(" ⬌ ") + GENERIC_MAX + " " + GRAY.wrap("(" + WHITE.wrap(GENERIC_CHANCE + "%") + ")"))
         ).read(config);
 
         this.objectCurrencyLimit = ConfigValue.create("Objective.Objects.Currency.LimitReached",
-            YELLOW.enclose("⏳ " + GENERIC_MIN + GRAY.enclose(" ⬌ ") + GENERIC_MAX + " " + YELLOW.enclose("(Max. Today)"))
+            YELLOW.wrap("⏳ " + GENERIC_MIN + GRAY.wrap(" ⬌ ") + GENERIC_MAX + " " + YELLOW.wrap("(Max. Today)"))
         ).read(config);
 
         this.objectiveSlots = ConfigValue.create("Objective.Slots", IntStream.range(0, 45).toArray()).read(config);

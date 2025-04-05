@@ -1,264 +1,218 @@
 package su.nightexpress.lootconomy.booster;
 
-import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import su.nightexpress.economybridge.EconomyBridge;
 import su.nightexpress.lootconomy.LootConomyPlugin;
 import su.nightexpress.lootconomy.Placeholders;
-import su.nightexpress.lootconomy.booster.config.BoosterInfo;
-import su.nightexpress.lootconomy.booster.config.RankBoosterInfo;
-import su.nightexpress.lootconomy.booster.config.ScheduledBoosterInfo;
+import su.nightexpress.lootconomy.booster.impl.BoosterSchedule;
 import su.nightexpress.lootconomy.booster.impl.Booster;
-import su.nightexpress.lootconomy.booster.impl.ExpirableBooster;
 import su.nightexpress.lootconomy.booster.listener.BoosterListener;
 import su.nightexpress.lootconomy.config.Config;
 import su.nightexpress.lootconomy.config.Lang;
 import su.nightexpress.lootconomy.data.impl.LootUser;
-import su.nightexpress.nightcore.config.FileConfig;
-import su.nightexpress.nightcore.language.entry.LangString;
-import su.nightexpress.nightcore.language.entry.LangText;
 import su.nightexpress.nightcore.manager.AbstractManager;
-import su.nightexpress.nightcore.util.NumberUtil;
 import su.nightexpress.nightcore.util.Players;
-import su.nightexpress.nightcore.util.TimeUtil;
+import su.nightexpress.nightcore.util.placeholder.Replacer;
+import su.nightexpress.nightcore.util.time.TimeFormatType;
+import su.nightexpress.nightcore.util.time.TimeFormats;
 
-import java.util.*;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.stream.Collectors;
+import java.util.HashSet;
+import java.util.Set;
 
 public class BoosterManager extends AbstractManager<LootConomyPlugin> {
 
-    private static final String FILE_NAME = "booster_data";
+    // TODO Dedicated config, and fully optional boosters module
 
-    private final Map<String, ExpirableBooster> boosterMap;
+    private Booster globalBooster;
 
     public BoosterManager(@NotNull LootConomyPlugin plugin) {
         super(plugin);
-        this.boosterMap = new ConcurrentHashMap<>();
     }
 
     @Override
     protected void onLoad() {
-        this.loadBoosters();
-
         this.addListener(new BoosterListener(this.plugin, this));
 
-        this.addAsyncTask(this::tickScheduledBoosters, Config.BOOSTER_SCHEDULER_INTERVAL.get());
+        this.addAsyncTask(this::tickBoosters, Config.BOOSTER_TICK_INTERVAL.get());
     }
 
     @Override
     protected void onShutdown() {
-        this.saveBoosters();
-
-        this.boosterMap.clear();
+        this.globalBooster = null;
     }
 
-    @NotNull
-    public static String formatBoosterValue(double amount) {
-        String format = amount >= 0 ? Config.BOOSTER_FORMAT_POSITIVE.get() : Config.BOOSTER_FORMAT_NEGATIVE.get();
-        return format.replace(Placeholders.GENERIC_AMOUNT, NumberUtil.format(amount));
+    public void tickBoosters() {
+        this.tickGlobal();
+        this.tickSchedules();
+        this.tickPersonal();
     }
 
-    private void loadBoosters() {
-        FileConfig config = this.getConfig();
-
-        config.getSection("booster").forEach(id -> {
-            ExpirableBooster booster = this.loadBooster(config, id);
-            if (booster.isExpired()) return;
-
-            this.addBooster(id, booster, true);
-        });
-    }
-
-    private void saveBoosters() {
-        FileConfig config = this.getConfig();
-
-        config.remove("booster");
-
-        this.getBoosterMap().forEach((id, booster) -> {
-            this.saveBooster(config, booster, id);
-        });
-
-        config.saveChanges();
-    }
-
-    @NotNull
-    private ExpirableBooster loadBooster(@NotNull FileConfig config, @NotNull String id) {
-        long expireDate = config.getLong("booster." + id + ".expire_date");
-        Multiplier multiplier = Multiplier.read(config, "booster." + id + ".multiplier");
-
-        return new ExpirableBooster(multiplier, expireDate);
-    }
-
-    private void saveBooster(@NotNull FileConfig config, @NotNull ExpirableBooster booster, @NotNull String id) {
-        config.set("booster." + id + ".expire_date", booster.getExpireDate());
-        booster.getMultiplier().write(config, "booster." + id + ".multiplier");
-    }
-
-    @NotNull
-    private FileConfig getConfig() {
-        return FileConfig.loadOrExtract(this.plugin, FILE_NAME);
-    }
-
-    @NotNull
-    public Map<String, ScheduledBoosterInfo> getScheduledBoosterMap() {
-        return new HashMap<>(Config.BOOSTERS_SCHEDULED.get());
-    }
-
-    @NotNull
-    public Map<String, RankBoosterInfo> getRankBoosterMap() {
-        return new HashMap<>(Config.BOOSTERS_RANK.get());
-    }
-
-    @NotNull
-    public Map<String, ExpirableBooster> getBoosterMap() {
-        this.boosterMap.values().removeIf(ExpirableBooster::isExpired);
-
-        return this.boosterMap;
-    }
-
-    @NotNull
-    public Set<ExpirableBooster> getBoosters() {
-        return new HashSet<>(this.boosterMap.values());
-    }
-
-    @Nullable
-    public ExpirableBooster getBooster(@NotNull String name) {
-        return this.boosterMap.get(name.toLowerCase());
-    }
-
-    @Nullable
-    public Booster getRankBooster(@NotNull Player player) {
-        return this.getRankBoosterMap().values().stream()
-            .filter(booster -> Players.getPermissionGroups(player).contains(booster.getRank()))
-            .max(Comparator.comparingInt(RankBoosterInfo::getPriority)).map(BoosterInfo::createBooster).orElse(null);
-    }
-
-    @NotNull
-    public Set<Booster> getBoosters(@NotNull Player player) {
-        Set<Booster> boosters = new HashSet<>();
-
-        LootUser user = plugin.getUserManager().getOrFetch(player);
-
-        // If user has personal booster with the name as global ones, use global one only.
-        Set<ExpirableBooster> customBoosters = this.getBoosters();
-        user.getBoosterMap().forEach((name, booster) -> {
-            ExpirableBooster custom = this.getBooster(name);
-            if (custom != null) {
-                boosters.add(custom);
-                customBoosters.remove(custom);
-            }
-            else boosters.add(booster);
-        });
-
-        boosters.add(this.getRankBooster(player));
-        boosters.addAll(customBoosters);
-        boosters.removeIf(Objects::isNull);
-
-        return boosters;
-    }
-
-    public void tickScheduledBoosters() {
-        this.getScheduledBoosterMap().forEach((id, boosterInfo) -> {
-            if (!boosterInfo.isReady()) return;
-
-            this.activateBooster(id, boosterInfo);
-        });
-    }
-
-    public boolean activateBooster(@NotNull String id) {
-        ScheduledBoosterInfo boosterInfo = this.getScheduledBoosterMap().get(id.toLowerCase());
-        if (boosterInfo == null) return false;
-
-        this.activateBooster(id, boosterInfo);
-        return true;
-    }
-
-    public void activateBooster(@NotNull String id, @NotNull ScheduledBoosterInfo boosterInfo) {
-        ExpirableBooster booster = boosterInfo.createBooster();
-        this.addBooster(id, booster, Lang.BOOSTER_NOTIFY_SCHEDULED);
-    }
-
-    public boolean addBooster(@NotNull String name, @NotNull ExpirableBooster booster, boolean notify) {
-        return this.addBooster(name, booster, notify ? Lang.BOOSTER_NOTIFY_CUSTOM : null);
-    }
-
-    private boolean addBooster(@NotNull String name, @NotNull ExpirableBooster booster, @Nullable LangText notify) {
-        if (booster.isExpired()) return false;
-
-        this.boosterMap.put(name.toLowerCase(), booster);
-
-        if (notify != null) {
-            this.notifyBooster(booster, notify);
+    private void tickGlobal() {
+        if (this.globalBooster == null) return;
+        if (this.globalBooster.isExpired()) {
+            Lang.BOOSTER_EXPIRED_GLOBAL.getMessage().broadcast(replacer -> replacer.replace(Placeholders.GENERIC_AMOUNT, this.globalBooster.formattedPercent()));
+            this.globalBooster = null;
         }
+    }
 
+    private void tickSchedules() {
+        if (this.hasGlobalBoost()) return;
+
+        BoosterSchedule ready = this.getBoosterSchedules().stream().filter(BoosterSchedule::isReady).findFirst().orElse(null);
+        if (ready == null) return;
+
+        this.activateBooster(ready, true);
+    }
+
+    private void tickPersonal() {
+        Players.getOnline().forEach(player -> {
+            LootUser user = plugin.getUserManager().getOrFetch(player);
+            Booster booster = user.getBooster();
+            if (booster == null) return;
+
+            if (booster.isExpired()) {
+                Lang.BOOSTER_EXPIRED_PERSONAL.getMessage().send(player, replacer -> replacer.replace(Placeholders.GENERIC_AMOUNT, booster.formattedPercent()));
+                user.removeBooster();
+            }
+        });
+    }
+
+    public boolean hasGlobalBoost() {
+        return this.globalBooster != null && this.globalBooster.isValid();
+    }
+
+    @NotNull
+    public Set<BoosterSchedule> getBoosterSchedules() {
+        return new HashSet<>(Config.getBoosterScheduleMap().values());
+    }
+
+    @Nullable
+    public BoosterSchedule getBoosterScheduleById(@NotNull String id) {
+        return Config.getBoosterScheduleMap().get(id.toLowerCase());
+    }
+
+    @Nullable
+    public Booster getGlobalBooster() {
+        return this.globalBooster;
+    }
+
+    public double getRankBoost(@NotNull Player player) {
+        return Config.BOOSTERS_BY_RANK.get().getGreatest(player);
+    }
+
+    public double getGlobalBoost() {
+        return this.getBoost(this.globalBooster);
+    }
+
+    public double getPersonalBoost(@NotNull Player player) {
+        LootUser user = plugin.getUserManager().getOrFetch(player);
+        return this.getBoost(user.getBooster());
+    }
+
+    public double getTotalBoostPercent(@NotNull Player player) {
+        double percent = 0D;
+        for (BoosterType type : BoosterType.values()) {
+            percent += BoosterUtils.getAsPercent(this.getBoosterMultiplier(player, type));
+        }
+        return percent;
+    }
+
+    private double getBoost(@Nullable Booster booster) {
+        return booster == null || !booster.isValid() ? 1D : booster.getMultiplier();
+    }
+
+    public double getTotalBoost(@NotNull Player player) {
+        return this.getTotalBoostPercent(player) / 100D;
+    }
+
+    public double getBoosterMultiplier(@NotNull Player player, @NotNull BoosterType type) {
+        return switch (type) {
+            case RANK -> this.getRankBoost(player);
+            case GLOBAL -> this.getGlobalBoost();
+            case PERSONAL -> this.getPersonalBoost(player);
+        };
+    }
+
+    public long getBoosterExpireDate(@NotNull Player player, @NotNull BoosterType type) {
+        return switch (type) {
+            case PERSONAL -> {
+                LootUser user = plugin.getUserManager().getOrFetch(player);
+                Booster booster = user.getBooster();
+                yield booster == null ? 0L : booster.getExpireDate();
+            }
+            case GLOBAL -> this.hasGlobalBoost() ? this.globalBooster.getExpireDate() : 0L;
+            case RANK -> -1L;
+        };
+    }
+
+    public boolean hasBoosterMultiplier(@NotNull Player player, @NotNull BoosterType type) {
+        return this.getBoosterMultiplier(player, type) != 1D;
+    }
+
+    public boolean activateBoosterById(@NotNull String id) {
+        BoosterSchedule schedule = this.getBoosterScheduleById(id);
+        if (schedule == null) return false;
+
+        this.activateBooster(schedule, false);
         return true;
     }
 
-    public boolean removeBooster(@NotNull String name) {
-        ExpirableBooster booster = this.boosterMap.remove(name.toLowerCase());
-        return booster != null;
+    public void activateBooster(@NotNull BoosterSchedule schedule, boolean relative) {
+        Booster booster = schedule.createBooster(true);
+        if (!booster.isValid()) return;
+
+        this.setGlobalBooster(booster);
     }
 
-    public void notifyBooster(@NotNull ExpirableBooster booster, @NotNull LangText text) {
-        text.getMessage().broadcast(replacer -> replacer
-            .replace(Placeholders.GENERIC_TIME, TimeUtil.formatDuration(booster.getExpireDate()))
-            .replace(Placeholders.GENERIC_ENTRY, list -> {
-                EconomyBridge.getCurrencies().forEach(currency -> {
-                    if (!booster.getMultiplier().has(currency)) return;
+    public boolean setGlobalBooster(@NotNull Booster booster) {
+        this.globalBooster = booster;
+        this.notifyGlobalBooster(booster);
+        return true;
+    }
 
-                    list.add(currency.replacePlaceholders().apply(Lang.BOOSTER_NOTIFY_ENTRY.getString())
-                        .replace(Placeholders.GENERIC_AMOUNT, booster.getMultiplier().formattedPercent(currency))
-                        .replace(Placeholders.GENERIC_MULTIPLIER, booster.getMultiplier().formattedMultiplier(currency))
-                    );
-                });
-            })
+    public void removeGlobalBooster() {
+        this.globalBooster = null;
+    }
+
+    public void notifyGlobalBooster(@NotNull Booster booster) {
+        Lang.BOOSTER_ACTIVATED_GLOBAL.getMessage().broadcast(replacer -> replacer
+            .replace(Placeholders.GENERIC_TIME, TimeFormats.formatDuration(booster.getExpireDate(), TimeFormatType.LITERAL))
+            .replace(Placeholders.GENERIC_AMOUNT, booster.formattedPercent())
         );
     }
 
-    public void printBoosters(@NotNull CommandSender sender) {
-        Set<Booster> userBoosters = sender instanceof Player player ? this.getBoosters(player) : new HashSet<>();
-        Set<Booster> globalBoosters = new HashSet<>(this.getBoosters());
-        userBoosters.removeAll(globalBoosters);
-
-        Lang.BOOSTER_LIST_INFO.getMessage().send(sender, replacer -> replacer
-            .replace(Placeholders.GENERIC_GLOBAL, list -> this.addPrintInfo(list, globalBoosters, Lang.BOOSTER_LIST_GLOBAL_NOTHING))
-            .replace(Placeholders.GENERIC_PERSONAL, list -> this.addPrintInfo(list, userBoosters, Lang.BOOSTER_LIST_PERSONAL_NOTHING))
+    public void notifyPersonalBooster(@NotNull Player player, @NotNull Booster booster) {
+        Lang.BOOSTER_ACTIVATED_PERSONAL.getMessage().send(player, replacer -> replacer
+            .replace(Placeholders.GENERIC_TIME, TimeFormats.formatDuration(booster.getExpireDate(), TimeFormatType.LITERAL))
+            .replace(Placeholders.GENERIC_AMOUNT, booster.formattedPercent())
         );
     }
 
-    private void addPrintInfo(@NotNull List<String> list, @NotNull Collection<Booster> boosters, @NotNull LangString fallback) {
-        if (boosters.isEmpty()) {
-            list.add(fallback.getString());
+    public void displayBoosterInfo(@NotNull Player player) {
+        double totalPercent = this.getTotalBoostPercent(player);
+        if (totalPercent == 0D) {
+            Lang.BOOSTER_LIST_NOTHING.getMessage().send(player);
             return;
         }
 
-        boosters.removeIf(booster -> booster instanceof ExpirableBooster expirableBooster && expirableBooster.isExpired());
+        Lang.BOOSTER_LIST_INFO.getMessage().send(player, replacer -> replacer
+            .replace(Placeholders.GENERIC_TOTAL, BoosterUtils.formatPercent(totalPercent))
+            .replace(Placeholders.GENERIC_ENTRY, list -> {
+                for (BoosterType type : BoosterType.values()) {
+                    if (!this.hasBoosterMultiplier(player, type)) continue;
 
-        EconomyBridge.getCurrencies().forEach(currency -> {
-            double percent = Booster.getPercent(currency, boosters);
-            double modifier = Booster.getMultiplier(currency, boosters);
-            if (percent == 0D) return;
-
-            String subBoosters = boosters.stream().map(booster -> {
-                String duration = Lang.OTHER_INFINITY.getString();
-                if (booster instanceof ExpirableBooster expirableBooster) {
-                    duration = TimeUtil.formatDuration(expirableBooster.getExpireDate());
+                    list.add(Replacer.create()
+                        .replace(Placeholders.GENERIC_TYPE, () -> Lang.BOOSTER_TYPE.getLocalized(type))
+                        .replace(Placeholders.GENERIC_AMOUNT, () -> BoosterUtils.formatMultiplier(this.getBoosterMultiplier(player, type)))
+                        .replace(Placeholders.GENERIC_TIME, () -> {
+                            long expireDate = this.getBoosterExpireDate(player, type);
+                            return expireDate < 0L ? Lang.OTHER_INFINITY.getString() : TimeFormats.formatDuration(expireDate, TimeFormatType.LITERAL);
+                        })
+                        .apply(Lang.BOOSTER_LIST_ENTRY.getString())
+                    );
                 }
-
-                return Lang.BOOSTER_LIST_ENTRY_HOVER.getString()
-                    .replace(Placeholders.GENERIC_AMOUNT, booster.getMultiplier().formattedPercent(currency))
-                    .replace(Placeholders.GENERIC_TIME, duration);
-
-            }).collect(Collectors.joining(Placeholders.TAG_LINE_BREAK));
-
-            list.add(currency.replacePlaceholders().apply(Lang.BOOSTER_LIST_ENTRY_CURRENCY.getString())
-                .replace(Placeholders.GENERIC_TOTAL, formatBoosterValue(percent))
-                .replace(Placeholders.GENERIC_MULTIPLIER, NumberUtil.format(modifier))
-                .replace(Placeholders.GENERIC_ENTRY, subBoosters)
-            );
-        });
+            })
+        );
     }
 }

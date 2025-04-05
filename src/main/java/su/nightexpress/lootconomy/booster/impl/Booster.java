@@ -1,42 +1,54 @@
 package su.nightexpress.lootconomy.booster.impl;
 
 import org.jetbrains.annotations.NotNull;
-import su.nightexpress.economybridge.api.Currency;
-import su.nightexpress.lootconomy.booster.Multiplier;
-import su.nightexpress.lootconomy.booster.config.BoosterInfo;
-
-import java.util.Collection;
+import su.nightexpress.lootconomy.booster.BoosterUtils;
+import su.nightexpress.nightcore.util.TimeUtil;
 
 public class Booster {
 
-    private final Multiplier multiplier;
+    private double multiplier;
+    private long expireDate;
 
-    public Booster(@NotNull BoosterInfo parent) {
-        this(parent.getMultiplier());
-    }
-
-    public Booster(@NotNull Multiplier multiplier) {
-        this.multiplier = multiplier;
+    public Booster(double multiplier, long expireDate) {
+        this.setMultiplier(multiplier);
+        this.setExpireDate(expireDate);
     }
 
     @NotNull
-    public Multiplier getMultiplier() {
+    public static Booster create(double multiplier, int duration) {
+        return new Booster(multiplier, TimeUtil.createFutureTimestamp(duration));
+    }
+
+    public boolean isValid() {
+        return this.multiplier != 0D && !this.isExpired();
+    }
+
+    public boolean isExpired() {
+        return TimeUtil.isPassed(this.expireDate);
+    }
+
+    @NotNull
+    public String formattedPercent() {
+        return BoosterUtils.formatMultiplier(this.multiplier);
+    }
+
+    public double getAsPercent() {
+        return BoosterUtils.getAsPercent(this.multiplier);
+    }
+
+    public double getMultiplier() {
         return this.multiplier;
     }
 
-    public static double getMultiplier(@NotNull Currency currency, @NotNull Collection<Booster> boosters) {
-        return getMultiplier(currency.getInternalId(), boosters);
+    public void setMultiplier(double multiplier) {
+        this.multiplier = Math.abs(multiplier);
     }
 
-    public static double getMultiplier(@NotNull String id, @NotNull Collection<Booster> boosters) {
-        return (boosters.stream().mapToDouble(b -> b.getMultiplier().getAsPercent(id)).sum() + 100D) / 100D;
+    public long getExpireDate() {
+        return expireDate;
     }
 
-    public static double getPercent(@NotNull Currency currency, @NotNull Collection<Booster> boosters) {
-        return getPercent(currency.getInternalId(), boosters);
-    }
-
-    public static double getPercent(@NotNull String id, @NotNull Collection<Booster> boosters) {
-        return boosters.stream().mapToDouble(b -> b.getMultiplier().getAsPercent(id)).sum();
+    public void setExpireDate(long expireDate) {
+        this.expireDate = expireDate;
     }
 }

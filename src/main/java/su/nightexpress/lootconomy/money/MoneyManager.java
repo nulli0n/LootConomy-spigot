@@ -11,6 +11,7 @@ import org.jetbrains.annotations.Nullable;
 import su.nightexpress.economybridge.EconomyBridge;
 import su.nightexpress.lootconomy.LootConomyPlugin;
 import su.nightexpress.lootconomy.Placeholders;
+import su.nightexpress.lootconomy.booster.BoosterUtils;
 import su.nightexpress.lootconomy.currency.CurrencySettings;
 import su.nightexpress.lootconomy.hook.HookId;
 import su.nightexpress.lootconomy.hook.impl.mythicmobs.MythicMobsHook;
@@ -20,7 +21,6 @@ import su.nightexpress.economybridge.api.Currency;
 import su.nightexpress.lootconomy.api.event.PlayerCurrencyGainEvent;
 import su.nightexpress.lootconomy.api.event.PlayerCurrencyLootCreateEvent;
 import su.nightexpress.lootconomy.api.event.PlayerCurrencyLoseEvent;
-import su.nightexpress.lootconomy.booster.impl.Booster;
 import su.nightexpress.lootconomy.config.Config;
 import su.nightexpress.lootconomy.config.Lang;
 import su.nightexpress.lootconomy.config.Perms;
@@ -379,7 +379,8 @@ public class MoneyManager extends AbstractManager<LootConomyPlugin> {
         LootUser user = plugin.getUserManager().getOrFetch(player);
         LootLimitData limitData = user.getLimitData();
 
-        Collection<Booster> boosters = plugin.getBoosterManager().getBoosters(player);
+        //Collection<Booster> boosters = plugin.getBoosterManager().getBoosters(player);
+        double boost = plugin.getBoosterManager().getTotalBoost(player);
 
         for (Currency currency : EconomyBridge.getCurrencies()) {
             CurrencySettings settings = plugin.getCurrencyManager().getSettings(currency);
@@ -395,7 +396,7 @@ public class MoneyManager extends AbstractManager<LootConomyPlugin> {
                 // Apply boosters only for positive amount.
                 if (moneyAmount > 0D) {
                     moneyAmount *= MoneyUtils.parseCustomMultiplier(player, dropInfo.getCustomMultiplier());
-                    moneyAmount *= Booster.getMultiplier(currency, boosters);
+                    if (BoosterUtils.isApplicable(currency)) moneyAmount *= boost;
                 }
 
                 if (settings.isRoundToInt()) {

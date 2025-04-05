@@ -4,10 +4,7 @@ import me.clip.placeholderapi.expansion.PlaceholderExpansion;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import su.nightexpress.lootconomy.LootConomyPlugin;
-import su.nightexpress.lootconomy.booster.impl.Booster;
 import su.nightexpress.nightcore.util.NumberUtil;
-
-import java.util.Collection;
 
 public class PlaceholderHook {
 
@@ -62,16 +59,19 @@ public class PlaceholderHook {
         public String onPlaceholderRequest(Player player, @NotNull String params) {
             //LootUser user = this.plugin.getUserManager().getUserData(player);
 
-            if (params.startsWith("currency_boost_multiplier_")) {
-                String curId = params.substring("currency_boost_multiplier_".length());
-                Collection<Booster> boosters = plugin.getBoosterManager().getBoosters(player);
-                return NumberUtil.format(Booster.getMultiplier(curId, boosters));
+            if (params.equalsIgnoreCase("boost_multiplier")) {
+//                String curId = params.substring("currency_boost_multiplier_".length());
+//                Collection<Booster> boosters = plugin.getBoosterManager().getBoosters(player);
+//                return NumberUtil.format(Booster.getMultiplier(curId, boosters));
+
+                return NumberUtil.format(plugin.getBoosterManager().getTotalBoost(player));
             }
 
-            if (params.startsWith("currency_boost_percent_")) {
-                String curId = params.substring("currency_boost_percent_".length());
-                Collection<Booster> boosters = plugin.getBoosterManager().getBoosters(player);
-                return NumberUtil.format(Booster.getPercent(curId, boosters));
+            if (params.equalsIgnoreCase("boost_percent")) {
+                return NumberUtil.format(plugin.getBoosterManager().getTotalBoostPercent(player));
+//                String curId = params.substring("currency_boost_percent_".length());
+//                Collection<Booster> boosters = plugin.getBoosterManager().getBoosters(player);
+//                return NumberUtil.format(Booster.getPercent(curId, boosters));
             }
 
             return null;

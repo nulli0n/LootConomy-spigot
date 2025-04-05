@@ -4,13 +4,10 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 import org.jetbrains.annotations.NotNull;
 import su.nightexpress.lootconomy.LootConomyPlugin;
-import su.nightexpress.lootconomy.booster.Multiplier;
-import su.nightexpress.lootconomy.booster.impl.ExpirableBooster;
+import su.nightexpress.lootconomy.booster.impl.Booster;
 import su.nightexpress.lootconomy.data.impl.LootLimitData;
 import su.nightexpress.lootconomy.data.impl.LootUser;
 import su.nightexpress.lootconomy.data.impl.UserSettings;
-import su.nightexpress.lootconomy.data.serialize.BoosterMultiplierSerializer;
-import su.nightexpress.lootconomy.data.serialize.ExpirableBoosterSerializer;
 import su.nightexpress.lootconomy.data.serialize.LimitDataSerializer;
 import su.nightexpress.lootconomy.data.serialize.UserSettingsSerializer;
 import su.nightexpress.nightcore.db.AbstractUserDataManager;
@@ -21,17 +18,16 @@ import su.nightexpress.nightcore.db.sql.query.type.ValuedQuery;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.UUID;
 import java.util.function.Function;
 
 public class DataHandler extends AbstractUserDataManager<LootConomyPlugin, LootUser> {
 
-    private static final Column COLUMN_LIMIT_DATA = Column.of("limitdata", ColumnType.STRING);
-    private static final Column COLUMN_BOOSTERS   = Column.of("boosters", ColumnType.STRING);
-    private static final Column COLUMN_SETTINGS   = Column.of("settings", ColumnType.STRING);
+    private static final Column COLUMN_LIMIT_DATA          = Column.of("limitdata", ColumnType.STRING);
+    private static final Column COLUMN_SETTINGS            = Column.of("settings", ColumnType.STRING);
+    private static final Column COLUMN_BOOSTER_MULTIPLIER  = Column.of("boosterMultiplier", ColumnType.DOUBLE);
+    private static final Column COLUMN_BOOSTER_EXPIRE_DATE = Column.of("boosterExpireDate", ColumnType.LONG);
 
     public DataHandler(@NotNull LootConomyPlugin plugin) {
         super(plugin);
@@ -50,13 +46,14 @@ public class DataHandler extends AbstractUserDataManager<LootConomyPlugin, LootU
                 LootLimitData limitData = this.gson.fromJson(resultSet.getString(COLUMN_LIMIT_DATA.getName()), new TypeToken<LootLimitData>(){}.getType());
                 if (limitData == null) limitData = LootLimitData.create();
 
-                Map<String, ExpirableBooster> boosters = this.gson.fromJson(resultSet.getString(COLUMN_BOOSTERS.getName()), new TypeToken<Map<String, ExpirableBooster>>(){}.getType());
-                if (boosters == null) boosters = new HashMap<>();
+                double boosterMult = resultSet.getDouble(COLUMN_BOOSTER_MULTIPLIER.getName());
+                long boosterExpireDate = resultSet.getLong(COLUMN_BOOSTER_EXPIRE_DATE.getName());
+                Booster booster = new Booster(boosterMult, boosterExpireDate);
 
                 UserSettings settings = this.gson.fromJson(resultSet.getString(COLUMN_SETTINGS.getName()), new TypeToken<UserSettings>(){}.getType());
                 if (settings == null) settings = new UserSettings();
 
-                return new LootUser(uuid, name, dateCreated, lastOnline, limitData, boosters, settings);
+                return new LootUser(uuid, name, dateCreated, lastOnline, limitData, booster, settings);
             }
             catch (SQLException ex) {
                 return null;
@@ -65,40 +62,48 @@ public class DataHandler extends AbstractUserDataManager<LootConomyPlugin, LootU
     }
 
     @Override
+    protected void onInitialize() {
+        super.onInitialize();
+
+        this.addColumn(this.tableUsers, COLUMN_BOOSTER_MULTIPLIER, "0");
+        this.addColumn(this.tableUsers, COLUMN_BOOSTER_EXPIRE_DATE, "0");
+    }
+
+    @Override
     protected void addUpsertQueryData(@NotNull ValuedQuery<?, LootUser> query) {
         query.setValue(COLUMN_LIMIT_DATA, user -> this.gson.toJson(user.getLimitData()));
-        query.setValue(COLUMN_BOOSTERS, user -> this.gson.toJson(user.getBoosterMap()));
         query.setValue(COLUMN_SETTINGS, user -> this.gson.toJson(user.getSettings()));
+        query.setValue(COLUMN_BOOSTER_MULTIPLIER, user -> String.valueOf(user.getBooster() == null ? 0D : user.getBooster().getMultiplier()));
+        query.setValue(COLUMN_BOOSTER_EXPIRE_DATE, user -> String.valueOf(user.getBooster() == null ? 0L : user.getBooster().getExpireDate()));
     }
 
     @Override
     protected void addSelectQueryData(@NotNull SelectQuery<LootUser> query) {
         query.column(COLUMN_LIMIT_DATA);
         query.column(COLUMN_SETTINGS);
-        query.column(COLUMN_BOOSTERS);
+        query.column(COLUMN_BOOSTER_MULTIPLIER);
+        query.column(COLUMN_BOOSTER_EXPIRE_DATE);
     }
 
     @Override
     protected void addTableColumns(@NotNull List<Column> columns) {
         columns.add(COLUMN_LIMIT_DATA);
         columns.add(COLUMN_SETTINGS);
-        columns.add(COLUMN_BOOSTERS);
+        columns.add(COLUMN_BOOSTER_MULTIPLIER);
+        columns.add(COLUMN_BOOSTER_EXPIRE_DATE);
     }
 
     @Override
     public void onSynchronize() {
         this.plugin.getUserManager().getLoaded().forEach(user -> {
             if (user.isAutoSavePlanned()) return;
+            if (!user.isAutoSyncReady()) return;
 
             LootUser fetched = this.getUser(user.getId());
             if (fetched == null) return;
 
-            if (!user.isAutoSyncReady()) return;
-
-            user.getBoosterMap().clear();
-            user.getBoosterMap().putAll(fetched.getBoosterMap());
-
             user.setLimitData(fetched.getLimitData());
+            user.setBooster(fetched.getBooster());
         });
     }
 
@@ -107,8 +112,6 @@ public class DataHandler extends AbstractUserDataManager<LootConomyPlugin, LootU
     protected GsonBuilder registerAdapters(@NotNull GsonBuilder builder) {
         return builder
             .registerTypeAdapter(UserSettings.class, new UserSettingsSerializer())
-            .registerTypeAdapter(LootLimitData.class, new LimitDataSerializer())
-            .registerTypeAdapter(Multiplier.class, new BoosterMultiplierSerializer())
-            .registerTypeAdapter(ExpirableBooster.class, new ExpirableBoosterSerializer());
+            .registerTypeAdapter(LootLimitData.class, new LimitDataSerializer());
     }
 }

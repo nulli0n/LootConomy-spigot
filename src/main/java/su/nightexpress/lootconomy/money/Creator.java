@@ -16,6 +16,7 @@ import su.nightexpress.lootconomy.money.object.MoneyObjective;
 import su.nightexpress.nightcore.config.FileConfig;
 import su.nightexpress.nightcore.util.Lists;
 import su.nightexpress.nightcore.util.StringUtil;
+import su.nightexpress.nightcore.util.Version;
 import su.nightexpress.nightcore.util.bukkit.NightItem;
 import su.nightexpress.nightcore.util.wrapper.UniDouble;
 import su.nightexpress.nightcore.util.wrapper.UniInt;
@@ -67,28 +68,28 @@ public class Creator {
         if (config.contains("Objectives.Categories")) return;
 
         this.createCategory(LootActions.MINING, Lists.newList(
-            LIGHT_GRAY.enclose("Blocks that drop money"),
-            LIGHT_GRAY.enclose("when mined.")
+            LIGHT_GRAY.wrap("Blocks that drop money"),
+            LIGHT_GRAY.wrap("when mined.")
         ), new NightItem(Material.COBBLESTONE));
 
         this.createCategory(LootActions.GATHERING, Lists.newList(
-            LIGHT_GRAY.enclose("Plants that drop money"),
-            LIGHT_GRAY.enclose("when harvested.")
+            LIGHT_GRAY.wrap("Plants that drop money"),
+            LIGHT_GRAY.wrap("when harvested.")
         ), new NightItem(Material.WHEAT));
 
         this.createCategory(LootActions.MOB_KILL, Lists.newList(
-            LIGHT_GRAY.enclose("Mobs that drop money"),
-            LIGHT_GRAY.enclose("when killed.")
+            LIGHT_GRAY.wrap("Mobs that drop money"),
+            LIGHT_GRAY.wrap("when killed.")
         ), new NightItem(Material.ZOMBIE_HEAD));
 
         this.createCategory(LootActions.SHEARING, Lists.newList(
-            LIGHT_GRAY.enclose("Mobs that drop money"),
-            LIGHT_GRAY.enclose("when sheared.")
+            LIGHT_GRAY.wrap("Mobs that drop money"),
+            LIGHT_GRAY.wrap("when sheared.")
         ), new NightItem(Material.SHEARS));
 
         this.createCategory(LootActions.FISHING, Lists.newList(
-            LIGHT_GRAY.enclose("Items that drop money"),
-            LIGHT_GRAY.enclose("when fished.")
+            LIGHT_GRAY.wrap("Items that drop money"),
+            LIGHT_GRAY.wrap("when fished.")
         ), new NightItem(Material.FISHING_ROD));
     }
 
@@ -142,6 +143,9 @@ public class Creator {
         logs.add(build("warped_stems", type, Tag.WARPED_STEMS, new NightItem(Material.WARPED_STEM), 15, MONEY_LOW));
         logs.add(build("leaves", type, Tag.LEAVES, new NightItem(Material.OAK_LEAVES), 3, MONEY_LOWEST));
         logs.add(build("cherry_logs", type, Tag.CHERRY_LOGS, new NightItem(Material.CHERRY_LOG), 15, MONEY_LOW));
+        if (Version.isAtLeast(Version.MC_1_21_4)) {
+            logs.add(build("pale_logs", type, Tag.PALE_OAK_LOGS, NightItem.fromType(Material.PALE_OAK_LOG), 15, MONEY_LOW));
+        }
 
         writeConfig("blocks_stones", stones);
         writeConfig("blocks_ores", ores);
@@ -301,6 +305,9 @@ public class Creator {
         various.add(build("vex", type, EntityType.VEX, "5e7330c7d5cd8a0a55ab9e95321535ac7ae30fe837c37ea9e53bea7ba2de86b", 66, MONEY_MEDIUM));
         various.add(build("silverfish", type, EntityType.SILVERFISH, "da91dab8391af5fda54acd2c0b18fbd819b865e1a8f1d623813fa761e924540", 33, MONEY_LOW));
         various.add(build("breeze", type, EntityType.BREEZE, "a275728af7e6a29c88125b675a39d88ae9919bb61fdc200337fed6ab0c49d65c", 55, MONEY_MEDIUM_HIGH));
+        if (Version.isAtLeast(Version.MC_1_21_4)) {
+            various.add(build("creaking", type, EntityType.CREAKING, "e840f459a96b0b11a25a4c3802fac20fac7879e1474e951d991628ae5ba33623", 33, MONEY_LOW));
+        }
 
         bosses.add(build("elder_guardian", type, EntityType.ELDER_GUARDIAN, "1c797482a14bfcb877257cb2cff1b6e6a8b8413336ffb4c29a6139278b436b", 100, MONEY_BOSS));
         bosses.add(build("ender_dragon", type, EntityType.ENDER_DRAGON, new NightItem(Material.DRAGON_HEAD), 100, MONEY_BOSS));

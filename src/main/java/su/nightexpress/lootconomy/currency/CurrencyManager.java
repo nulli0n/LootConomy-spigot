@@ -48,40 +48,6 @@ public class CurrencyManager extends AbstractManager<LootConomyPlugin> {
         return CurrencySettings.read(this.config, currency.getInternalId(), currency);
     }
 
-//    public void registerCurrency(@NotNull String id, @NotNull Supplier<CurrencyHandler> supplier) {
-//        CurrencyHandler handler = supplier.get();
-//        CurrencySettings settings = this.readSettings(id, handler);
-//        this.registerCurrency(new StandardCurrency<>(id, handler, settings));
-//    }
-//
-//    public void registerCurrency(@NotNull Currency currency) {
-//        this.currencyMap.put(currency.getId(), currency);
-//        this.plugin.info("Registered currency: '" + currency.getId() + "'.");
-//    }
-
-//    public boolean isRegistered(@NotNull String id) {
-//        return this.getCurrency(id) != null;
-//    }
-//
-//    public boolean hasCurrency() {
-//        return !this.currencyMap.isEmpty();
-//    }
-
-//    @NotNull
-//    public Map<String, Currency> getCurrencyMap() {
-//        return Collections.unmodifiableMap(this.currencyMap);
-//    }
-//
-//    @NotNull
-//    public Set<Currency> getCurrencies() {
-//        return new HashSet<>(this.currencyMap.values());
-//    }
-//
-//    @NotNull
-//    public List<String> getCurrencyIds() {
-//        return new ArrayList<>(this.currencyMap.keySet());
-//    }
-
     @Nullable
     public CurrencySettings getSettings(@NotNull Currency currency) {
         return this.getSettings(currency.getInternalId());
