@@ -133,7 +133,9 @@ public class MoneyManager extends AbstractManager<LootConomyPlugin> {
                 MoneyObjective objective = MoneyObjective.read(config, object, object);
                 if (!this.validateObjective(objective, config)) continue;
 
-                this.objectiveMap.computeIfAbsent(objective.getActionName(), k -> new HashMap<>()).put(objective.getId(), objective);
+                this.objectiveMap
+                        .computeIfAbsent(objective.getActionName(), k -> new HashMap<>())
+                        .put(objective.getId(), objective);
             }
             config.saveChanges();
         }
@@ -217,15 +219,15 @@ public class MoneyManager extends AbstractManager<LootConomyPlugin> {
     @NotNull
     public Set<MoneyObjective> getObjectives() {
         Set<MoneyObjective> objectives = new HashSet<>();
-        this.objectiveMap.values().forEach(map -> {
-            objectives.addAll(map.values());
-        });
+        this.objectiveMap.values().forEach(map -> objectives.addAll(map.values()));
         return objectives;
     }
 
     @NotNull
     public Set<MoneyObjective> getObjectives(@NotNull ObjectiveCategory category) {
-        return this.getObjectives().stream().filter(objective -> objective.isCategory(category)).collect(Collectors.toSet());
+        return this.getObjectives().stream()
+                .filter(objective -> objective.isCategory(category))
+                .collect(Collectors.toSet());
     }
 
     @Nullable
@@ -272,12 +274,9 @@ public class MoneyManager extends AbstractManager<LootConomyPlugin> {
 
     public boolean pickupMoney(@NotNull Player player, @NotNull Currency currency, double money, @Nullable MoneyObjective objective) {
         boolean isLose = money < 0D;
-
-        //money = currency.round(money);
         if (isLose) {
             return this.loseMoney(player, currency, money, objective);
-        }
-        else {
+        } else {
             return this.gainMoney(player, currency, money, objective);
         }
     }
@@ -297,18 +296,13 @@ public class MoneyManager extends AbstractManager<LootConomyPlugin> {
 
         (objective == null ? Lang.CURRENCY_LOST_DEATH : Lang.CURRENCY_LOST_PENALTY).getMessage().send(player, replacer -> {
             replacer
-                .replace(Placeholders.GENERIC_AMOUNT, currency.format(amount))
-                .replace(Placeholders.GENERIC_BALANCE, currency.format(currency.getBalance(player)));
+                    .replace(Placeholders.GENERIC_AMOUNT, currency.format(amount))
+                    .replace(Placeholders.GENERIC_BALANCE, currency.format(currency.getBalance(player)));
 
             if (objective != null) {
                 replacer.replace(Placeholders.GENERIC_NAME, objective.getDisplayName());
             }
         });
-
-//        if (objective != null) {
-//            message = message.replace(Placeholders.GENERIC_NAME, objective.getDisplayName());
-//        }
-        //message.send(player);
 
         return true;
     }
@@ -335,34 +329,36 @@ public class MoneyManager extends AbstractManager<LootConomyPlugin> {
         }
 
         Lang.CURRENCY_PICKUP.getMessage().send(player, replacer -> replacer
-            .replace(Placeholders.GENERIC_AMOUNT, currency.format(amount))
-            .replace(Placeholders.GENERIC_BALANCE, currency.format(currency.getBalance(player)))
+                .replace(Placeholders.GENERIC_AMOUNT, currency.format(amount))
+                .replace(Placeholders.GENERIC_BALANCE, currency.format(currency.getBalance(player)))
         );
 
         return true;
     }
 
-//    @NotNull
-//    @Deprecated
-//    public <O> List<ItemStack> createLoot(@NotNull Player player, @NotNull LootAction<?, O> type, @NotNull O object) {
-//        return this.createLoot(player, type, object, 1);
-//    }
-//
-//    @NotNull
-//    @Deprecated
-//    public <O> List<ItemStack> createLoot(@NotNull Player player, @NotNull LootAction<?, O> type, @NotNull O object, int amount) {
-//        List<ItemStack> loot = new ArrayList<>();
-//        this.getObjectives(type).forEach(objective -> {
-//            if (objective.hasObject(type.getObjectName(object))) {
-//                loot.addAll(this.createLoot(player, objective, amount));
-//            }
-//        });
-//        return loot;
-//    }
+    //    @NotNull
+    //    @Deprecated
+    //    public <O> List<ItemStack> createLoot(@NotNull Player player, @NotNull LootAction<?, O> type, @NotNull O object) {
+    //        return this.createLoot(player, type, object, 1);
+    //    }
+    //
+    //    @NotNull
+    //    @Deprecated
+    //    public <O> List<ItemStack> createLoot(@NotNull Player player, @NotNull LootAction<?, O> type, @NotNull O object, int amount) {
+    //        List<ItemStack> loot = new ArrayList<>();
+    //        this.getObjectives(type).forEach(objective -> {
+    //            if (objective.hasObject(type.getObjectName(object))) {
+    //                loot.addAll(this.createLoot(player, objective, amount));
+    //            }
+    //        });
+    //        return loot;
+    //    }
 
     @NotNull
     public List<MoneyObjective> getObjectives(@NotNull LootAction<?, ?> action, @NotNull String objectId) {
-        return this.getObjectives(action).stream().filter(objective -> objective.hasObject(objectId)).toList();
+        return this.getObjectives(action).stream()
+                .filter(objective -> objective.hasObject(objectId))
+                .toList();
     }
 
     @NotNull
@@ -379,21 +375,22 @@ public class MoneyManager extends AbstractManager<LootConomyPlugin> {
         LootUser user = plugin.getUserManager().getOrFetch(player);
         LootLimitData limitData = user.getLimitData();
 
-        //Collection<Booster> boosters = plugin.getBoosterManager().getBoosters(player);
         double boost = plugin.getBoosterManager().getTotalBoost(player);
 
         for (Currency currency : EconomyBridge.getCurrencies()) {
             CurrencySettings settings = plugin.getCurrencyManager().getSettings(currency);
             if (settings == null) continue;
 
-            // Do not drop money if limit is exceed and only if limit is still enabled.
-            if (settings.hasDailyLimit() && limitData.isLimitExceed(currency, settings)) continue;
+            // Skip if daily limit exceeded
+            if (settings.hasDailyLimit() && limitData.isLimitExceed(currency, settings)) {
+                continue;
+            }
 
             for (int count = 0; count < instances; count++) {
                 DropInfo dropInfo = objective.getCurrencyDrop(currency);
                 double moneyAmount = currency.fineValue(dropInfo.rollAmountNaturally());
 
-                // Apply boosters only for positive amount.
+                // Apply boosters only for positive amount
                 if (moneyAmount > 0D) {
                     moneyAmount *= MoneyUtils.parseCustomMultiplier(player, dropInfo.getCustomMultiplier());
                     if (BoosterUtils.isApplicable(currency)) moneyAmount *= boost;
@@ -403,10 +400,10 @@ public class MoneyManager extends AbstractManager<LootConomyPlugin> {
                     moneyAmount = Math.floor(moneyAmount);
                 }
 
-                // Do not drop zero amount.
+                // Skip zero amount
                 if (moneyAmount == 0D) continue;
 
-                // Instant apply penalty and go to next currency.
+                // Instant apply penalty and go to next currency
                 if (moneyAmount < 0D) {
                     this.pickupMoney(player, currency, moneyAmount, objective);
                     continue;
@@ -414,45 +411,53 @@ public class MoneyManager extends AbstractManager<LootConomyPlugin> {
 
                 boolean dropped;
 
-                // Add directly to balance if enabled.
+                // Add directly to balance if enabled
                 if (settings.isDirectToBalance()) {
                     dropped = this.pickupMoney(player, currency, moneyAmount, objective);
                 }
-                // Otherwise spawn money items depends on portions amount.
+                // Otherwise spawn money items based on portions
                 else {
                     int portions = dropInfo.rollPortions();
-                    double leftAmount = moneyAmount;
 
-                    while (leftAmount > 0 && portions > 0) {
-                        //System.out.println("moneyAmount = " + moneyAmount);
-                        double cutAmount = portions == 1 ? leftAmount : settings.cutRandom(currency, leftAmount);// currency.round(Rnd.getDouble(leftAmount));
-                        //System.out.println("cutAmount = " + cutAmount);
-                        //System.out.println("==========================");
-                        if (cutAmount == 0D) continue;
+                    // —— MULTI-SPLIT LOGIC ——
+                    List<Double> splits = settings.cutRandom(currency, moneyAmount, portions);
 
-                        PlayerCurrencyLootCreateEvent event = new PlayerCurrencyLootCreateEvent(player, currency, cutAmount, objective);
-                        plugin.getPluginManager().callEvent(event);
-                        if (!event.isCancelled()) {
-                            ItemStack moneyItem = MoneyUtils.createMoney(event.getCurrency(), settings, event.getAmount(), player.getUniqueId(), event.getObjective());
-                            loot.add(moneyItem);
+                    for (double cutAmount : splits) {
+                        if (cutAmount <= 0D) {
+                            // Skip zero or negative splits
+                            continue;
                         }
 
-                        leftAmount = currency.fineValue(leftAmount - cutAmount);
-                        portions--;
+                        PlayerCurrencyLootCreateEvent event =
+                                new PlayerCurrencyLootCreateEvent(player, currency, cutAmount, objective);
+                        plugin.getPluginManager().callEvent(event);
+                        if (event.isCancelled()) {
+                            continue;
+                        }
+
+                        ItemStack moneyItem = MoneyUtils.createMoney(
+                                event.getCurrency(),
+                                settings,
+                                event.getAmount(),
+                                player.getUniqueId(),
+                                event.getObjective()
+                        );
+                        loot.add(moneyItem);
                     }
 
                     dropped = !loot.isEmpty();
                 }
 
-                // Add limit only if currency was actually dropped/added.
+                // Add limit only if currency was actually dropped/added
                 if (dropped && settings.hasDailyLimit()) {
-                    if (!player.hasPermission(Perms.BYPASS_DAILY_LIMIT) && !player.hasPermission(Perms.PREFIX_BYPASS_DAILY_LIMIT + currency.getInternalId())) {
+                    if (!player.hasPermission(Perms.BYPASS_DAILY_LIMIT)
+                            && !player.hasPermission(Perms.PREFIX_BYPASS_DAILY_LIMIT + currency.getInternalId())) {
                         limitData.addCurrency(currency, moneyAmount);
 
                         if (limitData.isLimitExceed(currency, settings)) {
                             Lang.CURRENCY_LIMIT_NOTIFY.getMessage().send(player, replacer -> replacer
-                                .replace(Placeholders.GENERIC_MAX, currency.format(settings.getDailyLimit()))
-                                .replace(currency.replacePlaceholders())
+                                    .replace(Placeholders.GENERIC_MAX, currency.format(settings.getDailyLimit()))
+                                    .replace(currency.replacePlaceholders())
                             );
                         }
                     }
@@ -475,29 +480,30 @@ public class MoneyManager extends AbstractManager<LootConomyPlugin> {
         if (damageEvent != null) {
             Entity damager = MoneyUtils.getDamager(damageEvent);
             isPvP = damager instanceof Player && damager != player;
+        } else {
+            isPvP = false;
         }
-        else isPvP = false;
 
-        EconomyBridge.getCurrencies().forEach(currency -> {
-            if (player.hasPermission(Perms.BYPASS_DEATH_PENALTY)) return;
-            if (player.hasPermission(Perms.PREFIX_BYPASS_DEATH_PENALTY + currency.getInternalId())) return;
+        for (Currency currency : EconomyBridge.getCurrencies()) {
+            if (player.hasPermission(Perms.BYPASS_DEATH_PENALTY)) return list;
+            if (player.hasPermission(Perms.PREFIX_BYPASS_DEATH_PENALTY + currency.getInternalId())) return list;
 
             CurrencySettings settings = plugin.getCurrencyManager().getSettings(currency);
-            if (settings == null) return;
+            if (settings == null) return list;
 
             DeathPenalty deathPenalty = settings.getDeathPenalty();
-            if (!deathPenalty.isEnabled()) return;
-            if (isPvP && !deathPenalty.isForPvP()) return;
-            if (!isPvP && !deathPenalty.isForPvE()) return;
+            if (!deathPenalty.isEnabled()) return list;
+            if (isPvP && !deathPenalty.isForPvP()) return list;
+            if (!isPvP && !deathPenalty.isForPvE()) return list;
 
-            if (!Rnd.chance(deathPenalty.getChance())) return;
-
-            double percent = deathPenalty.rollAmount();
-            if (percent <= 0) return;
+            if (!Rnd.chance(deathPenalty.getChance())) return list;
 
             double balance = currency.getBalance(player);
+            double percent = deathPenalty.rollAmount();
+            if (percent <= 0) return list;
+
             double amount = NumberUtil.round(balance * percent / 100D);
-            if (amount <= 0D) return;
+            if (amount <= 0D) return list;
 
             if (this.loseMoney(player, currency, amount)) {
                 if (deathPenalty.isDropItem()) {
@@ -505,7 +511,7 @@ public class MoneyManager extends AbstractManager<LootConomyPlugin> {
                     list.add(item);
                 }
             }
-        });
+        }
 
         return list;
     }
@@ -527,54 +533,58 @@ public class MoneyManager extends AbstractManager<LootConomyPlugin> {
             if (player.getInventory().firstEmpty() != -1) continue;
             if (MoneyUtils.isDisabledWorld(player.getWorld())) continue;
 
-            player.getNearbyEntities(2, 2, 2).stream().filter(e -> e instanceof Item).forEach(entity -> {
-                Item item = (Item) entity;
-                if (item.getPickupDelay() > 0) return;
+            player.getNearbyEntities(2, 2, 2).stream()
+                    .filter(e -> e instanceof Item)
+                    .forEach(entity -> {
+                        Item item = (Item) entity;
+                        if (item.getPickupDelay() > 0) return;
 
-                ItemStack stack = item.getItemStack();
-                if (MoneyUtils.isMoney(stack)) {
-                    EntityPickupItemEvent event = new EntityPickupItemEvent(player, item, 0);
-                    plugin.getPluginManager().callEvent(event);
-                }
-            });
+                        ItemStack stack = item.getItemStack();
+                        if (MoneyUtils.isMoney(stack)) {
+                            EntityPickupItemEvent event = new EntityPickupItemEvent(player, item, 0);
+                            plugin.getPluginManager().callEvent(event);
+                        }
+                    });
         }
     }
 
     public void mergeMoneyItems() {
-        this.getTrackedLoot().stream().filter(Item::isOnGround).forEach(item -> {
-            if (!item.isValid() || item.isDead()) return; // This is needed to due 'near' item removal.
+        this.getTrackedLoot().stream()
+                .filter(Item::isOnGround)
+                .forEach(item -> {
+                    if (!item.isValid() || item.isDead()) return; // Needed due to 'near' item removal.
 
-            ItemStack originStack = item.getItemStack();
-            Currency originCurrency = this.getCurrency(originStack);
-            CurrencySettings settings = originCurrency == null ? null : plugin.getCurrencyManager().getSettings(originCurrency);
-            if (originCurrency == null || settings == null) {
-                item.remove();
-                return;
-            }
+                    ItemStack originStack = item.getItemStack();
+                    Currency originCurrency = this.getCurrency(originStack);
+                    CurrencySettings settings = originCurrency == null ? null : plugin.getCurrencyManager().getSettings(originCurrency);
+                    if (originCurrency == null || settings == null) {
+                        item.remove();
+                        return;
+                    }
 
-            UUID originOwner = MoneyUtils.getOwnerId(originStack);
-            double originAmount = MoneyUtils.getMoneyAmount(originStack);
+                    UUID originOwner = MoneyUtils.getOwnerId(originStack);
+                    double originAmount = MoneyUtils.getMoneyAmount(originStack);
 
-            for (Entity near : item.getNearbyEntities(5, 1, 5)) {
-                if (!(near instanceof Item nearItem)) continue;
+                    for (Entity near : item.getNearbyEntities(5, 1, 5)) {
+                        if (!(near instanceof Item nearItem)) continue;
 
-                ItemStack nearby = nearItem.getItemStack();
-                if (!MoneyUtils.isMoney(nearby)) continue;
+                        ItemStack nearby = nearItem.getItemStack();
+                        if (!MoneyUtils.isMoney(nearby)) continue;
 
-                UUID ownerName = MoneyUtils.getOwnerId(nearby);
-                if (ownerName != null && !ownerName.equals(originOwner)) continue;
+                        UUID ownerName = MoneyUtils.getOwnerId(nearby);
+                        if (ownerName != null && !ownerName.equals(originOwner)) continue;
 
-                Currency currency = this.getCurrency(nearby);
-                if (currency != originCurrency) continue;
+                        Currency currency = this.getCurrency(nearby);
+                        if (currency != originCurrency) continue;
 
-                originAmount += MoneyUtils.getMoneyAmount(nearby);
-                near.remove();
-            }
+                        originAmount += MoneyUtils.getMoneyAmount(nearby);
+                        near.remove();
+                    }
 
-            ItemStack money = MoneyUtils.createMoney(originCurrency, settings, originAmount, originOwner);
-            item.setCustomName(ItemUtil.getItemName(money));
-            item.setItemStack(money);
-        });
+                    ItemStack money = MoneyUtils.createMoney(originCurrency, settings, originAmount, originOwner);
+                    item.setCustomName(ItemUtil.getItemName(money));
+                    item.setItemStack(money);
+                });
     }
 
     /*@NotNull
