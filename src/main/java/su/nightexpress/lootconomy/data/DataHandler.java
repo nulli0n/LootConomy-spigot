@@ -65,6 +65,7 @@ public class DataHandler extends AbstractUserDataManager<LootConomyPlugin, LootU
     protected void onInitialize() {
         super.onInitialize();
 
+        this.dropColumn(this.tableUsers, "boosters");
         this.addColumn(this.tableUsers, COLUMN_BOOSTER_MULTIPLIER, "0");
         this.addColumn(this.tableUsers, COLUMN_BOOSTER_EXPIRE_DATE, "0");
     }

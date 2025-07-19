@@ -21,7 +21,6 @@ import su.nightexpress.lootconomy.hook.impl.mythicmobs.MythicMobsHook;
 import su.nightexpress.lootconomy.loot.handler.LootActions;
 import su.nightexpress.lootconomy.money.object.MoneyObjective;
 import su.nightexpress.nightcore.util.*;
-import su.nightexpress.nightcore.util.text.NightMessage;
 
 import java.util.UUID;
 
@@ -112,11 +111,11 @@ public class MoneyUtils {
                 PDCUtil.set(meta, Keys.itemOwner, ownerId);
             }
 
-            meta.setDisplayName(NightMessage.asLegacy(settings.dropFormat(currency, amount)));
+            ItemUtil.setCustomName(meta, settings.dropFormat(currency, amount));
+            //meta.setDisplayName(NightMessage.asLegacy(settings.dropFormat(currency, amount)));
         });
         return item;
     }
-
     public static boolean isDisabledWorld(@NotNull World world) {
         return isDisabledWorld(world.getName());
     }

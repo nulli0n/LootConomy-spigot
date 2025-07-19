@@ -11,11 +11,12 @@ import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
-import su.nightexpress.lootconomy.LootConomyPlugin;
 import su.nightexpress.economybridge.api.Currency;
+import su.nightexpress.lootconomy.LootConomyPlugin;
 import su.nightexpress.lootconomy.money.MoneyManager;
 import su.nightexpress.lootconomy.money.MoneyUtils;
 import su.nightexpress.nightcore.manager.AbstractListener;
+import su.nightexpress.nightcore.util.EntityUtil;
 import su.nightexpress.nightcore.util.ItemUtil;
 import su.nightexpress.nightcore.util.Players;
 
@@ -36,7 +37,8 @@ public class MoneyItemListener extends AbstractListener<LootConomyPlugin> {
         if (currency == null) return;
 
         this.moneyManager.getTrackedLoot().add(item);
-        item.setCustomName(ItemUtil.getItemName(itemStack));
+        //item.setCustomName(ItemUtil.getItemName(itemStack));
+        EntityUtil.setCustomName(item, ItemUtil.getNameSerialized(itemStack));
         item.setCustomNameVisible(true);
     }
 

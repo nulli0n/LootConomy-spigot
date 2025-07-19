@@ -26,7 +26,6 @@ import su.nightexpress.nightcore.util.blocktracker.PlayerBlockTracker;
 
 import java.util.function.Consumer;
 
-@SuppressWarnings("UnstableApiUsage")
 public class LootHandlers {
 
     private static <O> void dropLoot(@NotNull LootConomyPlugin plugin,
