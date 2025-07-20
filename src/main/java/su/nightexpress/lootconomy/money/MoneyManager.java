@@ -572,7 +572,7 @@ public class MoneyManager extends AbstractManager<LootConomyPlugin> {
             }
 
             ItemStack money = MoneyUtils.createMoney(originCurrency, settings, originAmount, originOwner);
-            item.setCustomName(ItemUtil.getItemName(money));
+            item.setCustomName(ItemUtil.getNameSerialized(money));
             item.setItemStack(money);
         });
     }
